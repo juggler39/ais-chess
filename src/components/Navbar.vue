@@ -12,13 +12,13 @@
           Home
         </span>
       </v-btn>
-      <v-btn to="/account" text>
+      <v-btn text>
         <v-icon left>mdi-mouse</v-icon>
         <span class="hidden-xs-only">
           Play ai
         </span>
       </v-btn>
-      <v-btn text>
+      <v-btn text to="/game">
         <v-icon left>mdi-face</v-icon>
         <span class="hidden-xs-only">
           Play human
