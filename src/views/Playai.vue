@@ -1,6 +1,6 @@
 <template>
   <div class="game">
-    <h1 class="text-center">This is a play human page</h1>
+    <h1 class="text-center">This is a play computer page</h1>
     <v-container>
       <v-row>
         <v-col class="col-12 col-md-9 grey darken-4">

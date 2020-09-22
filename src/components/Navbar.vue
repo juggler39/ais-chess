@@ -6,24 +6,19 @@
         ais-chess
       </v-toolbar-title>
 
-      <v-btn to="/" text>
-        <v-icon left>mdi-home</v-icon>
-        <span class="hidden-xs-only">
-          Home
-        </span>
-      </v-btn>
-      <v-btn text>
-        <v-icon left>mdi-mouse</v-icon>
-        <span class="hidden-xs-only">
-          Play ai
-        </span>
-      </v-btn>
-      <v-btn text to="/game">
-        <v-icon left>mdi-face</v-icon>
-        <span class="hidden-xs-only">
-          Play human
-        </span>
-      </v-btn>
+      <div class="menubuttons" v-for="link in menuLinks" :key="link.text">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
+              <v-icon left>{{ link.icon }}</v-icon>
+              <span class="hidden-sm-and-down">
+                {{ link.text }}
+              </span>
+            </v-btn>
+          </template>
+          <span>{{ link.text }}</span>
+        </v-tooltip>
+      </div>
 
       <v-spacer></v-spacer>
 
@@ -89,6 +84,12 @@ export default {
     Login
   },
   data: () => ({
+    menuLinks: [
+      { icon: "mdi-home", text: "Home", route: "/" },
+      { icon: "mdi-store", text: "Lobby", route: "/lobby" },
+      { icon: "mdi-mouse", text: "Play AI", route: "/playai" },
+      { icon: "mdi-face", text: "Play Human", route: "/game" }
+    ],
     drawer: false,
     drawerLinks: [
       { icon: "mdi-home", text: "Home", route: "/" },

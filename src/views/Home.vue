@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>Homepage</h1>
-    <img alt="Vue logo" src="../assets/logo.png" />
+
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis ab
       obcaecati quod ad quis doloremque debitis praesentium hic dolorem

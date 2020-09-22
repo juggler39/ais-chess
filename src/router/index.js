@@ -4,6 +4,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Account from "../views/Account.vue";
 import Game from "../views/Game.vue";
+import Lobby from "../views/Lobby.vue";
+import Playai from "../views/Playai.vue";
 
 Vue.use(VueRouter);
 
@@ -22,6 +24,16 @@ const routes = [
     path: "/game",
     name: "Game",
     component: Game
+  },
+  {
+    path: "/lobby",
+    name: "Lobby",
+    component: Lobby
+  },
+  {
+    path: "/playai",
+    name: "Playai",
+    component: Playai
   }
 ];
 
