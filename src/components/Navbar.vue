@@ -6,19 +6,17 @@
         ais-chess
       </v-toolbar-title>
 
-      <div class="menubuttons" v-for="link in menuLinks" :key="link.text">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
-              <v-icon left>{{ link.icon }}</v-icon>
-              <span class="hidden-sm-and-down">
-                {{ link.text }}
-              </span>
-            </v-btn>
-          </template>
-          <span>{{ link.text }}</span>
-        </v-tooltip>
-      </div>
+      <v-tooltip v-for="link in menuLinks" :key="link.text" bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
+            <v-icon left>{{ link.icon }}</v-icon>
+            <span class="hidden-sm-and-down">
+              {{ link.text }}
+            </span>
+          </v-btn>
+        </template>
+        <span>{{ link.text }}</span>
+      </v-tooltip>
 
       <v-spacer></v-spacer>
 

@@ -23,13 +23,8 @@
           </v-card>
           <v-container>
             <h2 class="text-center">Chat</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Asperiores quis nostrum nesciunt quas inventore cumque, minima
-              debitis temporibus eos eligendi incidunt ipsa at corporis
-              voluptatum quod soluta, ab nisi enim? sdadasd
-            </p></v-container
-          >
+            <Chat />
+          </v-container>
         </v-col>
       </v-row>
     </v-container>
@@ -37,5 +32,10 @@
 </template>
 
 <script>
-export default {};
+import Chat from "@/components/Chat";
+export default {
+  components: {
+    Chat
+  }
+};
 </script>
