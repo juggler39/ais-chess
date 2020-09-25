@@ -18,8 +18,16 @@
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Asperiores quis nostrum nesciunt quas inventore cumque, minima
               debitis temporibus eos eligendi incidunt ipsa at corporis
-              voluptatum quod soluta, ab nisi enim? sdadasd
+              voluptatum quod soluta, ab nisi enim?
             </p>
+            <ul>
+              <li
+                v-for="(move, index) in $store.state.gameHistory"
+                v-bind:key="index"
+              >
+                {{ move }}
+              </li>
+            </ul>
           </v-card>
           <v-container>
             <h2 class="text-center">Chat</h2>
