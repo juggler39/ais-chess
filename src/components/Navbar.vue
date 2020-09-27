@@ -24,7 +24,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn text>
+      <v-btn text @click.prevent="logoutFromAccountTest">
         <v-icon left>mdi-logout</v-icon>
         <span class="hidden-sm-and-down">
           logout
@@ -75,11 +75,19 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Login from "./Login";
+import router from "../router/index";
 
 export default {
   components: {
     Login
+  },
+  methods: {
+    logoutFromAccountTest () {
+        this.$store.commit("removeLoginUser")
+        router.push("/", () => {})
+    }
   },
   data: () => ({
     menuLinks: [
