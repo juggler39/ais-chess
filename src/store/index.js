@@ -6,6 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     gameHistory: [1, 2, 3, 4],
+    playAiColor: "",
+    AiStart: false,
     chatHistory: []
   },
   mutations: {},
