@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import gameHistory from "./modules/gameHistory";
 import { setStore, getStore, removeItem } from "../config/utils";
 
 Vue.use(Vuex);
@@ -8,7 +9,7 @@ const user = getStore("user");
 
 export default new Vuex.Store({
   state: {
-    gameHistory: [1, 2, 3, 4],
+    chatHistory: []
     playAiColor: "",
     AiStart: false,
     chatHistory: [],
@@ -25,7 +26,9 @@ export default new Vuex.Store({
     }
   },
   actions: {},
-  modules: {},
+  modules: {
+    gameHistory
+  },
   getters: {
     getLoginUserInfo(state) {
       return state.loginUser;

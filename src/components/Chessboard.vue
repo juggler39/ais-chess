@@ -53,6 +53,13 @@ export default {
       });
       return dests;
     },
+    updateHistory(move) {
+      this.$store.dispatch("updateHistory", move);
+    },
+    playerMove() {
+      return (orig, dest) => {
+        let move = { orig: orig, dest: dest, color: this.game.turn() };
+        this.updateHistory(move);
     playerMove() {
       return (orig, dest) => {
         this.game.move({ from: orig, to: dest });
