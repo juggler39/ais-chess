@@ -9,7 +9,7 @@ const user = getStore("user");
 
 export default new Vuex.Store({
   state: {
-    chatHistory: []
+    gameHistory: [],
     playAiColor: "",
     AiStart: false,
     chatHistory: [],

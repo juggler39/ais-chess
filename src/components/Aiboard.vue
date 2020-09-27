@@ -25,6 +25,7 @@ export default {
         });
         if (color === "white") {
           this.board.set({
+            turnColor: "white",
             movable: {
               color: "white",
               events: {
