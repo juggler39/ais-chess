@@ -3,9 +3,8 @@
     <h1 class="text-center">This is a play human page</h1>
     <v-container>
       <v-row>
-        <v-col class="col-12 col-md-9 grey darken-4 d-flex justify-center">
-          <Chessboard />
-        </v-col>
+        <Humanboard />
+
         <v-col class="col-12 col-md-3 grey darken-4">
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
@@ -28,14 +27,14 @@
 </template>
 
 <script>
-import Chessboard from "@/components/Chessboard";
+import Humanboard from "@/components/Humanboard";
 import Chat from "@/components/chat/Chat";
 import GameHistory from "@/components/chat/GameHistory";
 import { mapGetters } from "vuex";
 export default {
   components: {
     Chat,
-    Chessboard,
+    Humanboard,
     GameHistory
   },
   computed: mapGetters(["getHistory"])

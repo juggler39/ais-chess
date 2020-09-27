@@ -1,7 +1,9 @@
 <template>
-  <div class="merida">
-    <div ref="board" class="cg-board-wrap"></div>
-  </div>
+  <v-col class="col-12 col-md-9 grey darken-4 d-flex justify-center">
+    <div class="merida">
+      <div ref="board" class="cg-board-wrap"></div>
+    </div>
+  </v-col>
 </template>
 
 <script>
@@ -54,10 +56,12 @@ export default {
     updateHistory(move) {
       this.$store.dispatch("updateHistory", move);
     },
-    changeTurn() {
+    playerMove() {
       return (orig, dest) => {
         let move = { orig: orig, dest: dest, color: this.game.turn() };
         this.updateHistory(move);
+    playerMove() {
+      return (orig, dest) => {
         this.game.move({ from: orig, to: dest });
         this.board.set({
           fen: this.game.fen(),
@@ -70,8 +74,15 @@ export default {
       };
     },
     toColor() {
-      console.log(this.game.turn());
       return this.game.turn() === "w" ? "white" : "black";
+    },
+    promote(orig, dest) {
+      if (this.game.move({ from: orig, to: dest, promotion: "q" })) {
+        this.game.undo(); //move is ok, now we can go ahead and check for promotion
+        if (!this.game.move({ from: orig, to: dest })) {
+          return prompt("q - qween, r - rook, b - bishop, n - knight", "q");
+        }
+      }
     },
     loadPosition() {
       this.game.load(this.fen);
@@ -87,14 +98,10 @@ export default {
         },
         orientation: this.orientation
       });
-      this.board.set({
-        movable: { events: { after: this.changeTurn() } }
-      });
     }
   },
   mounted() {
     this.game = new Chess();
-    this.loadPosition();
   }
 };
 </script>

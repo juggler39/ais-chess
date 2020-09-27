@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <v-dialog persistent v-model="dialog">
     <template v-slot:activator="{ on, attrs }">
@@ -39,7 +40,13 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-btn color="secondary" @click.prevent="loginWithGoogle">
+                  <img alt="Google" src="https://img.comss.net/fit-in/200x200/filters:fill(FFFFFF)/logo/google-logo.png" width="18" height="18">
+                  Google
+              </v-btn>
+              <v-spacer></v-spacer>
               <v-btn color="primary">Login</v-btn>
+              <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -49,11 +56,33 @@
 </template>
 
 <script>
+/* eslint-disable */
+import router from '../router/index'
 export default {
-  data() {
+  name: 'login_signup_social',
+  methods: {
+    loginWithGoogle () {
+      this.$gAuth
+        .signIn()
+        .then(GoogleUser => {
+          // on success do something
+          console.log('GoogleUser', GoogleUser)
+          let userInfo = {
+            loginType: 'google',
+            google: GoogleUser
+          }
+          this.$store.commit('setLoginUser', userInfo)
+          router.push('/', () => {})
+        })
+        .catch(error => {
+          console.log('error', error)
+        })
+    }
+  },
+   data() {
     return {
       dialog: false
     };
   }
-};
+}
 </script>
