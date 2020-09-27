@@ -60,7 +60,6 @@ export default {
       return (orig, dest) => {
         let move = { orig: orig, dest: dest, color: this.game.turn() };
         this.updateHistory(move);
-
         this.game.move({ from: orig, to: dest });
         this.board.set({
           fen: this.game.fen(),
