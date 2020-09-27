@@ -7,12 +7,13 @@
         <v-col class="col-12 col-md-3 grey darken-4">
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Asperiores quis nostrum nesciunt quas inventore cumque, minima
-              debitis temporibus eos eligendi incidunt ipsa at corporis
-              voluptatum quod soluta, ab nisi enim? sdadasd
-            </p>
+            <div class="history">
+              <GameHistory
+                v-for="(move, index) in getHistory"
+                v-bind:key="index"
+                v-bind:move="move"
+              />
+            </div>
           </v-card>
           <v-container>
             <Choosecolor />
@@ -26,11 +27,37 @@
 <script>
 import Aiboard from "@/components/Aiboard";
 import Choosecolor from "@/components/dialogs/Choosecolor";
+import GameHistory from "@/components/chat/GameHistory";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Aiboard,
-    Choosecolor
-  }
+    Choosecolor,
+    GameHistory
+  },
+  computed: mapGetters(["getHistory"])
 };
 </script>
+<style scoped>
+.history {
+  width: 100%;
+  height: 200px;
+  overflow-y: scroll;
+}
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #bcc9d2;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: #bcc9d2;
+}
+</style>

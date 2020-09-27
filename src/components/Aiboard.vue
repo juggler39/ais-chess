@@ -47,6 +47,12 @@ export default {
         let moves = this.game.moves({ verbose: true });
         let randomMove = moves[Math.floor(Math.random() * moves.length)];
         this.game.move(randomMove);
+        let move = {
+          orig: randomMove.from,
+          dest: randomMove.to,
+          color: randomMove.color
+        };
+        this.updateHistory(move);
         this.board.set({
           fen: this.game.fen(),
           turnColor: this.toColor(),
@@ -69,7 +75,12 @@ export default {
     }
   },
   methods: {
+    updateHistory(move) {
+      this.$store.dispatch("updateHistory", move);
+    },
     humanMove(orig, dest) {
+      let move = { orig: orig, dest: dest, color: this.game.turn() };
+      this.updateHistory(move);
       this.game.move({
         from: orig,
         to: dest,
