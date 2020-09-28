@@ -69,4 +69,13 @@ app.use((err, req, res) => {
   });
 });
 
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    return res.json({
+      success: false,
+      message: 'No token provided.'
+    });
+  }
+});
+
 app.listen(8000, () => console.log('Server running on http://localhost:8000/'));

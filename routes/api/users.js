@@ -71,11 +71,11 @@ router.post('/register', auth.optional, (req, res, next) => {
 });
 
 //POST login route
-router.post('/login', auth.optional, (req, res, next) => {
+router.post('/login', (req, res, next) => {
   const { body: { user } } = req;
 
   if(!user.login) {
-    return res.status(422).json({
+    return res.json({
       errors: {
         login: 'is required',
       },
@@ -83,7 +83,7 @@ router.post('/login', auth.optional, (req, res, next) => {
   }
 
   if(!user.password) {
-    return res.status(422).json({
+    return res.json({
       errors: {
         password: 'is required',
       },
@@ -102,21 +102,31 @@ router.post('/login', auth.optional, (req, res, next) => {
       return res.json({ user: user.toAuthJSON() });
     }
 
-    return status(400).info;
+    return res.json({
+      errors: {
+        user: 'not found',
+      },
+    });
   })(req, res, next);
 });
 
+router.post('/google', (req, res, next) => {
+  const { body: { ID } } = req;
+  console.log(req.headers);
+    res.json({ user: "okay" });
+
+});
+
 //GET current route
-router.get('/current', auth.required, (req, res, next) => {
+router.get('/secret', auth.required, (req, res, next) => {
   const { payload: { id } } = req;
 
   return Users.findById(id)
     .then((user) => {
       if(!user) {
-        return res.json({ route: "Access is denied" });;
+        return res.json({ user: "Access is denied" });
       }
-
-      return res.json({ route: "Access is allowed" });
+      return res.json({ user: "Access is allowed" });
     });
 });
 
