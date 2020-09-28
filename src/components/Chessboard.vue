@@ -15,17 +15,14 @@ export default {
   components: {},
   data() {
     return {
-      pieceColor: "white"
+      pieceColor: "white",
+      orientation: "white"
     };
   },
   props: {
     fen: {
       type: String,
       default: ""
-    },
-    orientation: {
-      type: String,
-      default: "white"
     }
   },
   watch: {
@@ -87,7 +84,6 @@ export default {
       this.board = Chessground(this.$refs.board, {
         fen: this.game.fen(),
         movable: {
-          color: this.orientation,
           free: false,
           dests: this.possibleMoves()
         },
@@ -96,10 +92,47 @@ export default {
         },
         orientation: this.orientation
       });
+    },
+    checkEndReason() {
+      const result = {};
+      if (this.game.in_checkmate()) {
+        result.color = this.turn === "white" ? "black" : "white";
+        result.reason = "checkmate";
+      } else if (this.game.in_stalemate()) {
+        result.color = "draw";
+        result.reason = "stalemate";
+      } else if (this.game.in_threefold_repetition()) {
+        result.color = "draw";
+        result.reason = "threefold repetition";
+      } else if (this.game.insufficient_material()) {
+        result.color = "draw";
+        result.reason = "insufficient material";
+      } else if (this.game.in_draw()) {
+        result.color = "draw";
+        result.reason = "50-move rule";
+      } else {
+        result.color = "player who loose"; //insert color of player, who capitulated
+        result.reason = "capitulation";
+      }
+
+      return result;
+    },
+    gameOver() {
+      if (this.game.game_over()) {
+        const result = this.checkEndReason();
+        alert(`Game over!, ${result.color}, ${result.reason}`);
+      }
     }
   },
+
   mounted() {
     this.game = new Chess();
+    this.loadPosition();
+    this.board.set({
+      movable: {
+        color: null
+      }
+    });
   }
 };
 </script>

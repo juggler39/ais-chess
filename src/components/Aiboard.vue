@@ -6,7 +6,6 @@ export default {
   extends: Chessboard,
   data() {
     return {
-      pieceColor: "white",
       aiTurn: false
     };
   },
@@ -75,9 +74,6 @@ export default {
     }
   },
   methods: {
-    updateHistory(move) {
-      this.$store.dispatch("updateHistory", move);
-    },
     humanMove(orig, dest) {
       let move = { orig: orig, dest: dest, color: this.game.turn() };
       this.updateHistory(move);
@@ -100,20 +96,10 @@ export default {
     gameOver() {
       if (this.game.game_over()) {
         this.aiTurn = false;
-        alert("Game over!");
-        return false;
+        const result = this.checkEndReason();
+        alert(`Game over!, ${result.color}, ${result.reason}`);
       }
-
-      return true;
     }
-  },
-  mounted() {
-    this.loadPosition();
-    this.board.set({
-      movable: {
-        color: null
-      }
-    });
   }
 };
 </script>
