@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
         return next("/");
       });
     }
-    next();
+    else next();
   }
   verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
 });
