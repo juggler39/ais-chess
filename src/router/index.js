@@ -56,8 +56,9 @@ router.beforeEach((to, from, next) => {
   const publicPages = ["/lobby", "/playai", "/", "/contact"];
   const authRequired = !publicPages.includes(to.path);
 
+  async function verify() {
   if (authRequired) {
-    axios.get("/api/users/secret", {}).then((response) => {
+    await axios.get("/api/users/secret", {}).then((response) => {
       if (response.data.user === "Access is allowed") {
         return;
       }
@@ -65,11 +66,10 @@ router.beforeEach((to, from, next) => {
       }, error => {
         return next("/");
       });
+    }
+    next();
   }
- 
-
-  next();
-  
+  verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
 });
 
 export default router;
