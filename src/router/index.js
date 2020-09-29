@@ -6,6 +6,7 @@ import Account from "../views/Account.vue";
 import Game from "../views/Game.vue";
 import Lobby from "../views/Lobby.vue";
 import Playai from "../views/Playai.vue";
+import axios from "axios";
 //import Login from "../components/Login.vue";
 
 Vue.use(VueRouter);
@@ -50,15 +51,25 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // redirect to login page if not logged in and trying to access a restricted page
+  /* eslint-disable */
+  // redirect to home page if not logged in and trying to access a restricted page
   const publicPages = ["/lobby", "/playai", "/", "/contact"];
   const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem("user");
 
-  if (authRequired && !loggedIn) {
-    return next("/");
+  if (authRequired) {
+    axios.get("/api/users/secret", {}).then((response) => {
+      if (response.data.user === "Access is allowed") {
+        return;
+      }
+      else return next("/");
+      }, error => {
+        return next("/");
+      });
   }
+ 
+
   next();
+  
 });
 
 export default router;

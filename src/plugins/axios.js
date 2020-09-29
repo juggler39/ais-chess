@@ -4,14 +4,16 @@ import Vue from "vue";
 import axios from "axios";
 
 // Full config:  https://github.com/axios/axios#request-config
-// axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+// eslint-disable-next-line
+axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || "http://localhost:8000";
+if (localStorage.getItem("userLog")) axios.defaults.headers.common["Authorization"] = `Token ${localStorage.getItem("userLog")}`;
+//axios.defaults.headers.common["Authorization"] = "Token asd";
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
 let config = {
-  // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  // timeout: 60 * 1000, // Timeout
-  // withCredentials: true, // Check cross-site Access-Control
+  //baseURL: process.env.baseURL || process.env.apiUrl || "http://localhost:8000",
+  timeout: 0,
+  withCredentials: false
 };
 
 const _axios = axios.create(config);
