@@ -60,14 +60,14 @@ router.beforeEach((to, from, next) => {
   if (authRequired) {
     await axios.get("/api/users/secret", {}).then((response) => {
       if (response.data.user === "Access is allowed") {
-        return;
+        return next();
       }
       else return next("/");
       }, error => {
         return next("/");
       });
     }
-    else next();
+  else next();
   }
   verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
 });
