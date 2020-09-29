@@ -23,14 +23,13 @@
             </v-toolbar>
             <v-card-text>
               <v-form>
-                <v-text-field
+                <v-text-field id="Login"
                   label="Login"
                   name="login"
                   prepend-icon="mdi-account"
                   type="text"
                 ></v-text-field>
-                <v-text-field
-                  id="password"
+                <v-text-field id="Password"
                   label="Password"
                   name="password"
                   prepend-icon="mdi-lock"
@@ -45,7 +44,7 @@
                   Google
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="primary">Login</v-btn>
+              <v-btn color="primary" @click.prevent="loginWithLogin">Login</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -58,25 +57,49 @@
 <script>
 /* eslint-disable */
 import router from '../router/index'
+import axios from "axios"
 export default {
   name: 'login_signup_social',
   methods: {
     loginWithGoogle () {
       this.$gAuth
         .signIn()
-        .then(GoogleUser => {
-          // on success do something
-          console.log('GoogleUser', GoogleUser)
-          let userInfo = {
-            loginType: 'google',
-            google: GoogleUser
-          }
-          this.$store.commit('setLoginUser', userInfo)
+        .then(async GoogleUser => {
+          // on success send ID to backend
+          await axios.post('/api/users/google', {
+                        ID: GoogleUser.getAuthResponse().id_token
+                      }).then((response) => {
+                            axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
+                            window.localStorage.setItem("userLog", response.data.user.token);
+                            router.push('/account', () => {});
+                          }, (error) => {
+                            console.log(error);
+                          });
           router.push('/', () => {})
         })
         .catch(error => {
           console.log('error', error)
         })
+    },
+    loginWithLogin() {
+      let userObj = {
+        user: {
+          login: document.getElementById("Login").value,
+          password: document.getElementById("Password").value
+        }
+      }
+      axios.post('/api/users/login', userObj).then((response) => {
+                            if (response.data.user) {
+                              axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
+                              window.localStorage.setItem("userLog", response.data.user.token);
+                              router.push('/account', () => {});
+                            }
+
+                            //here if Login info is incorrect
+
+                          }, (error) => {
+                            console.log(error);
+                          });
     }
   },
    data() {
