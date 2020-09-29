@@ -17,7 +17,6 @@
             </div>
           </v-card>
           <v-container>
-            <h2 class="text-center">Chat</h2>
             <Chat />
           </v-container>
         </v-col>
