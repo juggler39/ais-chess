@@ -1,11 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import gameHistory from "./modules/gameHistory";
-import { getStore} from "../config/utils";
+// eslint-disable-next-line
+import {getStore} from "../config/utils";
 
 Vue.use(Vuex);
 
-const user = getStore("user");
+const user = getStore("userName");
 
 export default new Vuex.Store({
   state: {

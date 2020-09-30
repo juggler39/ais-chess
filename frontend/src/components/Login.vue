@@ -68,10 +68,11 @@ export default {
           // on success send ID to backend
           await axios.post('/api/users/google', {
                         ID: GoogleUser.getAuthResponse().id_token
-                      }).then((response) => {
+                      }).then(async (response) => {
                             axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
                             window.localStorage.setItem("userLog", response.data.user.token);
-                            this.$store.commit("setLoginUser", response.data.user.login);
+                            window.localStorage.setItem("userName", response.data.user.name);
+                            this.$store.commit("setLoginUser", response.data.user.name);
                             router.push('/account', () => {});
                           }, (error) => {
                             console.log(error);
@@ -89,11 +90,12 @@ export default {
           password: document.getElementById("Password").value
         }
       }
-      axios.post('/api/users/login', userObj).then((response) => {
+      axios.post('/api/users/login', userObj).then(async (response) => {
                             if (response.data.user) {
                               axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
                               window.localStorage.setItem("userLog", response.data.user.token);
-                              this.$store.commit("setLoginUser", response.data.user.login);
+                              window.localStorage.setItem("userName", response.data.user.name);
+                              this.$store.commit("setLoginUser", response.data.user.name);
                               router.push('/account', () => {});
                             }
 

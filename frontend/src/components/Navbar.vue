@@ -87,6 +87,7 @@ export default {
     logoutFromAccountTest () {
         axios.defaults.headers.common["Authorization"] = "Token asd";
         window.localStorage.removeItem("userLog");
+        window.localStorage.removeItem("userName");
         this.$store.commit("removeLoginUser");
         router.push("/", () => {})
     }
