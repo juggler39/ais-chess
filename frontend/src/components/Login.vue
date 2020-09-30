@@ -71,6 +71,7 @@ export default {
                       }).then((response) => {
                             axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
                             window.localStorage.setItem("userLog", response.data.user.token);
+                            this.$store.commit("setLoginUser", response.data.user.login);
                             router.push('/account', () => {});
                           }, (error) => {
                             console.log(error);
@@ -92,6 +93,7 @@ export default {
                             if (response.data.user) {
                               axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
                               window.localStorage.setItem("userLog", response.data.user.token);
+                              this.$store.commit("setLoginUser", response.data.user.login);
                               router.push('/account', () => {});
                             }
 

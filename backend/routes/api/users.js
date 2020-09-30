@@ -139,10 +139,10 @@ router.post('/google', (req, res, next) => {
     const email = payload['email'];
     const name = payload['name'];
     
-    Users.findOne({ login: userid }, function( err, isUser) {
+    Users.findOne({ login: userid }, async function( err, isUser) {
       if (isUser)
       {
-        const token = generateJWTGoogle(isUser._id, name);
+        const token = await generateJWTGoogle(isUser._id, name);
         res.json({ user : {email, name, token }});
       }
       else {
@@ -151,8 +151,11 @@ router.post('/google', (req, res, next) => {
           login: userid
         }
         const finalUser = new Users(userObj);
-        return finalUser.save()
-        .then(() => res.json({ user: finalUser.toAuthJSON() }));
+        await finalUser.save()
+        .then(async () => {
+          let returnUser = await finalUser.toAuthJSON();
+          returnUser.name = name;
+          res.json({ user: returnUser })});
       }
     })
   }
