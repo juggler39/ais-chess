@@ -17,6 +17,7 @@
           </v-card>
           <v-container>
             <Choosecolor />
+            <Resign />
           </v-container>
         </v-col>
       </v-row>
@@ -28,13 +29,15 @@
 import Aiboard from "@/components/Aiboard";
 import Choosecolor from "@/components/dialogs/Choosecolor";
 import GameHistory from "@/components/chat/GameHistory";
+import Resign from "@/components/dialogs/Resign";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     Aiboard,
     Choosecolor,
-    GameHistory
+    GameHistory,
+    Resign
   },
   computed: mapGetters(["getHistory"])
 };

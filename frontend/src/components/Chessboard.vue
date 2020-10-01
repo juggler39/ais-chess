@@ -16,7 +16,9 @@ export default {
   data() {
     return {
       pieceColor: "white",
-      orientation: "white"
+      orientation: "white",
+      resign: false,
+      drawProposal: false
     };
   },
   props: {

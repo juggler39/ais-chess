@@ -5,10 +5,11 @@
     </div>
     <div class="d-flex flex-column">
       <v-btn @click="changeOrientation">Change orientation</v-btn>
-      <input type="text" v-model="opponentMoveFrom" class="white--text" />
-      <input type="text" v-model="opponentMoveTo" class="white--text" />
-      <v-btn @click="opponentMove()" color="primary" dark>Move</v-btn>
-      <!--  only for testing -->
+      <input type="text" v-model="opponentMoveFrom" class="ms-4 white--text" />
+      <input type="text" v-model="opponentMoveTo" class="ms-4 white--text" />
+      <v-btn @click="opponentMove()" color="primary" class="ms-4" dark
+        >Move</v-btn
+      >
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="290">
           <template v-slot:activator="{ on, attrs }">
@@ -39,32 +40,32 @@
           </v-card>
         </v-dialog>
       </v-row>
-      <!--  only for testing -->
+      <v-spacer></v-spacer>
+      <Resign />
+      <OfferDraw />
     </div>
   </v-col>
 </template>
 
 <script>
 import Chessboard from "./Chessboard";
-
+import Resign from "@/components/dialogs/Resign";
+import OfferDraw from "@/components/dialogs/OfferDraw";
 export default {
   name: "Humanboard",
   extends: Chessboard,
-
+  components: { Resign, OfferDraw },
   data() {
     return {
-      // only for testing
       dialog: false,
       radios: "white",
       opponentMoveFrom: "e7",
       opponentMoveTo: "e5",
       orientation: "white",
       pieceColor: "white"
-      // only for testing
     };
   },
   methods: {
-    // only for testing
     submit() {
       this.pieceColor = this.radios;
       this.dialog = false;
@@ -87,7 +88,6 @@ export default {
         });
       }
     },
-    // only for testing
     opponentMove() {
       let move = {
         orig: this.opponentMoveFrom,
