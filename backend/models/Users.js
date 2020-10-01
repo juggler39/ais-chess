@@ -41,4 +41,7 @@ UsersSchema.methods.toAuthJSON = function() {
   };
 };
 
+UsersSchema.index({ login: 1 });
+UsersSchema.index({ email: 1 });
+
 mongoose.model('Users', UsersSchema);

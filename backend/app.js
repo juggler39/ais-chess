@@ -41,6 +41,9 @@ mongoose.connect('mongodb://TapeGhad:1985Chess1985@chess-shard-00-00.mc0lt.mongo
 
 //Models & routes
 require('./models/Users');
+require('./models/GlobalChat');
+require('./models/FinishedGames');
+require('./models/OpenGames');
 require('./config/passport');
 app.use(require('./routes'));
 
