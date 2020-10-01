@@ -55,6 +55,9 @@ export default {
     updateHistory(move) {
       this.$store.dispatch("updateHistory", move);
     },
+    clearHistory() {
+      this.$store.dispatch("clearHistory");
+    },
     playerMove() {
       return (orig, dest) => {
         let move = { orig: orig, dest: dest, color: this.game.turn() };
@@ -121,6 +124,7 @@ export default {
     },
     gameOver() {
       if (this.game.game_over()) {
+        this.clearHistory();
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
       }

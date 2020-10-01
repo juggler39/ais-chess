@@ -16,6 +16,8 @@
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-socket.io": "^3.0.10",
+    "vue-socket.io-extended": "^4.0.5",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
   },
