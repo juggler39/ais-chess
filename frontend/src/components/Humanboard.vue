@@ -66,6 +66,7 @@ export default {
   methods: {
     // only for testing
     submit() {
+      this.$store.dispatch("clearHistory");
       this.pieceColor = this.radios;
       this.dialog = false;
       this.game.reset();

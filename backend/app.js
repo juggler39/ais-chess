@@ -5,12 +5,25 @@ const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
+const http = require('http');
+const io = require('socket.io');
 
 //Configure isProduction variable
 const isProduction = process.env.NODE_ENV === 'production';
 
 //Initiate our app
 const app = express();
+const server = http.createServer(app);
+const socketIO = io(server);
+
+socketIO.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+  })
+
+  socket.on('send', (msg) => {
+      socketIO.sockets.emit('add', msg);
+  });
+})
 
 //Configure our app
 app.use(cors());
@@ -78,4 +91,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(8000, () => console.log('Server running on http://localhost:8000/'));
+server.listen(8000, () => console.log('Server running on http://localhost:8000/'));

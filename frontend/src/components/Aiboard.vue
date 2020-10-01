@@ -95,6 +95,7 @@ export default {
     },
     gameOver() {
       if (this.game.game_over()) {
+        this.$store.dispatch("clearHistory");
         this.aiTurn = false;
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
