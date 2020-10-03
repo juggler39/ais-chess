@@ -49,6 +49,7 @@ router.post('/register', auth.optional, (req, res, next) => {
   }
 
   const finalUser = new Users(user);
+  finalUser.name = user.login;
 
   Users.findOne({ login: user.login }, function( err, user_login) {
     if (user_login)
@@ -148,14 +149,12 @@ router.post('/google', (req, res, next) => {
       else {
         const userObj = {
           email,
-          login: userid
+          login: userid,
+          name
         }
         const finalUser = new Users(userObj);
-        await finalUser.save()
-        .then(async () => {
-          let returnUser = await finalUser.toAuthJSON();
-          returnUser.name = name;
-          res.json({ user: returnUser })});
+        finalUser.save()
+        .then(() => res.json({ user: returnUser }));
       }
     })
   }
