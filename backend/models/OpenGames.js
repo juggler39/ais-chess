@@ -5,12 +5,13 @@ const { Schema } = mongoose;
 const OpenGameSchema = new Schema({
   players: {player1: String, player2: String},
   startDate: { type: Date, default: Date.now },
-  moves: [String],
-  chat: [{player: String, message: String}],
+  moves: [{from: String, to: String}],
+  chat: [{player: String, message: String}]
 });
 
 OpenGameSchema.methods.toJSON = function() {
     return {
+      id: this._id,
       players: this.players,
       startDate: this.startDate,
       moves: this.moves,
