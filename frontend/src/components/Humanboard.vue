@@ -1,8 +1,14 @@
 <template>
-  <v-col class="col-12 col-md-9 grey darken-4 d-flex justify-center">
-    <div class="merida">
-      <div ref="board" class="cg-board-wrap"></div>
-    </div>
+  <v-col
+    class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
+  >
+    <v-card>
+      <Playerbar color="black" />
+      <div class="merida">
+        <div ref="board" class="cg-board-wrap"></div>
+      </div>
+      <Playerbar color="white" :username="$store.state.loginUser" />
+    </v-card>
     <div class="d-flex flex-column">
       <v-btn @click="changeOrientation">Change orientation</v-btn>
       <input type="text" v-model="opponentMoveFrom" class="ms-4 white--text" />
@@ -70,12 +76,16 @@ export default {
       this.$store.dispatch("clearHistory");
       this.pieceColor = this.radios;
       this.dialog = false;
+      this.$store.state.timeWhite = this.$store.state.time;
+      this.$store.state.timeBlack = this.$store.state.time;
       this.game.reset();
       this.board.set({
         fen: this.game.fen(),
         lastMove: null,
         orientation: this.pieceColor
       });
+      console.log(this.game.fen());
+      this.startTimer();
       if (this.pieceColor === "white") {
         this.board.set({
           movable: {

@@ -10,6 +10,9 @@ const user = getStore("userName");
 
 export default new Vuex.Store({
   state: {
+    time: 6000,
+    timeWhite: 0,
+    timeBlack: 0,
     playAiColor: "",
     AiStart: false,
     loginUser: user

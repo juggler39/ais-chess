@@ -1,24 +1,32 @@
 <template>
-  <v-col class="col-12 col-md-9 grey darken-4 d-flex justify-center">
-    <div class="merida">
-      <div ref="board" class="cg-board-wrap"></div>
-    </div>
+  <v-col
+    class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
+  >
+    <v-card>
+      <Playerbar color="black" />
+      <div class="merida">
+        <div ref="board" class="cg-board-wrap"></div>
+      </div>
+      <Playerbar color="white" :username="$store.state.loginUser" />
+    </v-card>
   </v-col>
 </template>
 
 <script>
 import Chess from "chess.js";
 import { Chessground } from "chessground";
+import Playerbar from "@/components/Playerbar";
 
 export default {
   name: "Chessboard",
-  components: {},
+  components: { Playerbar },
   data() {
     return {
       pieceColor: "white",
       orientation: "white",
       resign: false,
-      drawProposal: false
+      drawProposal: false,
+      timer: null
     };
   },
   props: {
@@ -36,6 +44,15 @@ export default {
     }
   },
   methods: {
+    startTimer() {
+      clearInterval(this.timer);
+      this.timer = setInterval(this.countDown, 100);
+    },
+    countDown() {
+      this.game.turn() === "w"
+        ? this.$store.state.timeWhite--
+        : this.$store.state.timeBlack--;
+    },
     changeOrientation() {
       this.orientation = this.orientation === "white" ? "black" : "white";
       return;
@@ -127,6 +144,7 @@ export default {
         this.clearHistory();
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
+        clearInterval(this.timer);
       }
     }
   },
