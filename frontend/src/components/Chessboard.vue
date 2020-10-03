@@ -3,11 +3,9 @@
     class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
   >
     <v-card>
-      <Playerbar color="black" />
       <div class="merida">
         <div ref="board" class="cg-board-wrap"></div>
       </div>
-      <Playerbar color="white" :username="$store.state.loginUser" />
     </v-card>
   </v-col>
 </template>
@@ -15,11 +13,10 @@
 <script>
 import Chess from "chess.js";
 import { Chessground } from "chessground";
-import Playerbar from "@/components/Playerbar";
 
 export default {
   name: "Chessboard",
-  components: { Playerbar },
+  components: {},
   data() {
     return {
       pieceColor: "white",
@@ -102,10 +99,12 @@ export default {
       }
     },
     loadPosition() {
+      this.game = new Chess();
       this.game.load(this.fen);
       this.board = Chessground(this.$refs.board, {
         fen: this.game.fen(),
         movable: {
+          color: null,
           free: false,
           dests: this.possibleMoves()
         },
@@ -136,7 +135,6 @@ export default {
         result.color = "player who loose"; //insert color of player, who capitulated
         result.reason = "capitulation";
       }
-
       return result;
     },
     gameOver() {
@@ -148,15 +146,8 @@ export default {
       }
     }
   },
-
   mounted() {
-    this.game = new Chess();
     this.loadPosition();
-    this.board.set({
-      movable: {
-        color: null
-      }
-    });
   }
 };
 </script>

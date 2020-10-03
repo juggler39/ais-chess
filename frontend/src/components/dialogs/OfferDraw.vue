@@ -14,7 +14,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-card-text class = "pa-5">Are you sure?</v-card-text>
+        <v-card-text class="pa-5">Are you sure?</v-card-text>
         <v-card-actions>
           <v-btn color="error" dark @click="dialog = false">NO</v-btn>
           <v-spacer></v-spacer>

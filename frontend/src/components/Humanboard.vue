@@ -9,6 +9,7 @@
       </div>
       <Playerbar color="white" :username="$store.state.loginUser" />
     </v-card>
+
     <div class="d-flex flex-column">
       <v-btn @click="changeOrientation">Change orientation</v-btn>
       <input type="text" v-model="opponentMoveFrom" class="ms-4 white--text" />
@@ -57,10 +58,11 @@
 import Chessboard from "./Chessboard";
 import Resign from "@/components/dialogs/Resign";
 import OfferDraw from "@/components/dialogs/OfferDraw";
+import Playerbar from "@/components/Playerbar";
 export default {
   name: "Humanboard",
   extends: Chessboard,
-  components: { Resign, OfferDraw },
+  components: { Resign, OfferDraw, Playerbar },
   data() {
     return {
       dialog: false,
@@ -79,12 +81,13 @@ export default {
       this.$store.state.timeWhite = this.$store.state.time;
       this.$store.state.timeBlack = this.$store.state.time;
       this.game.reset();
+      this.loadPosition();
       this.board.set({
         fen: this.game.fen(),
         lastMove: null,
         orientation: this.pieceColor
       });
-      console.log(this.game.fen());
+
       this.startTimer();
       if (this.pieceColor === "white") {
         this.board.set({
@@ -92,7 +95,18 @@ export default {
             color: "white",
             events: {
               after: (orig, dest) => {
-                this.changeTurn(orig, dest);
+                this.playerMove(orig, dest);
+              }
+            }
+          }
+        });
+      } else {
+        this.board.set({
+          movable: {
+            color: null,
+            events: {
+              after: (orig, dest) => {
+                this.playerMove(orig, dest);
               }
             }
           }
@@ -118,8 +132,7 @@ export default {
       });
       this.gameOver();
     },
-
-    changeTurn(orig, dest) {
+    playerMove(orig, dest) {
       let move = { orig: orig, dest: dest, color: this.game.turn() };
       this.updateHistory(move);
       this.game.move({
@@ -137,6 +150,9 @@ export default {
       });
       this.gameOver();
     }
+  },
+  mounted() {
+   
   }
 };
 </script>
