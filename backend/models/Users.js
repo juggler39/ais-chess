@@ -6,6 +6,7 @@ const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
   email: String,
+  name: String,
   login: String,
   hash: String,
   salt: String,
@@ -35,7 +36,7 @@ UsersSchema.methods.generateJWT = function() {
 
 UsersSchema.methods.toAuthJSON = function() {
   return {
-    name: this.login,
+    name: this.name,
     email: this.email,
     token: this.generateJWT(),
   };
