@@ -9,6 +9,15 @@ const OpenGameSchema = new Schema({
   chat: [{player: String, message: String}],
 });
 
+OpenGameSchema.methods.toJSON = function() {
+    return {
+      players: this.players,
+      startDate: this.startDate,
+      moves: this.moves,
+      chat: this.chat
+    };
+};
+
 OpenGameSchema.index({ players: 1, startDate: -1 });
 
 mongoose.model('OpenGame', OpenGameSchema);
