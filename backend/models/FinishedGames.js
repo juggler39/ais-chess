@@ -10,6 +10,7 @@ const FinishedGameSchema = new Schema({
 
 FinishedGameSchema.methods.toJSON = function() {
     return {
+      id: this._id,
       gameDate: this.gameDate,
       players: this.players,
       moves: this.moves,
