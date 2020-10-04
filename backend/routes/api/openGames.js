@@ -22,7 +22,7 @@ router.post('/open-game', auth.required, (req, res, next) => {
         });
 });
 
-router.post('/open-game/message', auth.required, (req, res, next) => {
+router.post('/open-game-message', auth.required, (req, res, next) => {
     const { payload: { id } } = req;
     const { body: { gameUser } } = req;
 
@@ -50,7 +50,7 @@ router.post('/open-game/message', auth.required, (req, res, next) => {
         }).catch((err) => {res.json({error: err})});
 });
 
-router.post('/open-game/move', auth.required, (req, res, next) => {
+router.post('/open-game-move', auth.required, (req, res, next) => {
     const { payload: { id } } = req;
     const { body: { gameUser } } = req;
 
