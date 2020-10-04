@@ -23,7 +23,8 @@ export default {
       orientation: "white",
       resign: false,
       drawProposal: false,
-      timer: null
+      timer: null,
+      timestamp: 0
     };
   },
   props: {
@@ -43,12 +44,14 @@ export default {
   methods: {
     startTimer() {
       clearInterval(this.timer);
+      this.timestamp = Date.now();
       this.timer = setInterval(this.countDown, 100);
     },
     countDown() {
       this.game.turn() === "w"
-        ? this.$store.state.timeWhite--
-        : this.$store.state.timeBlack--;
+        ? (this.$store.state.timeWhite -= Date.now() - this.timestamp)
+        : (this.$store.state.timeBlack -= Date.now() - this.timestamp);
+      this.timestamp = Date.now();
     },
     changeOrientation() {
       this.orientation = this.orientation === "white" ? "black" : "white";

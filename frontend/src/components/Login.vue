@@ -78,6 +78,7 @@ export default {
                             console.log(error);
                           });
           router.push('/', () => {})
+          this.dialog = false;
         })
         .catch(error => {
           console.log('error', error)
@@ -97,6 +98,7 @@ export default {
                               window.localStorage.setItem("userName", response.data.user.name);
                               this.$store.commit("setLoginUser", response.data.user.name);
                               router.push('/account', () => {});
+                              this.dialog = false;
                             }
 
                             //here if Login info is incorrect

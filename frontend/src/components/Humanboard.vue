@@ -151,8 +151,6 @@ export default {
       this.gameOver();
     }
   },
-  mounted() {
-   
-  }
+  mounted() {}
 };
 </script>

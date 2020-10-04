@@ -33,20 +33,20 @@ export default {
   },
   computed: {
     whiteMinutes: function() {
-      return Math.floor(this.$store.state.timeWhite / 600);
+      return Math.floor(this.$store.state.timeWhite / 60000);
     },
     blackMinutes: function() {
-      return Math.floor(this.$store.state.timeBlack / 600);
+      return Math.floor(this.$store.state.timeBlack / 60000);
     },
     whiteSeconds: function() {
       return (
-        "00" + Math.floor(this.$store.state.timeWhite % 600).toString()
-      ).slice(-3, -1);
+        "00" + Math.floor((this.$store.state.timeWhite / 1000) % 60).toString()
+      ).slice(-2);
     },
     blackSeconds: function() {
       return (
-        "00" + Math.floor(this.$store.state.timeBlack % 600).toString()
-      ).slice(-3, -1);
+        "00" + Math.floor((this.$store.state.timeBlack / 1000) % 60).toString()
+      ).slice(-2);
     }
   }
 };

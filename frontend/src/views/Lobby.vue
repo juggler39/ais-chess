@@ -1,7 +1,7 @@
 <template>
   <div class="lobby">
     <h1 class="text-center">Game lobby</h1>
-    <h2 class="text-center">Choose an open call or create an own game</h2>
+    <h2 class="text-center">Choose an open call or create your own game</h2>
     <Creategame class="my-6" />
     <v-simple-table dark>
       <template v-slot:default>
