@@ -47,14 +47,8 @@ export default {
         let randomMove = moves[Math.floor(Math.random() * moves.length)];
         this.game.move(randomMove);
         console.log(randomMove);
-        if (this.game.history().length % 2 === 0) {
-          let move = [
-            this.game
-              .history({ verbose: true })
-              .slice(this.game.history().length - 2, this.game.history().length)
-          ];
-          this.updateHistory(move);
-        }
+        this.gameHistory();
+
         this.board.set({
           fen: this.game.fen(),
           turnColor: this.toColor(),
@@ -83,14 +77,7 @@ export default {
         to: dest,
         promotion: this.promote(orig, dest)
       });
-      if (this.game.history().length % 2 === 0) {
-        let move = [
-          this.game
-            .history({ verbose: true })
-            .slice(this.game.history().length - 2, this.game.history().length)
-        ];
-        this.updateHistory(move);
-      }
+      this.gameHistory();
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.$store.state.playAiColor,
