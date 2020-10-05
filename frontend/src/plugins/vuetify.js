@@ -7,6 +7,11 @@ Vue.use(Vuetify);
 export default new Vuetify({
   theme: {
     dark: true,
-    options: { minifyTheme }
+    options: { minifyTheme },
+    themes: {
+      dark: {
+        background: "#000000"
+      }
+    }
   }
 });

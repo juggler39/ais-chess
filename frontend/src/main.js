@@ -8,6 +8,13 @@ import vuetify from "./plugins/vuetify";
 import VueSocketIOExt from "vue-socket.io-extended";
 import io from "socket.io-client";
 import GoogleAuth from "./config/google.js";
+import VueResource from "vue-resource";
+
+Vue.config.productionTip = false;
+
+Vue.use(VueResource);
+
+Vue.use(VueResource);
 
 const gauthOption = {
   // eslint-disable-next-line
