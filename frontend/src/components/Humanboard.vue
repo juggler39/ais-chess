@@ -115,14 +115,7 @@ export default {
     },
     opponentMove() {
       this.game.move({ from: this.opponentMoveFrom, to: this.opponentMoveTo });
-      if (this.game.history().length % 2 === 0) {
-        let move = [
-          this.game
-            .history({ verbose: true })
-            .slice(this.game.history().length - 2, this.game.history().length)
-        ];
-        this.updateHistory(move);
-      }
+      this.gameHistory();
       this.board.set({
         fen: this.game.fen(),
         lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
@@ -140,14 +133,7 @@ export default {
         to: dest,
         promotion: this.promote(orig, dest)
       });
-      if (this.game.history().length % 2 === 0) {
-        let move = [
-          this.game
-            .history({ verbose: true })
-            .slice(this.game.history().length - 2, this.game.history().length)
-        ];
-        this.updateHistory(move);
-      }
+      this.gameHistory();
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.toColor(),
