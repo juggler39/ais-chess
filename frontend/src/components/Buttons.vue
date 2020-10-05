@@ -21,7 +21,7 @@ export default {
       { icon: "mdi-face", text: "Play Human", route: "/game" }
     ]
   })
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -30,7 +30,12 @@ export default {
   justify-content: space-evenly;
 
   .v-btn {
-    background-image: linear-gradient(45deg, #c2bdbd00 0%, #505657c0 50%, #1f1f2073 100%);
+    background-image: linear-gradient(
+      45deg,
+      #c2bdbd00 0%,
+      #505657c0 50%,
+      #1f1f2073 100%
+    );
     background-position: 100% 0;
     background-size: 200% 200%;
     font-size: 16px;

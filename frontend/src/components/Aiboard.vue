@@ -112,16 +112,16 @@ export default {
     }
   },
   created() {
-    let stockfish = new Worker("js/stockfish.js");
-    stockfish.onmessage = function onmessage(event) {
-      const match = event.data.match(
-        /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
-      );
-      if (match) console.log("match: " + match);
-    };
-    stockfish.postMessage("uci");
-    stockfish.postMessage("ucinewgame");
-    stockfish.postMessage("go depth 15");
+    // let stockfish = new Worker("js/stockfish.js");
+    // stockfish.onmessage = function onmessage(event) {
+    //   const match = event.data.match(
+    //     /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
+    //   );
+    //   if (match) console.log("match: " + match);
+    // };
+    // stockfish.postMessage("uci");
+    // stockfish.postMessage("ucinewgame");
+    // stockfish.postMessage("go depth 15");
   }
 };
 </script>

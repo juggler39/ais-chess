@@ -2,15 +2,15 @@
   <v-app>
     <Navbar />
     <div class="shimmery-background">
-    <div class="background-image"></div>
-    <div class="content">
-      <v-main class="container">
-      <transition name="fade" mode="out-in">
-        <router-view></router-view>
-      </transition>
-    </v-main>
+      <div class="background-image"></div>
+      <div class="content">
+        <v-main class="container">
+          <transition name="fade" mode="out-in">
+            <router-view></router-view>
+          </transition>
+        </v-main>
+      </div>
     </div>
-  </div>
     <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
@@ -22,14 +22,14 @@ import Navbar from "@/components/Navbar";
 
 export default {
   name: "App",
-  components: { Navbar },
+  components: { Navbar }
 };
 </script>
 
 <style lang="scss" scoped>
-
 .background-image {
-  background: url('assets/foreground.png') 5% 5%, url('assets/midground.png') 50% 50%, url('assets/background.png') 90% 110%;
+  background: url("assets/foreground.png") 5% 5%,
+    url("assets/midground.png") 50% 50%, url("assets/background.png") 90% 110%;
   top: 0;
   left: 0;
   right: 0;
