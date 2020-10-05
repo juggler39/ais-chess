@@ -46,6 +46,7 @@ export default {
         let moves = this.game.moves({ verbose: true });
         let randomMove = moves[Math.floor(Math.random() * moves.length)];
         this.game.move(randomMove);
+        console.log(randomMove);
         if (this.game.history().length % 2 === 0) {
           let move = [
             this.game
@@ -109,6 +110,18 @@ export default {
         alert(`Game over!, ${result.color}, ${result.reason}`);
       }
     }
+  },
+  created() {
+    let stockfish = new Worker("js/stockfish.js");
+    stockfish.onmessage = function onmessage(event) {
+      const match = event.data.match(
+        /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
+      );
+      if (match) console.log("match: " + match);
+    };
+    stockfish.postMessage("uci");
+    stockfish.postMessage("ucinewgame");
+    stockfish.postMessage("go depth 15");
   }
 };
 </script>
