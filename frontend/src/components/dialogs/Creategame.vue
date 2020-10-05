@@ -51,6 +51,11 @@ export default {
   methods: {
     send() {
       this.dialog = false;
+      this.$socket.client.emit("newGame", {
+        player: this.$store.state.loginUser,
+        time: this.time,
+        color: this.color
+      });
     }
   }
 };
