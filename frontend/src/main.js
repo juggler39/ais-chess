@@ -6,6 +6,13 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import GoogleAuth from "./config/google.js";
+import VueResource from "vue-resource";
+
+Vue.config.productionTip = false;
+
+Vue.use(VueResource);
+
+Vue.use(VueResource);
 
 const gauthOption = {
   // eslint-disable-next-line

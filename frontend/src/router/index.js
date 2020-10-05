@@ -8,6 +8,7 @@ import Lobby from "../views/Lobby.vue";
 import Playai from "../views/Playai.vue";
 import axios from "axios";
 //import Login from "../components/Login.vue";
+import News from "@/components/News";
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,11 @@ const routes = [
     path: "/playai",
     name: "Playai",
     component: Playai
+  },
+  {
+    path: "/news",
+    name: "News",
+    component: News
   }
 ];
 
@@ -53,7 +59,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   /* eslint-disable */
   // redirect to home page if not logged in and trying to access a restricted page
-  const publicPages = ["/lobby", "/playai", "/", "/contact"];
+  const publicPages = ["/lobby", "/playai", "/", "/contact", "/news"];
   const authRequired = !publicPages.includes(to.path);
 
   async function verify() {
