@@ -48,6 +48,7 @@ export default {
         this.game.move(randomMove);
         console.log(randomMove);
         this.gameHistory();
+
         this.board.set({
           fen: this.game.fen(),
           turnColor: this.toColor(),
