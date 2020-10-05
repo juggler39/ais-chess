@@ -11,7 +11,7 @@ export default {
       state.chatHistory = [];
     },
     updateGameHistory(state, turn) {
-      state.gameHistory.unshift(turn);
+      state.gameHistory.push(turn);
     },
     updateChatHistory(state, message) {
       state.chatHistory.push(message);

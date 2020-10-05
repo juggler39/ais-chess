@@ -5,7 +5,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import VueSocketIOExt from 'vue-socket.io-extended';
+import VueSocketIOExt from "vue-socket.io-extended";
 import io from "socket.io-client";
 import GoogleAuth from "./config/google.js";
 
@@ -16,7 +16,7 @@ const gauthOption = {
   prompt: "select_account"
 };
 
-const socket = io('http://localhost:8000');
+const socket = io("http://localhost:8000");
 
 Vue.use(VueSocketIOExt, socket);
 Vue.use(GoogleAuth, gauthOption);

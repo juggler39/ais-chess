@@ -49,19 +49,18 @@ export default {
   components: {
     ChatItem
   },
-  methods: {  
+  methods: {
     send() {
       let data = {
         text: this.itemData.text,
-        name: this.$store.state.loginUser.split(' ')[0],
+        name: this.$store.state.loginUser.split(" ")[0],
         time: new Date().toLocaleTimeString()
       };
       this.$socket.client.emit("send", data);
     }
   },
   computed: mapGetters(["getChatHistory"]),
-  created() {
-  }
+  created() {}
 };
 </script>
 
