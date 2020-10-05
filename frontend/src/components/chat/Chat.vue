@@ -27,18 +27,21 @@
 
 <script>
 import ChatItem from "@/components/chat/ChatItem";
-import io from "socket.io-client";
 import { mapGetters } from "vuex";
-
-const socket = io("http://localhost:3030/");
 
 export default {
   name: "Chat",
+  sockets: {
+    add(value) {
+      this.$store.dispatch("updateChatHistory", value);
+      this.itemData.text = "";
+    }
+  },
   data() {
     return {
       itemData: {
         text: "",
-        name: this.$store.state.loginUser.google.nt.pV,
+        name: this.$store.state.loginUser,
         time: new Date().toLocaleTimeString()
       }
     };
@@ -50,19 +53,14 @@ export default {
     send() {
       let data = {
         text: this.itemData.text,
-        name: this.$store.state.loginUser.google.nt.pV,
+        name: this.$store.state.loginUser.split(" ")[0],
         time: new Date().toLocaleTimeString()
       };
-      socket.emit("send", data);
-      this.itemData.text = "";
+      this.$socket.client.emit("send", data);
     }
   },
   computed: mapGetters(["getChatHistory"]),
-  created() {
-    socket.on("add", data => {
-      this.$store.dispatch("updateChatHistory", data);
-    });
-  }
+  created() {}
 };
 </script>
 

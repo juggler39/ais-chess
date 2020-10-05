@@ -5,12 +5,25 @@ const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
+const http = require('http');
+const io = require('socket.io');
 
 //Configure isProduction variable
 const isProduction = process.env.NODE_ENV === 'production';
 
 //Initiate our app
 const app = express();
+const server = http.createServer(app);
+const socketIO = io(server);
+
+socketIO.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+  })
+
+  socket.on('send', (msg) => {
+      socketIO.sockets.emit('add', msg);
+  });
+})
 
 //Configure our app
 app.use(cors());
@@ -41,6 +54,9 @@ mongoose.connect('mongodb://TapeGhad:1985Chess1985@chess-shard-00-00.mc0lt.mongo
 
 //Models & routes
 require('./models/Users');
+require('./models/GlobalChat');
+require('./models/FinishedGames');
+require('./models/OpenGames');
 require('./config/passport');
 app.use(require('./routes'));
 
@@ -78,4 +94,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(8000, () => console.log('Server running on http://localhost:8000/'));
+server.listen(8000, () => console.log('Server running on http://localhost:8000/'));

@@ -46,12 +46,14 @@ export default {
         let moves = this.game.moves({ verbose: true });
         let randomMove = moves[Math.floor(Math.random() * moves.length)];
         this.game.move(randomMove);
-        let move = {
-          orig: randomMove.from,
-          dest: randomMove.to,
-          color: randomMove.color
-        };
-        this.updateHistory(move);
+        if (this.game.history().length % 2 === 0) {
+          let move = [
+            this.game
+              .history({ verbose: true })
+              .slice(this.game.history().length - 2, this.game.history().length)
+          ];
+          this.updateHistory(move);
+        }
         this.board.set({
           fen: this.game.fen(),
           turnColor: this.toColor(),
@@ -75,13 +77,19 @@ export default {
   },
   methods: {
     humanMove(orig, dest) {
-      let move = { orig: orig, dest: dest, color: this.game.turn() };
-      this.updateHistory(move);
       this.game.move({
         from: orig,
         to: dest,
         promotion: this.promote(orig, dest)
       });
+      if (this.game.history().length % 2 === 0) {
+        let move = [
+          this.game
+            .history({ verbose: true })
+            .slice(this.game.history().length - 2, this.game.history().length)
+        ];
+        this.updateHistory(move);
+      }
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.$store.state.playAiColor,
@@ -95,6 +103,7 @@ export default {
     },
     gameOver() {
       if (this.game.game_over()) {
+        this.$store.dispatch("clearHistory");
         this.aiTurn = false;
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
