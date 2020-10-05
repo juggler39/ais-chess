@@ -16,6 +16,8 @@ const app = express();
 const server = http.createServer(app);
 const socketIO = io(server);
 
+let games = [];
+
 socketIO.on('connection', (socket) => {
   socket.on('disconnect', () => {
   })
@@ -23,6 +25,18 @@ socketIO.on('connection', (socket) => {
   socket.on('send', (msg) => {
       socketIO.sockets.emit('add', msg);
   });
+
+  socket.on('loadGames', () => {
+    socket.emit('newGameInfo', games)
+  })
+
+  socket.on('newGame', (info) => {
+    info.id = games.length + 100000
+    // Sergey, here you can send info to mongoDB
+    games.push(info);
+    console.log(games);
+    socket.emit('newGameInfo', games)
+  })
 })
 
 //Configure our app

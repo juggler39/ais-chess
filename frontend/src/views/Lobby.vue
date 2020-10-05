@@ -22,7 +22,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="game in games" :key="game.id" @click="selectGame(game.id)">
+          <tr
+            v-for="game in getGames"
+            :key="game.id"
+            @click="selectGame(game.id)"
+          >
             <td>{{ game.player }}</td>
             <td>{{ game.time }}</td>
             <td>{{ game.color }}</td>
@@ -36,54 +40,23 @@
 
 <script>
 import Creategame from "@/components/dialogs/Creategame";
+import { mapGetters } from "vuex";
+
 export default {
   components: { Creategame },
-  data() {
-    return {
-      games: [
-        {
-          player: "Test",
-          time: "10 minutes",
-          color: "white",
-          id: 123123121
-        },
-        {
-          player: "Илья",
-          time: "10 minutes",
-          color: "black",
-          id: 123123122
-        },
-        {
-          player: "Денис",
-          time: "10 minutes",
-          color: "random",
-          id: 1231123123
-        },
-        {
-          player: "Сергей",
-          time: "20 minutes",
-          color: "white",
-          id: 1231123124
-        },
-        {
-          player: "Таня",
-          time: "10 minutes",
-          color: "white",
-          id: 1231123125
-        },
-        {
-          player: "Test",
-          time: "10 minutes",
-          color: "white",
-          id: 1231123126
-        }
-      ]
-    };
+  sockets: {
+    newGameInfo(games) {
+      this.$store.dispatch("updateGamesList", games);
+    }
   },
   methods: {
     selectGame(id) {
       console.log(id);
     }
+  },
+  computed: mapGetters(["getGames"]),
+  mounted() {
+    this.$socket.client.emit("loadGames");
   }
 };
 </script>
