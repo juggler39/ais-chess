@@ -12,6 +12,7 @@
                 v-for="(move, index) in getHistory"
                 v-bind:key="index"
                 v-bind:move="move"
+                v-bind:id="index + 1"
               />
             </div>
           </v-card>

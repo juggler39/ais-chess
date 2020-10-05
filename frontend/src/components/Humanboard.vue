@@ -114,13 +114,15 @@ export default {
       }
     },
     opponentMove() {
-      let move = {
-        orig: this.opponentMoveFrom,
-        dest: this.opponentMoveTo,
-        color: this.game.turn()
-      };
-      this.updateHistory(move);
       this.game.move({ from: this.opponentMoveFrom, to: this.opponentMoveTo });
+      if (this.game.history().length % 2 === 0) {
+        let move = [
+          this.game
+            .history({ verbose: true })
+            .slice(this.game.history().length - 2, this.game.history().length)
+        ];
+        this.updateHistory(move);
+      }
       this.board.set({
         fen: this.game.fen(),
         lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
@@ -133,13 +135,19 @@ export default {
       this.gameOver();
     },
     playerMove(orig, dest) {
-      let move = { orig: orig, dest: dest, color: this.game.turn() };
-      this.updateHistory(move);
       this.game.move({
         from: orig,
         to: dest,
         promotion: this.promote(orig, dest)
       });
+      if (this.game.history().length % 2 === 0) {
+        let move = [
+          this.game
+            .history({ verbose: true })
+            .slice(this.game.history().length - 2, this.game.history().length)
+        ];
+        this.updateHistory(move);
+      }
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.toColor(),
