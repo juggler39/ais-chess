@@ -11,8 +11,6 @@
         </v-main>
       </div>
     </div>
-
-  </div>
     <Footer />
   </v-app>
 </template>
@@ -41,7 +39,6 @@ export default {
 
 .shimmery-background {
   flex: 1 0 auto;
-  
   &:target .background-image {
     left: -5000px;
   }

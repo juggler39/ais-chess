@@ -5,13 +5,15 @@
         <p class="nav_header">Menu</p>
         <ul>
           <li v-for="link in menuLinks" :key="link.point">
-            <router-link :to="link.route" class="footer-link">{{ link.point }}</router-link>
+            <router-link :to="link.route" class="footer-link">{{
+              link.point
+            }}</router-link>
           </li>
         </ul>
       </nav>
       <nav>
         <p class="nav_header">Contact Us</p>
-        <ul  class="social-buttons">
+        <ul class="social-buttons">
           <li v-for="link in socialLinks" :key="link.text">
             <router-link :to="link.url" class="social-btn" target="_blank">
               <v-icon center>{{ link.icon }}</v-icon>
@@ -29,7 +31,9 @@
         </div>
       </form>
     </div>
-    <span class="small-txt">Made by the best team &copy; {{ new Date().getFullYear() }}</span>
+    <span class="small-txt"
+      >Made by the best team &copy; {{ new Date().getFullYear() }}</span
+    >
   </v-footer>
 </template>
 
@@ -45,7 +49,11 @@ export default {
     socialLinks: [
       { text: "Twitter", icon: "mdi-twitter", url: "https://www.twitter.com" },
       { text: "Vkontakte", icon: "mdi-vk", url: "https://vk.com" },
-      { text: "LinkedIn", icon: "mdi-linkedin", url: "https://www.linkedin.com/" },
+      {
+        text: "LinkedIn",
+        icon: "mdi-linkedin",
+        url: "https://www.linkedin.com/"
+      },
       { text: "Gmail", icon: "mdi-gmail", url: "https://mail.google.com" }
     ],
     email: null
@@ -87,17 +95,18 @@ export default {
     display: flex;
     width: 100%;
 
-    input[type=email] {
+    input[type="email"] {
       width: 70%;
       padding: 5px;
       outline: none;
       transition: 0.3s;
       background-color: #272727;
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         background-color: #3f3f3f;
       }
     }
-    button[type=submit] {
+    button[type="submit"] {
       width: 30%;
       border-left: 1px solid #202020;
       background-color: #202020;
@@ -105,17 +114,20 @@ export default {
       padding: 5px;
       outline: none;
       transition: 0.3s;
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         background-color: #383838;
         color: #202020;
       }
     }
   }
 
-  nav, form {
+  nav,
+  form {
     width: 25%;
 
-    ul, li {
+    ul,
+    li {
       padding: 0;
       margin: 0;
       list-style: none;
