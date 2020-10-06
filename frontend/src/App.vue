@@ -11,18 +11,17 @@
     </v-main>
     </div>
   </div>
-    <v-footer app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default {
   name: "App",
-  components: { Navbar },
+  components: { Navbar, Footer }
 };
 </script>
 
@@ -39,6 +38,8 @@ export default {
 }
 
 .shimmery-background {
+  flex: 1 0 auto;
+  
   &:target .background-image {
     left: -5000px;
   }
@@ -60,6 +61,9 @@ export default {
 }
 .v-application {
   background-color: #000000 !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .container {
   width: 1140px;

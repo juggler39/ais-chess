@@ -4,18 +4,26 @@
       <img class="home--main_image" slot="image" :src="require('@/assets/chess-img.gif')" />
     <div class="home--title">
       <h1 class="main-title">Experience Virtual World of Chess</h1>
-      <p class="subtitle">We provide you with an amazing chess application, 
-      giving you an opportunity to explore the world of online chess.
+      <p class="subtitle">
+        We provide you with an amazing chess application, giving you an opportunity to explore the world of online chess.
       </p>
       <Buttons />
     </div>
     </div>
     <div class="description blink">
-      <p>Nowadays chess remain a very popular sport. Everybody can go online and play a game of chess with somebody or participate in the tournament.</p>
-      <p>Any time of the day you can find thousands of players of different levels who want to play with you on our chess portal.</p>
-      <p>There are major tournaments and championships  and winners get big money prizes.</p>
+      <p>
+        Nowadays chess remain a very popular sport. Everybody can go online and play a game of chess with somebody or participate in the tournament.
+      </p>
+      <p>
+        Any time of the day you can find thousands of players of different levels who want to play with you on our chess portal.
+      </p>
+      <p>
+        There are major tournaments and championships and winners get big money prizes.
+      </p>
     </div>
-    <router-link :to="{ name: 'News' }">News</router-link>
+    <router-link :to="{ name: 'News' }">
+      Latest news in the world of chess
+    </router-link>
   </div>
 </template>
 
