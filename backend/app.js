@@ -89,6 +89,7 @@ app.use((err, req, res, next) => {
 });
 
 const GlobalChat = mongoose.model('GlobalChat');
+const OpenGame = mongoose.model('OpenGame');
 
 socketIO.on('connection', (socket) => {
   socket.on('disconnect', () => {
@@ -109,10 +110,17 @@ socketIO.on('connection', (socket) => {
 
   socket.on('newGame', (info) => {
     info.id = games.length + 100000
-    // Sergey, here you can send info to mongoDB
+    let Game = new OpenGame();
+    Game.players.player1 = info.player;
+    Game.players.player1Color = info.color;
+    Game.timeToGo = info.time;
+
     games.push(info);
     console.log(games);
-    socket.emit('newGameInfo', games)
+    
+    Game.save().then(() => {socket.emit('newGameInfo', games)})
+    .catch(err => console.log(err));
+    
   })
 })
 
