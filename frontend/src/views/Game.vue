@@ -9,12 +9,7 @@
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
             <div class="history">
-              <GameHistory
-                v-for="(move, index) in getHistory"
-                v-bind:key="index"
-                v-bind:move="move"
-                v-bind:id="index + 1"
-              />
+              <GameHistory v-bind:moves="getHistory" />
             </div>
           </v-card>
           <v-container>
