@@ -54,6 +54,7 @@ export default {
       let data = {
         text: this.itemData.text,
         name: this.$store.state.loginUser.split(" ")[0],
+        id: this.$store.state.idUser,
         time: new Date().toLocaleTimeString()
       };
       this.$socket.client.emit("send", data);
