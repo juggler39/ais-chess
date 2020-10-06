@@ -8,6 +8,7 @@ import {getStore} from "../config/utils";
 Vue.use(Vuex);
 
 const user = getStore("userName");
+const id = getStore("userID");
 
 export default new Vuex.Store({
   state: {
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     timeBlack: 0,
     playAiColor: "",
     AiStart: false,
-    loginUser: user
+    loginUser: user,
+    idUser: id
   },
   mutations: {
     setLoginUser(state, user) {
@@ -24,6 +26,12 @@ export default new Vuex.Store({
     },
     removeLoginUser(state) {
       state.loginUser = null;
+    },
+    setLoginUserID(state, user) {
+      state.idUser = user;
+    },
+    removeLoginUserID(state) {
+      state.idUser = null;
     }
   },
   actions: {},
