@@ -88,7 +88,9 @@ export default {
         axios.defaults.headers.common["Authorization"] = "Token asd";
         window.localStorage.removeItem("userLog");
         window.localStorage.removeItem("userName");
+        window.localStorage.removeItem("userID");
         this.$store.commit("removeLoginUser");
+        this.$store.commit("removeLoginUserID");
         router.push("/", () => {})
     }
   },

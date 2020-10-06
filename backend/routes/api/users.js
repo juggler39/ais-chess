@@ -144,7 +144,7 @@ router.post('/google', (req, res, next) => {
       if (isUser)
       {
         const token = await generateJWTGoogle(isUser._id, name);
-        res.json({ user : {email, name, token }});
+        res.json({ user : {email, name, token, id: isUser._id }});
       }
       else {
         const userObj = {
@@ -154,7 +154,7 @@ router.post('/google', (req, res, next) => {
         }
         const finalUser = new Users(userObj);
         finalUser.save()
-        .then(() => res.json({ user: returnUser }));
+        .then(() => res.json({ user: finalUser.toAuthJSON() }));
       }
     })
   }
