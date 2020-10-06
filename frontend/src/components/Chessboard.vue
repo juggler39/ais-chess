@@ -69,6 +69,16 @@ export default {
       });
       return dests;
     },
+    getMoves() {
+      let moves = "";
+      let history = this.game.history({ verbose: true });
+      for (let i = 0; i < history.length; ++i) {
+        let move = history[i];
+        moves +=
+          " " + move.from + move.to + (move.promotion ? move.promotion : "");
+      }
+      return moves;
+    },
     gameHistory() {
       if (this.game.history().length % 2 === 0) {
         let move = [
