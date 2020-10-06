@@ -6,7 +6,9 @@ export default {
   extends: Chessboard,
   data() {
     return {
-      aiTurn: false
+      aiTurn: false,
+      stockfish: null,
+      bestMove: {}
     };
   },
   watch: {
@@ -35,7 +37,10 @@ export default {
             }
           });
         } else {
-          this.aiTurn = true;
+          this.stockfish.postMessage(
+            "position startpos moves" + this.getMoves()
+          );
+          this.stockfish.postMessage("go depth 12");
         }
       }
       this.$store.state.AiStart = false;
@@ -43,10 +48,7 @@ export default {
     aiTurn: function(n) {
       if (n) {
         this.aiTurn = false;
-        let moves = this.game.moves({ verbose: true });
-        let randomMove = moves[Math.floor(Math.random() * moves.length)];
-        this.game.move(randomMove);
-        console.log(randomMove);
+        this.game.move(this.bestMove);
         this.gameHistory();
 
         this.board.set({
@@ -55,7 +57,7 @@ export default {
           animation: {
             duration: 500
           },
-          lastMove: [randomMove.from, randomMove.to],
+          lastMove: [this.bestMove.from, this.bestMove.to],
           movable: {
             color: this.toColor(),
             dests: this.possibleMoves(),
@@ -84,7 +86,13 @@ export default {
         movable: {
           color: this.$store.state.playAiColor,
           dests: this.possibleMoves(),
-          events: { after: (this.aiTurn = true) }
+          events: {
+            after:
+              (this.stockfish.postMessage(
+                "position startpos moves" + this.getMoves()
+              ),
+              this.stockfish.postMessage("go depth 12"))
+          }
         }
       });
       this.gameOver();
@@ -99,16 +107,17 @@ export default {
     }
   },
   created() {
-    // let stockfish = new Worker("js/stockfish.js");
-    // stockfish.onmessage = function onmessage(event) {
-    //   const match = event.data.match(
-    //     /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
-    //   );
-    //   if (match) console.log("match: " + match);
-    // };
-    // stockfish.postMessage("uci");
-    // stockfish.postMessage("ucinewgame");
-    // stockfish.postMessage("go depth 15");
+    this.stockfish = new Worker("js/stockfish.js");
+    this.stockfish.onmessage = event => {
+      const match = event.data.match(
+        /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
+      );
+      if (match) {
+        this.bestMove = { from: match[1], to: match[2], promotion: match[3] };
+        this.aiTurn = true;
+      }
+    };
+    this.stockfish.postMessage("uci");
   }
 };
 </script>
