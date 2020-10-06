@@ -6,6 +6,7 @@ const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
   email: String,
+  name: String,
   login: String,
   hash: String,
   salt: String,
@@ -35,10 +36,14 @@ UsersSchema.methods.generateJWT = function() {
 
 UsersSchema.methods.toAuthJSON = function() {
   return {
-    _id: this._id,
+    id: this._id,
+    name: this.name,
     email: this.email,
     token: this.generateJWT(),
   };
 };
+
+UsersSchema.index({ login: 1 });
+UsersSchema.index({ email: 1 });
 
 mongoose.model('Users', UsersSchema);

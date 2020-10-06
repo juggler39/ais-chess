@@ -70,7 +70,8 @@ export default {
       letter-spacing: 1px;
     }
 
-    .main-title:after, .main-title:before {
+    .main-title:after,
+    .main-title:before {
       content: "";
       position: absolute;
       top: 0;
@@ -78,8 +79,22 @@ export default {
       display: block;
       width: 100px;
       height: 100px;
-      background-image: radial-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0) 30%), linear-gradient(45deg, rgba(0, 0, 0, 0) 49%, rgba(255, 255, 255, 0.4) 50%, rgba(0, 0, 0, 0) 51%),
-      linear-gradient(135deg, rgba(0, 0, 0, 0) 49%, rgba(255, 255, 255, 0.4) 50%, rgba(0, 0, 0, 0) 51%);
+      background-image: radial-gradient(
+          rgba(255, 255, 255, 1),
+          rgba(255, 255, 255, 0) 30%
+        ),
+        linear-gradient(
+          45deg,
+          rgba(0, 0, 0, 0) 49%,
+          rgba(255, 255, 255, 0.4) 50%,
+          rgba(0, 0, 0, 0) 51%
+        ),
+        linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0) 49%,
+          rgba(255, 255, 255, 0.4) 50%,
+          rgba(0, 0, 0, 0) 51%
+        );
       animation: title 7s linear infinite;
       transform: scale(0, 0) rotate(0deg);
     }
@@ -117,10 +132,10 @@ export default {
 .blink {
   animation-name: blinker;
   animation-iteration-count: infinite;
-  animation-timing-function: cubic-bezier(1.0, 2.0, 2.0, 1.0);
+  animation-timing-function: cubic-bezier(1, 2, 2, 1);
   animation-duration: 3s;
 }
- 
+
 @keyframes blinker {
   from {
     opacity: 0.7;

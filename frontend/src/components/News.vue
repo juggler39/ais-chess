@@ -21,11 +21,11 @@
 </template>
 
 <script>
-export default{
+export default {
   data() {
     return {
       publishers: ""
-    }
+    };
   },
   methods: {
     initData: function() {
@@ -43,13 +43,13 @@ export default{
       window.open(publish.url, "_blank");
     },
     getFeed: function(publish) {
-      this.$router.push({ name: "News", params: { id: publish.id }})
+      this.$router.push({ name: "News", params: { id: publish.id } });
     }
   },
   created: function() {
     this.initData();
   }
-}
+};
 </script>
 
 <style>

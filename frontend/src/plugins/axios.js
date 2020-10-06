@@ -6,7 +6,10 @@ import axios from "axios";
 // Full config:  https://github.com/axios/axios#request-config
 // eslint-disable-next-line
 axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || "http://localhost:8000";
-if (localStorage.getItem("userLog")) axios.defaults.headers.common["Authorization"] = `Token ${localStorage.getItem("userLog")}`;
+if (localStorage.getItem("userLog"))
+  axios.defaults.headers.common[
+    "Authorization"
+  ] = `Token ${localStorage.getItem("userLog")}`;
 //axios.defaults.headers.common["Authorization"] = "Token asd";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 

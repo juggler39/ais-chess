@@ -46,12 +46,9 @@ export default {
         let moves = this.game.moves({ verbose: true });
         let randomMove = moves[Math.floor(Math.random() * moves.length)];
         this.game.move(randomMove);
-        let move = {
-          orig: randomMove.from,
-          dest: randomMove.to,
-          color: randomMove.color
-        };
-        this.updateHistory(move);
+        console.log(randomMove);
+        this.gameHistory();
+
         this.board.set({
           fen: this.game.fen(),
           turnColor: this.toColor(),
@@ -75,13 +72,12 @@ export default {
   },
   methods: {
     humanMove(orig, dest) {
-      let move = { orig: orig, dest: dest, color: this.game.turn() };
-      this.updateHistory(move);
       this.game.move({
         from: orig,
         to: dest,
         promotion: this.promote(orig, dest)
       });
+      this.gameHistory();
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.$store.state.playAiColor,
@@ -95,11 +91,24 @@ export default {
     },
     gameOver() {
       if (this.game.game_over()) {
+        this.$store.dispatch("clearHistory");
         this.aiTurn = false;
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
       }
     }
+  },
+  created() {
+    // let stockfish = new Worker("js/stockfish.js");
+    // stockfish.onmessage = function onmessage(event) {
+    //   const match = event.data.match(
+    //     /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
+    //   );
+    //   if (match) console.log("match: " + match);
+    // };
+    // stockfish.postMessage("uci");
+    // stockfish.postMessage("ucinewgame");
+    // stockfish.postMessage("go depth 15");
   }
 };
 </script>

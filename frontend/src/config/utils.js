@@ -10,7 +10,7 @@ export const setStore = (name, content) => {
  */
 export const getStore = name => {
   if (!name) return;
-  return JSON.parse(window.localStorage.getItem(name));
+  return window.localStorage.getItem(name);
 };
 /**
  * Clear localStorage

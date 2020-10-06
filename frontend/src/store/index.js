@@ -1,31 +1,43 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import gameHistory from "./modules/gameHistory";
-import { setStore, getStore, removeItem } from "../config/utils";
+import openGames from "./modules/openGames";
+// eslint-disable-next-line
+import {getStore} from "../config/utils";
 
 Vue.use(Vuex);
 
-const user = getStore("user");
+const user = getStore("userName");
+const id = getStore("userID");
 
 export default new Vuex.Store({
   state: {
+    time: 600000,
+    timeWhite: 0,
+    timeBlack: 0,
     playAiColor: "",
     AiStart: false,
-    loginUser: user
+    loginUser: user,
+    idUser: id
   },
   mutations: {
     setLoginUser(state, user) {
       state.loginUser = user;
-      setStore("user", user);
     },
     removeLoginUser(state) {
-      state.loginUser = "";
-      removeItem("user");
+      state.loginUser = null;
+    },
+    setLoginUserID(state, user) {
+      state.idUser = user;
+    },
+    removeLoginUserID(state) {
+      state.idUser = null;
     }
   },
   actions: {},
   modules: {
-    gameHistory
+    gameHistory,
+    openGames
   },
   getters: {
     getLoginUserInfo(state) {

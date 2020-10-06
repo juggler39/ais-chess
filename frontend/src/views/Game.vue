@@ -13,6 +13,7 @@
                 v-for="(move, index) in getHistory"
                 v-bind:key="index"
                 v-bind:move="move"
+                v-bind:id="index + 1"
               />
             </div>
           </v-card>
@@ -31,6 +32,11 @@ import Chat from "@/components/chat/Chat";
 import GameHistory from "@/components/chat/GameHistory";
 import { mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      id: 12
+    };
+  },
   components: {
     Chat,
     Humanboard,

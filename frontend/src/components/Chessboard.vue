@@ -1,8 +1,12 @@
 <template>
-  <v-col class="col-12 col-md-9 grey darken-4 d-flex justify-center">
-    <div class="merida">
-      <div ref="board" class="cg-board-wrap"></div>
-    </div>
+  <v-col
+    class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
+  >
+    <v-card>
+      <div class="merida">
+        <div ref="board" class="cg-board-wrap"></div>
+      </div>
+    </v-card>
   </v-col>
 </template>
 
@@ -16,7 +20,11 @@ export default {
   data() {
     return {
       pieceColor: "white",
-      orientation: "white"
+      orientation: "white",
+      resign: false,
+      drawProposal: false,
+      timer: null,
+      timestamp: 0
     };
   },
   props: {
@@ -34,6 +42,17 @@ export default {
     }
   },
   methods: {
+    startTimer() {
+      clearInterval(this.timer);
+      this.timestamp = Date.now();
+      this.timer = setInterval(this.countDown, 100);
+    },
+    countDown() {
+      this.game.turn() === "w"
+        ? (this.$store.state.timeWhite -= Date.now() - this.timestamp)
+        : (this.$store.state.timeBlack -= Date.now() - this.timestamp);
+      this.timestamp = Date.now();
+    },
     changeOrientation() {
       this.orientation = this.orientation === "white" ? "black" : "white";
       return;
@@ -50,13 +69,24 @@ export default {
       });
       return dests;
     },
+    gameHistory() {
+      if (this.game.history().length % 2 === 0) {
+        let move = [
+          this.game
+            .history({ verbose: true })
+            .slice(this.game.history().length - 2, this.game.history().length)
+        ];
+        this.updateHistory(move);
+      }
+    },
     updateHistory(move) {
       this.$store.dispatch("updateHistory", move);
     },
+    clearHistory() {
+      this.$store.dispatch("clearHistory");
+    },
     playerMove() {
       return (orig, dest) => {
-        let move = { orig: orig, dest: dest, color: this.game.turn() };
-        this.updateHistory(move);
         this.game.move({ from: orig, to: dest });
         this.board.set({
           fen: this.game.fen(),
@@ -80,10 +110,12 @@ export default {
       }
     },
     loadPosition() {
+      this.game = new Chess();
       this.game.load(this.fen);
       this.board = Chessground(this.$refs.board, {
         fen: this.game.fen(),
         movable: {
+          color: null,
           free: false,
           dests: this.possibleMoves()
         },
@@ -114,25 +146,19 @@ export default {
         result.color = "player who loose"; //insert color of player, who capitulated
         result.reason = "capitulation";
       }
-
       return result;
     },
     gameOver() {
       if (this.game.game_over()) {
+        this.clearHistory();
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
+        clearInterval(this.timer);
       }
     }
   },
-
   mounted() {
-    this.game = new Chess();
     this.loadPosition();
-    this.board.set({
-      movable: {
-        color: null
-      }
-    });
   }
 };
 </script>
