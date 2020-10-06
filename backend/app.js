@@ -18,26 +18,6 @@ const socketIO = io(server);
 
 let games = [];
 
-socketIO.on('connection', (socket) => {
-  socket.on('disconnect', () => {
-  })
-
-  socket.on('send', (msg) => {
-      socketIO.sockets.emit('add', msg);
-  });
-
-  socket.on('loadGames', () => {
-    socket.emit('newGameInfo', games)
-  })
-
-  socket.on('newGame', (info) => {
-    info.id = games.length + 100000
-    // Sergey, here you can send info to mongoDB
-    games.push(info);
-    console.log(games);
-    socket.emit('newGameInfo', games)
-  })
-})
 
 //Configure our app
 app.use(cors());
@@ -107,5 +87,41 @@ app.use((err, req, res, next) => {
     });
   }
 });
+
+const GlobalChat = mongoose.model('GlobalChat');
+const OpenGame = mongoose.model('OpenGame');
+
+socketIO.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+  })
+
+  socket.on('send', (msg) => {
+    let Message = new GlobalChat();
+    Message.user = msg.id;
+    Message.message = msg.text;
+    Message.save().then(() => {socketIO.sockets.emit('add', msg);})
+      .catch(err => console.log(err));
+      
+  });
+
+  socket.on('loadGames', () => {
+    socket.emit('newGameInfo', games)
+  })
+
+  socket.on('newGame', (info) => {
+    info.id = games.length + 100000
+    let Game = new OpenGame();
+    Game.players.player1 = info.player;
+    Game.players.player1Color = info.color;
+    Game.timeToGo = info.time;
+
+    games.push(info);
+    console.log(games);
+    
+    Game.save().then(() => {socket.emit('newGameInfo', games)})
+    .catch(err => console.log(err));
+    
+  })
+})
 
 server.listen(8000, () => console.log('Server running on http://localhost:8000/'));
