@@ -79,15 +79,13 @@ export default {
       }
       return moves;
     },
-    gameHistory() {
+    AIGameHistory() {
       let move = this.game.history({ verbose: true }).pop();
-      this.updateHistory(move);
+      this.$store.dispatch("updateAIHistory", move);
     },
-    updateHistory(move) {
-      this.$store.dispatch("updateHistory", move);
-    },
-    clearHistory() {
-      this.$store.dispatch("clearHistory");
+    PvPameHistory() {
+      let move = this.game.history({ verbose: true }).pop();
+      this.$store.dispatch("updatePvPHistory", move);
     },
     playerMove() {
       return (orig, dest) => {

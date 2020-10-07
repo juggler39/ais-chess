@@ -8,7 +8,7 @@
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
             <div class="history">
-              <GameHistory v-bind:moves="getHistory" />
+              <GameHistory v-bind:moves="getAIHistory" />
             </div>
           </v-card>
           <v-container>
@@ -35,7 +35,7 @@ export default {
     GameHistory,
     Resign
   },
-  computed: mapGetters(["getHistory"])
+  computed: mapGetters(["getAIHistory"])
 };
 </script>
 <style scoped>

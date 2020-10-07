@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("clearHistory");
+      this.$store.dispatch("clearAIHistory");
       this.$store.state.playAiColor = this.radios;
       this.$store.state.AiStart = true;
       this.dialog = false;
