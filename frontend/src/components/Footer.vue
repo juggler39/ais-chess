@@ -1,6 +1,6 @@
 <template>
   <v-footer>
-    <div class="footer__navigation">
+    <div class="footer__navigation container">
       <nav>
         <p class="nav_header">Menu</p>
         <ul>
@@ -21,6 +21,10 @@
           </li>
         </ul>
       </nav>
+        <v-toolbar-side-icon class="footer_logo">
+        <v-img class="mr-3" src="@/assets/new-logo.png"> 
+        </v-img>
+     </v-toolbar-side-icon>
       <form @submit.prevent="action()">
         <p class="nav_header">Stay Connected</p>
         <div class="form-input">
@@ -30,6 +34,7 @@
           </button>
         </div>
       </form>
+     
     </div>
     <span class="small-txt"
       >Made by the best team &copy; {{ new Date().getFullYear() }}</span
@@ -62,6 +67,7 @@ export default {
   border-top: 1px solid #666;
   background: rgba(70, 70, 70, 0.4) !important;
   flex: 0 0 auto;
+  margin-top: 50px;
 
   .social-buttons {
     display: flex;
@@ -82,7 +88,7 @@ export default {
 }
 .footer__navigation {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 100%;
   color: #ffffff;
   padding: 20px 0;
@@ -118,9 +124,13 @@ export default {
     }
   }
 
+  .footer_logo {
+    width: 13%;
+  }
+
   nav,
   form {
-    width: 25%;
+    width: 23%;
 
     ul,
     li {
