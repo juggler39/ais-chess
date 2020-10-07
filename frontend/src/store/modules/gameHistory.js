@@ -1,39 +1,55 @@
 export default {
   state: {
     chatHistory: [],
-    gameHistory: []
+    AIGameHistory: [],
+    PvPGameHistory: []
   },
   mutations: {
-    clearGameHistory(state) {
-      state.gameHistory = [];
+    clearAIGameHistory(state) {
+      state.AIGameHistory = [];
+    },
+    clearPvPGameHistory(state) {
+      state.PvPGameHistory = [];
     },
     clearChatHistory(state) {
       state.chatHistory = [];
     },
-    updateGameHistory(state, turn) {
-      state.gameHistory.push(turn);
+    updateAIGameHistory(state, turn) {
+      state.AIGameHistory.push(turn);
+    },
+    updatePvPGameHistory(state, turn) {
+      state.PvPGameHistory.push(turn);
     },
     updateChatHistory(state, message) {
       state.chatHistory.push(message);
     }
   },
   actions: {
-    clearHistory(context) {
-      context.commit("clearGameHistory");
+    clearAIHistory(context) {
+      context.commit("clearAIGameHistory");
+    },
+    clearPvPHistory(context) {
+      context.commit("clearPvPGameHistory");
     },
     clearChatHistory(context) {
       context.commit("clearChatHistory");
     },
-    updateHistory(context, turn) {
-      context.commit("updateGameHistory", turn);
+    updateAIHistory(context, turn) {
+      context.commit("updateAIGameHistory", turn);
+    },
+    updatePvPHistory(context, turn) {
+      context.commit("updatePvPGameHistory", turn);
     },
     updateChatHistory(context, message) {
       context.commit("updateChatHistory", message);
     }
   },
   getters: {
-    getHistory(state) {
-      return state.gameHistory;
+    getAIHistory(state) {
+      return state.AIGameHistory;
+    },
+    getPVPHistory(state) {
+      return state.PvPGameHistory;
     },
     getChatHistory(state) {
       return state.chatHistory;

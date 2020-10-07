@@ -46,7 +46,7 @@ export default {
       if (n) {
         this.aiTurn = false;
         this.game.move(this.bestMove);
-        this.gameHistory();
+        this.AIGameHistory();
 
         this.board.set({
           fen: this.game.fen(),
@@ -76,7 +76,7 @@ export default {
         to: dest,
         promotion: this.promote(orig, dest)
       });
-      this.gameHistory();
+      this.AIGameHistory();
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.$store.state.playAiColor,
@@ -98,7 +98,6 @@ export default {
     },
     gameOver() {
       if (this.game.game_over()) {
-        this.$store.dispatch("clearHistory");
         this.aiTurn = false;
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);

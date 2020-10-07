@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("clearHistory");
+      this.$store.dispatch("clearPvPHistory");
       this.pieceColor = this.radios;
       this.dialog = false;
       this.$store.state.timeWhite = this.$store.state.time;
@@ -115,7 +115,7 @@ export default {
     },
     opponentMove() {
       this.game.move({ from: this.opponentMoveFrom, to: this.opponentMoveTo });
-      this.gameHistory();
+      this.PvPameHistory();
       this.board.set({
         fen: this.game.fen(),
         lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
@@ -133,7 +133,7 @@ export default {
         to: dest,
         promotion: this.promote(orig, dest)
       });
-      this.gameHistory();
+      this.PvPameHistory();
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.toColor(),
@@ -142,7 +142,6 @@ export default {
           dests: this.possibleMoves()
         }
       });
-      this.gameOver();
     }
   },
   mounted() {}
