@@ -1,6 +1,6 @@
 <template>
   <v-footer>
-    <div class="footer__navigation">
+    <div class="footer__navigation container">
       <nav>
         <p class="nav_header">Menu</p>
         <ul>
@@ -15,12 +15,16 @@
         <p class="nav_header">Contact Us</p>
         <ul class="social-buttons">
           <li v-for="link in socialLinks" :key="link.text">
-            <router-link :to="link.url" class="social-btn" target="_blank">
+            <router-link :to="'//' + link.url" class="social-btn" target="_blank">
               <v-icon center>{{ link.icon }}</v-icon>
             </router-link>
           </li>
         </ul>
       </nav>
+        <v-toolbar-side-icon class="footer_logo">
+        <v-img class="mr-3" src="@/assets/new-logo.png"> 
+        </v-img>
+     </v-toolbar-side-icon>
       <form @submit.prevent="action()">
         <p class="nav_header">Stay Connected</p>
         <div class="form-input">
@@ -30,6 +34,7 @@
           </button>
         </div>
       </form>
+     
     </div>
     <span class="small-txt"
       >Made by the best team &copy; {{ new Date().getFullYear() }}</span
@@ -47,14 +52,10 @@ export default {
       { point: "Lobby", route: "/lobby" }
     ],
     socialLinks: [
-      { text: "Twitter", icon: "mdi-twitter", url: "https://www.twitter.com" },
-      { text: "Vkontakte", icon: "mdi-vk", url: "https://vk.com" },
-      {
-        text: "LinkedIn",
-        icon: "mdi-linkedin",
-        url: "https://www.linkedin.com/"
-      },
-      { text: "Gmail", icon: "mdi-gmail", url: "https://mail.google.com" }
+      { text: "Twitter", icon: "mdi-twitter", url: "www.twitter.com" },
+      { text: "Vkontakte", icon: "mdi-vk", url: "vk.com" },
+      { text: "LinkedIn", icon: "mdi-linkedin", url: "www.linkedin.com"},
+      { text: "Gmail", icon: "mdi-gmail", url: "mail.google.com" }
     ],
     email: null
   })
@@ -66,6 +67,7 @@ export default {
   border-top: 1px solid #666;
   background: rgba(70, 70, 70, 0.4) !important;
   flex: 0 0 auto;
+  margin-top: 50px;
 
   .social-buttons {
     display: flex;
@@ -86,7 +88,7 @@ export default {
 }
 .footer__navigation {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 100%;
   color: #ffffff;
   padding: 20px 0;
@@ -122,9 +124,13 @@ export default {
     }
   }
 
+  .footer_logo {
+    width: 13%;
+  }
+
   nav,
   form {
-    width: 25%;
+    width: 23%;
 
     ul,
     li {
