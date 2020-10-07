@@ -46,6 +46,7 @@ export default {
   components: { Creategame },
   sockets: {
     newGameInfo(games) {
+      console.log(games);
       this.$store.dispatch("updateGamesList", games);
     }
   },
