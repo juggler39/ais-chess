@@ -1,11 +1,11 @@
 <template>
   <nav>
-    <v-app-bar class="text-uppercase" app>
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-      <v-toolbar-title class="hidden-sm-and-down">
-        ais-chess
-      </v-toolbar-title>
-
+    <v-app-bar  class="container" app>
+      <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
+     <v-toolbar-side-icon>
+        <v-img class="mr-10" src="@/assets/new-logo.png" width="60px"> 
+        </v-img>
+     </v-toolbar-side-icon>
       <v-tooltip v-for="link in menuLinks" :key="link.text" bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
@@ -20,9 +20,9 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      </v-btn> -->
 
       <v-btn text @click.prevent="logoutFromAccountTest">
         <v-icon left>mdi-logout</v-icon>
@@ -110,3 +110,13 @@ export default {
   })
 };
 </script>
+
+<style lang="scss" scoped>
+.v-app-bar {
+  background-color: #000000 !important;
+  position: relative;
+}
+// .v-toolbar__content {
+//   height: auto !important;
+// }
+</style>

@@ -67,6 +67,7 @@ export default {
 .container {
   width: 1140px;
   margin: 0 auto;
+  padding: 0;
   height: 100%;
 
   @media (max-width: 1170px) {
