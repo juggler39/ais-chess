@@ -15,7 +15,7 @@
         <p class="nav_header">Contact Us</p>
         <ul class="social-buttons">
           <li v-for="link in socialLinks" :key="link.text">
-            <router-link :to="link.url" class="social-btn" target="_blank">
+            <router-link :to="'//' + link.url" class="social-btn" target="_blank">
               <v-icon center>{{ link.icon }}</v-icon>
             </router-link>
           </li>
@@ -47,14 +47,10 @@ export default {
       { point: "Lobby", route: "/lobby" }
     ],
     socialLinks: [
-      { text: "Twitter", icon: "mdi-twitter", url: "https://www.twitter.com" },
-      { text: "Vkontakte", icon: "mdi-vk", url: "https://vk.com" },
-      {
-        text: "LinkedIn",
-        icon: "mdi-linkedin",
-        url: "https://www.linkedin.com/"
-      },
-      { text: "Gmail", icon: "mdi-gmail", url: "https://mail.google.com" }
+      { text: "Twitter", icon: "mdi-twitter", url: "www.twitter.com" },
+      { text: "Vkontakte", icon: "mdi-vk", url: "vk.com" },
+      { text: "LinkedIn", icon: "mdi-linkedin", url: "www.linkedin.com"},
+      { text: "Gmail", icon: "mdi-gmail", url: "mail.google.com" }
     ],
     email: null
   })
