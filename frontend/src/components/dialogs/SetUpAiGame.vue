@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("clearHistory");
+      this.$store.dispatch("clearAIHistory");
       let color = this.radios;
       if (color === "random") {
         color = Math.random() < 0.5 ? "white" : "black";
