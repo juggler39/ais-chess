@@ -68,7 +68,7 @@ export default {
       radios: "random",
       min: 0,
       max: 20,
-      slider: 4
+      slider: 1
     };
   },
   methods: {

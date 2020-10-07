@@ -15,6 +15,33 @@ export default {
   watch: {
     "$store.state.aiStart": function(n) {
       if (n) {
+        if (window.Worker) {
+          const level = this.$store.state.engineLevel;
+          if (level < 5) {
+            this.engineTime = "1";
+          } else if (level < 10) {
+            this.engineTime = "2";
+          } else if (level < 15) {
+            this.engineTime = "3";
+          } else {
+            // Let the engine decide.
+            this.engineTime = "";
+            this.stockfish.postMessage(
+              "setoption name Skill Level value " + level
+            );
+            //Stockfish level 20 does not make errors (intentially), so these numbers have no effect on level 20.
+            //Level 0 starts at 1
+            this.stockfish.postMessage(
+              "setoption name Skill Level Maximum Error value " +
+                Math.round(level * -0.5 + 10)
+            );
+            // Level 0 starts at 10
+            this.stockfish.postMessage(
+              "setoption name Skill Level Probability value " +
+                Math.round(level * 6.35 + 1)
+            );
+          }
+        }
         let color = this.$store.state.playAiColor;
         this.game.reset();
         this.board.set({
@@ -41,6 +68,7 @@ export default {
           this.engineAnalyse();
         }
       }
+      this.$store.state.aiStart = false;
     },
     aiTurn: function(n) {
       if (n) {
@@ -108,7 +136,6 @@ export default {
     if (window.Worker) {
       this.stockfish = new Worker("js/stockfish.js");
       this.stockfish.onmessage = event => {
-        console.log(event.data);
         const match = event.data.match(
           /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
         );
@@ -118,30 +145,6 @@ export default {
         }
       };
       this.stockfish.postMessage("uci");
-      const level = this.$store.state.engineLevel;
-      console.log("Level:" + level);
-      if (level < 5) {
-        this.engineTime = "1";
-      } else if (level < 10) {
-        this.engineTime = "2";
-      } else if (level < 15) {
-        this.engineTime = "3";
-      } else {
-        // Let the engine decide.
-        this.engineTime = "";
-        this.stockfish.postMessage("setoption name Skill Level value " + level);
-        //Stockfish level 20 does not make errors (intentially), so these numbers have no effect on level 20.
-        //Level 0 starts at 1
-        this.stockfish.postMessage(
-          "setoption name Skill Level Maximum Error value " +
-            Math.round(level * 6.35 + 1)
-        );
-        // Level 0 starts at 10
-        this.stockfish.postMessage(
-          "setoption name Skill Level Probability value " +
-            Math.round(level * -5.5 + 10)
-        );
-      }
     } else {
       // Sorry! No Web Worker support..
     }

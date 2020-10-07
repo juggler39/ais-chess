@@ -13,7 +13,6 @@
           </v-card>
           <v-container>
             <SetUpAiGame />
-            <Resign />
           </v-container>
         </v-col>
       </v-row>
@@ -25,15 +24,13 @@
 import Aiboard from "@/components/Aiboard";
 import SetUpAiGame from "@/components/dialogs/SetUpAiGame";
 import GameHistory from "@/components/chat/GameHistory";
-import Resign from "@/components/dialogs/Resign";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     Aiboard,
     SetUpAiGame,
-    GameHistory,
-    Resign
+    GameHistory
   },
   computed: mapGetters(["getAIHistory"])
 };
