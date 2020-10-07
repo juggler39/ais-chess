@@ -2,10 +2,9 @@
   <nav>
     <v-app-bar  class="container" app>
       <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
-     <v-toolbar-side-icon>
-        <v-img class="mr-10" src="@/assets/new-logo.png" width="60px"> 
-        </v-img>
-     </v-toolbar-side-icon>
+     <div class="logo">
+        <v-img src="@/assets/new-logo.png"></v-img>
+     </div>
       <v-tooltip v-for="link in menuLinks" :key="link.text" bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
@@ -115,6 +114,11 @@ export default {
 .v-app-bar {
   background-color: #000000 !important;
   position: relative;
+
+  .logo {
+    width: 60px;
+    margin-right: 20px;
+  }
 }
 // .v-toolbar__content {
 //   height: auto !important;
