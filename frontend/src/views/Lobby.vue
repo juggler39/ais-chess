@@ -22,11 +22,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="game in getGames"
-            :key="game.id"
-            @click="selectGame(game.id)"
-          >
+          <tr v-for="game in getGames" :key="game.id" @click="selectGame(game)">
             <td>{{ game.player }}</td>
             <td>{{ game.time }}</td>
             <td>{{ game.color }}</td>
@@ -51,8 +47,9 @@ export default {
     }
   },
   methods: {
-    selectGame(id) {
-      console.log(id);
+    selectGame(game) {
+      this.$router.push({ name: "Game", params: { id: game.id, game: game } });
+      console.log(game.id);
     }
   },
   computed: mapGetters(["getGames"]),
