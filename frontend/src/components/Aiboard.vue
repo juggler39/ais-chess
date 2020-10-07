@@ -8,11 +8,12 @@ export default {
     return {
       aiTurn: false,
       stockfish: null,
-      bestMove: {}
+      bestMove: {},
+      engineTime: "1"
     };
   },
   watch: {
-    "$store.state.AiStart": function(n) {
+    "$store.state.aiStart": function(n) {
       if (n) {
         let color = this.$store.state.playAiColor;
         this.game.reset();
@@ -37,19 +38,15 @@ export default {
             }
           });
         } else {
-          this.stockfish.postMessage(
-            "position startpos moves" + this.getMoves()
-          );
-          this.stockfish.postMessage("go depth 12");
+          this.engineAnalyse();
         }
       }
-      this.$store.state.AiStart = false;
     },
     aiTurn: function(n) {
       if (n) {
         this.aiTurn = false;
         this.game.move(this.bestMove);
-        this.gameHistory();
+        this.AIGameHistory();
 
         this.board.set({
           fen: this.game.fen(),
@@ -79,7 +76,7 @@ export default {
         to: dest,
         promotion: this.promote(orig, dest)
       });
-      this.gameHistory();
+      this.AIGameHistory();
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.$store.state.playAiColor,
@@ -87,37 +84,72 @@ export default {
           color: this.$store.state.playAiColor,
           dests: this.possibleMoves(),
           events: {
-            after:
-              (this.stockfish.postMessage(
-                "position startpos moves" + this.getMoves()
-              ),
-              this.stockfish.postMessage("go depth 12"))
+            after: this.engineAnalyse()
           }
         }
       });
       this.gameOver();
     },
+    engineAnalyse() {
+      this.stockfish.postMessage("position startpos moves" + this.getMoves());
+      this.stockfish.postMessage(
+        "go " + (this.engineTime ? "depth " + this.engineTime : "")
+      );
+    },
     gameOver() {
       if (this.game.game_over()) {
-        this.$store.dispatch("clearHistory");
         this.aiTurn = false;
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
       }
     }
   },
-  created() {
-    this.stockfish = new Worker("js/stockfish.js");
-    this.stockfish.onmessage = event => {
-      const match = event.data.match(
-        /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
-      );
-      if (match) {
-        this.bestMove = { from: match[1], to: match[2], promotion: match[3] };
-        this.aiTurn = true;
+  mounted() {
+    if (window.Worker) {
+      this.stockfish = new Worker("js/stockfish.js");
+      this.stockfish.onmessage = event => {
+        console.log(event.data);
+        const match = event.data.match(
+          /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
+        );
+        if (match) {
+          this.bestMove = { from: match[1], to: match[2], promotion: match[3] };
+          this.aiTurn = true;
+        }
+      };
+      this.stockfish.postMessage("uci");
+      const level = this.$store.state.engineLevel;
+      console.log("Level:" + level);
+      if (level < 5) {
+        this.engineTime = "1";
+      } else if (level < 10) {
+        this.engineTime = "2";
+      } else if (level < 15) {
+        this.engineTime = "3";
+      } else {
+        // Let the engine decide.
+        this.engineTime = "";
+        this.stockfish.postMessage("setoption name Skill Level value " + level);
+        //Stockfish level 20 does not make errors (intentially), so these numbers have no effect on level 20.
+        //Level 0 starts at 1
+        this.stockfish.postMessage(
+          "setoption name Skill Level Maximum Error value " +
+            Math.round(level * 6.35 + 1)
+        );
+        // Level 0 starts at 10
+        this.stockfish.postMessage(
+          "setoption name Skill Level Probability value " +
+            Math.round(level * -5.5 + 10)
+        );
       }
-    };
-    this.stockfish.postMessage("uci");
+    } else {
+      // Sorry! No Web Worker support..
+    }
+  },
+  destroyed() {
+    if (window.Worker) {
+      this.stockfish.terminate();
+    }
   }
 };
 </script>

@@ -8,11 +8,11 @@
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
             <div class="history">
-              <GameHistory v-bind:moves="getHistory" />
+              <GameHistory v-bind:moves="getAIHistory" />
             </div>
           </v-card>
           <v-container>
-            <Choosecolor />
+            <SetUpAiGame />
             <Resign />
           </v-container>
         </v-col>
@@ -23,7 +23,7 @@
 
 <script>
 import Aiboard from "@/components/Aiboard";
-import Choosecolor from "@/components/dialogs/Choosecolor";
+import SetUpAiGame from "@/components/dialogs/SetUpAiGame";
 import GameHistory from "@/components/chat/GameHistory";
 import Resign from "@/components/dialogs/Resign";
 import { mapGetters } from "vuex";
@@ -31,11 +31,11 @@ import { mapGetters } from "vuex";
 export default {
   components: {
     Aiboard,
-    Choosecolor,
+    SetUpAiGame,
     GameHistory,
     Resign
   },
-  computed: mapGetters(["getHistory"])
+  computed: mapGetters(["getAIHistory"])
 };
 </script>
 <style scoped>
