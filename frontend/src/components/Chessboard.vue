@@ -80,14 +80,8 @@ export default {
       return moves;
     },
     gameHistory() {
-      if (this.game.history().length % 2 === 0) {
-        let move = [
-          this.game
-            .history({ verbose: true })
-            .slice(this.game.history().length - 2, this.game.history().length)
-        ];
-        this.updateHistory(move);
-      }
+      let move = this.game.history({ verbose: true }).pop();
+      this.updateHistory(move);
     },
     updateHistory(move) {
       this.$store.dispatch("updateHistory", move);
