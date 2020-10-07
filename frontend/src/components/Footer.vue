@@ -21,10 +21,9 @@
           </li>
         </ul>
       </nav>
-        <v-toolbar-side-icon class="footer_logo">
-        <v-img class="mr-3" src="@/assets/new-logo.png"> 
-        </v-img>
-     </v-toolbar-side-icon>
+      <div class="footer_logo">
+        <v-img src="@/assets/new-logo.png"></v-img>
+      </div>
       <form @submit.prevent="action()">
         <p class="nav_header">Stay Connected</p>
         <div class="form-input">
