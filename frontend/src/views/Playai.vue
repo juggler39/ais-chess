@@ -3,7 +3,7 @@
     <h1 class="text-center">Play against the Artificial Intelligence</h1>
     <v-container>
       <v-row>
-        <Aiboard />
+        <Aiboard v-bind:moves="getAIHistory" />
         <v-col class="col-12 col-md-3 grey darken-4">
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
@@ -13,7 +13,6 @@
           </v-card>
           <v-container>
             <SetUpAiGame />
-            <Resign />
           </v-container>
         </v-col>
       </v-row>
@@ -25,15 +24,22 @@
 import Aiboard from "@/components/Aiboard";
 import SetUpAiGame from "@/components/dialogs/SetUpAiGame";
 import GameHistory from "@/components/chat/GameHistory";
-import Resign from "@/components/dialogs/Resign";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     Aiboard,
     SetUpAiGame,
-    GameHistory,
-    Resign
+    GameHistory
+  },
+  methods: {},
+  mounted() {
+    if (window.localStorage.getItem("history")) {
+      this.$store.dispatch(
+        "loadAIHistory",
+        JSON.parse(window.localStorage.getItem("history"))
+      );
+    }
   },
   computed: mapGetters(["getAIHistory"])
 };

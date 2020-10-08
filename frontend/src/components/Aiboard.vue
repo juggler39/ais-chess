@@ -13,19 +13,18 @@ export default {
     };
   },
   watch: {
-    "$store.state.aiStart": function(n) {
+    "$store.state.aiNewGame": function(n) {
       if (n) {
-        let color = this.$store.state.playAiColor;
         this.game.reset();
         this.board.set({
           fen: this.game.fen(),
           lastMove: null,
-          orientation: color,
+          orientation: this.$store.state.playAiColor,
           movable: {
             dests: this.possibleMoves()
           }
         });
-        if (color === "white") {
+        if (this.$store.state.playAiColor === "white") {
           this.board.set({
             turnColor: "white",
             movable: {
@@ -39,6 +38,74 @@ export default {
           });
         } else {
           this.engineAnalyse();
+        }
+        this.$store.state.aiNewGame = false;
+        this.$store.state.aiRun = true;
+      }
+    },
+    "$store.state.aiRun": function(n) {
+      if (n) {
+        if (window.Worker) {
+          const level = this.$store.state.engineLevel;
+          if (level < 5) {
+            this.engineTime = "1";
+          } else if (level < 10) {
+            this.engineTime = "2";
+          } else if (level < 15) {
+            this.engineTime = "3";
+          } else {
+            // Let the engine decide.
+            this.engineTime = "";
+            this.stockfish.postMessage(
+              "setoption name Skill Level value " + level
+            );
+            //set error value in centipawns
+            this.stockfish.postMessage(
+              "setoption name Skill Level Maximum Error value " +
+                Math.round(level * -40 + 800)
+            );
+            // set Probability of Success
+            this.stockfish.postMessage(
+              "setoption name Skill Level Probability value " +
+                Math.round(level * 6.35 + 1)
+            );
+          }
+        }
+      }
+      this.board.set({
+        orientation: this.$store.state.playAiColor,
+        movable: {
+          dests: this.possibleMoves()
+        }
+      });
+      //if the user left the page and then came back, let continue the game
+      if (this.aiTurn) {
+        this.engineAnalyse();
+      } else {
+        if (this.$store.state.playAiColor === "white") {
+          this.board.set({
+            turnColor: "white",
+            movable: {
+              color: "white",
+              events: {
+                after: (orig, dest) => {
+                  this.humanMove(orig, dest);
+                }
+              }
+            }
+          });
+        } else {
+          this.board.set({
+            turnColor: "black",
+            movable: {
+              color: "black",
+              events: {
+                after: (orig, dest) => {
+                  this.humanMove(orig, dest);
+                }
+              }
+            }
+          });
         }
       }
     },
@@ -105,10 +172,12 @@ export default {
     }
   },
   mounted() {
+    if (this.moves.length > 0) {
+      this.$store.state.aiRun = true;
+    }
     if (window.Worker) {
       this.stockfish = new Worker("js/stockfish.js");
       this.stockfish.onmessage = event => {
-        console.log(event.data);
         const match = event.data.match(
           /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
         );
@@ -118,38 +187,16 @@ export default {
         }
       };
       this.stockfish.postMessage("uci");
-      const level = this.$store.state.engineLevel;
-      console.log("Level:" + level);
-      if (level < 5) {
-        this.engineTime = "1";
-      } else if (level < 10) {
-        this.engineTime = "2";
-      } else if (level < 15) {
-        this.engineTime = "3";
-      } else {
-        // Let the engine decide.
-        this.engineTime = "";
-        this.stockfish.postMessage("setoption name Skill Level value " + level);
-        //Stockfish level 20 does not make errors (intentially), so these numbers have no effect on level 20.
-        //Level 0 starts at 1
-        this.stockfish.postMessage(
-          "setoption name Skill Level Maximum Error value " +
-            Math.round(level * 6.35 + 1)
-        );
-        // Level 0 starts at 10
-        this.stockfish.postMessage(
-          "setoption name Skill Level Probability value " +
-            Math.round(level * -5.5 + 10)
-        );
-      }
     } else {
-      // Sorry! No Web Worker support..
+      console.log("Sorry! No Web Worker support.");
     }
   },
   destroyed() {
     if (window.Worker) {
       this.stockfish.terminate();
     }
+    this.$store.state.aiRun = false;
+    this.$store.state.aiNewGame = false;
   }
 };
 </script>

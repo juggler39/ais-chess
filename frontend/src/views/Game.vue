@@ -1,6 +1,8 @@
 <template>
   <div class="game">
-    <h1 class="text-center">This is a play human page</h1>
+    <h1 class="text-center">
+      This is a play human page. Game {{ $route.params.game.id }}
+    </h1>
     <v-container>
       <v-row>
         <Humanboard />

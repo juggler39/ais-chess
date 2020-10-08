@@ -68,19 +68,22 @@ export default {
       radios: "random",
       min: 0,
       max: 20,
-      slider: 4
+      slider: 1
     };
   },
   methods: {
     submit() {
-      this.$store.dispatch("clearHistory");
+      this.$store.dispatch("clearAIHistory");
+      window.localStorage.removeItem("AIfen");
+      window.localStorage.removeItem("history");
       let color = this.radios;
       if (color === "random") {
         color = Math.random() < 0.5 ? "white" : "black";
       }
       this.$store.state.playAiColor = color;
       this.$store.state.engineLevel = this.slider;
-      this.$store.state.aiStart = true;
+      this.$store.state.aiNewGame = true;
+      this.$store.state.aiRun = false;
       this.dialog = false;
     }
   }

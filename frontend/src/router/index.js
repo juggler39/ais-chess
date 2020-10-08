@@ -24,7 +24,7 @@ const routes = [
     component: Account
   },
   {
-    path: "/game",
+    path: "/game/:id'",
     name: "Game",
     component: Game
   },
