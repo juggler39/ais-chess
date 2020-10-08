@@ -78,6 +78,12 @@ export default {
     AIGameHistory() {
       let move = this.game.history({ verbose: true }).pop();
       this.$store.dispatch("updateAIHistory", move);
+      let AIfen = this.game.fen();
+      window.localStorage.setItem("AIfen", AIfen);
+      window.localStorage.setItem(
+        "history",
+        JSON.stringify(this.$store.getters.getAIHistory)
+      );
     },
     PvPameHistory() {
       let move = this.game.history({ verbose: true }).pop();
@@ -109,11 +115,18 @@ export default {
     },
     loadPosition() {
       this.game = new Chess();
+
       if (this.moves != undefined) {
         this.moves.map(move => {
           this.game.move(move.san);
         });
       }
+
+      // if (!window.localStorage.getItem("AIfen")) {
+      //   this.game.load(this.fen);
+      // } else {
+      //   this.game.load(window.localStorage.getItem("AIfen"));
+      // }
 
       this.board = Chessground(this.$refs.board, {
         fen: this.game.fen(),
@@ -153,7 +166,6 @@ export default {
     },
     gameOver() {
       if (this.game.game_over()) {
-        this.clearHistory();
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
         clearInterval(this.timer);
