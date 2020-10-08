@@ -24,15 +24,11 @@ export default {
       resign: false,
       drawProposal: false,
       timer: null,
-      timestamp: 0
+      timestamp: 0,
+      fen: ""
     };
   },
-  props: {
-    fen: {
-      type: String,
-      default: ""
-    }
-  },
+  props: ["moves"],
   watch: {
     orientation: function(orientation) {
       this.orientation = orientation;
@@ -113,7 +109,12 @@ export default {
     },
     loadPosition() {
       this.game = new Chess();
-      this.game.load(this.fen);
+      if (this.moves != undefined) {
+        this.moves.map(move => {
+          this.game.move(move.san);
+        });
+      }
+
       this.board = Chessground(this.$refs.board, {
         fen: this.game.fen(),
         movable: {

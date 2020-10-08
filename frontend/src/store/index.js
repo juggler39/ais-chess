@@ -17,7 +17,8 @@ export default new Vuex.Store({
     timeBlack: 0,
     playAiColor: "",
     engineLevel: 0,
-    aiStart: false,
+    aiRun: false,
+    aiNewGame: false,
     loginUser: user,
     idUser: id
   },

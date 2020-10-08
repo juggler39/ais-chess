@@ -13,7 +13,37 @@ export default {
     };
   },
   watch: {
-    "$store.state.aiStart": function(n) {
+    "$store.state.aiNewGame": function(n) {
+      if (n) {
+        this.game.reset();
+        this.board.set({
+          fen: this.game.fen(),
+          lastMove: null,
+          orientation: this.$store.state.playAiColor,
+          movable: {
+            dests: this.possibleMoves()
+          }
+        });
+        if (this.$store.state.playAiColor === "white") {
+          this.board.set({
+            turnColor: "white",
+            movable: {
+              color: "white",
+              events: {
+                after: (orig, dest) => {
+                  this.humanMove(orig, dest);
+                }
+              }
+            }
+          });
+        } else {
+          this.engineAnalyse();
+        }
+        this.$store.state.aiNewGame = false;
+        this.$store.state.aiRun = true;
+      }
+    },
+    "$store.state.aiRun": function(n) {
       if (n) {
         if (window.Worker) {
           const level = this.$store.state.engineLevel;
@@ -29,30 +59,30 @@ export default {
             this.stockfish.postMessage(
               "setoption name Skill Level value " + level
             );
-            //Stockfish level 20 does not make errors (intentially), so these numbers have no effect on level 20.
-            //Level 0 starts at 1
+            //set error value in centipawns
             this.stockfish.postMessage(
               "setoption name Skill Level Maximum Error value " +
-                Math.round(level * -0.5 + 10)
+                Math.round(level * -40 + 800)
             );
-            // Level 0 starts at 10
+            // set Probability of Success
             this.stockfish.postMessage(
               "setoption name Skill Level Probability value " +
                 Math.round(level * 6.35 + 1)
             );
           }
         }
-        let color = this.$store.state.playAiColor;
-        this.game.reset();
-        this.board.set({
-          fen: this.game.fen(),
-          lastMove: null,
-          orientation: color,
-          movable: {
-            dests: this.possibleMoves()
-          }
-        });
-        if (color === "white") {
+      }
+      this.board.set({
+        orientation: this.$store.state.playAiColor,
+        movable: {
+          dests: this.possibleMoves()
+        }
+      });
+      //if the user left the page and then came back, let continue the game
+      if (this.aiTurn) {
+        this.engineAnalyse();
+      } else {
+        if (this.$store.state.playAiColor === "white") {
           this.board.set({
             turnColor: "white",
             movable: {
@@ -65,10 +95,19 @@ export default {
             }
           });
         } else {
-          this.engineAnalyse();
+          this.board.set({
+            turnColor: "black",
+            movable: {
+              color: "black",
+              events: {
+                after: (orig, dest) => {
+                  this.humanMove(orig, dest);
+                }
+              }
+            }
+          });
         }
       }
-      this.$store.state.aiStart = false;
     },
     aiTurn: function(n) {
       if (n) {
@@ -133,6 +172,9 @@ export default {
     }
   },
   mounted() {
+    if (this.moves.length > 0) {
+      this.$store.state.aiRun = true;
+    }
     if (window.Worker) {
       this.stockfish = new Worker("js/stockfish.js");
       this.stockfish.onmessage = event => {
@@ -146,13 +188,15 @@ export default {
       };
       this.stockfish.postMessage("uci");
     } else {
-      // Sorry! No Web Worker support..
+      console.log("Sorry! No Web Worker support.");
     }
   },
   destroyed() {
     if (window.Worker) {
       this.stockfish.terminate();
     }
+    this.$store.state.aiRun = false;
+    this.$store.state.aiNewGame = false;
   }
 };
 </script>

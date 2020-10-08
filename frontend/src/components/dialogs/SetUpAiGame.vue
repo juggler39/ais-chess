@@ -80,7 +80,8 @@ export default {
       }
       this.$store.state.playAiColor = color;
       this.$store.state.engineLevel = this.slider;
-      this.$store.state.aiStart = true;
+      this.$store.state.aiNewGame = true;
+      this.$store.state.aiRun = false;
       this.dialog = false;
     }
   }
