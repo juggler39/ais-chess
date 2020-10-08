@@ -23,9 +23,9 @@
         </thead>
         <tbody>
           <tr v-for="game in getGames" :key="game.id" @click="selectGame(game)">
-            <td>{{ game.player }}</td>
-            <td>{{ game.time }}</td>
-            <td>{{ game.color }}</td>
+            <td>{{ game.players.player1Name }}</td>
+            <td>{{ game.timeToGo }}</td>
+            <td>{{ game.players.player1Color }}</td>
             <td>{{ game.id }}</td>
           </tr>
         </tbody>

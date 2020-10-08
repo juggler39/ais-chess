@@ -52,7 +52,8 @@ export default {
     send() {
       this.dialog = false;
       this.$socket.client.emit("newGame", {
-        player: this.$store.state.idUser,
+        playerID: this.$store.state.idUser,
+        playerName: this.$store.state.loginUser,
         time: this.time,
         color: this.color
       });

@@ -16,8 +16,6 @@ const app = express();
 const server = http.createServer(app);
 const socketIO = io(server);
 
-let games = [];
-
 
 //Configure our app
 app.use(cors());
@@ -105,20 +103,23 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('loadGames', () => {
-    socket.emit('newGameInfo', games)
+    OpenGame.find({}, (err, allOpenGames) => {
+      socket.emit('newGameInfo', allOpenGames);
+    });
   })
 
   socket.on('newGame', (info) => {
-    info.id = games.length + 100000
     let Game = new OpenGame();
-    Game.players.player1 = info.player;
+    Game.players.player1ID = info.playerID;
+    Game.players.player1Name = info.playerName;
     Game.players.player1Color = info.color;
     Game.timeToGo = info.time;
-
-    games.push(info);
-    console.log(games);
     
-    Game.save().then(() => {socket.emit('newGameInfo', games)})
+    Game.save().then(() => {
+      OpenGame.find({}, (err, allOpenGames) => {
+        socket.emit('newGameInfo', allOpenGames);
+      });
+    })
     .catch(err => console.log(err));
     
   })
