@@ -74,6 +74,8 @@ export default {
   methods: {
     submit() {
       this.$store.dispatch("clearAIHistory");
+      window.localStorage.removeItem("AIfen");
+      window.localStorage.removeItem("history");
       let color = this.radios;
       if (color === "random") {
         color = Math.random() < 0.5 ? "white" : "black";

@@ -32,6 +32,15 @@ export default {
     SetUpAiGame,
     GameHistory
   },
+  methods: {},
+  mounted() {
+    if (window.localStorage.getItem("history")) {
+      this.$store.dispatch(
+        "loadAIHistory",
+        JSON.parse(window.localStorage.getItem("history"))
+      );
+    }
+  },
   computed: mapGetters(["getAIHistory"])
 };
 </script>
