@@ -5,6 +5,9 @@ export default {
     PvPGameHistory: []
   },
   mutations: {
+    loadAIHistory(state, history) {
+      state.AIGameHistory = history;
+    },
     clearAIGameHistory(state) {
       state.AIGameHistory = [];
     },
@@ -25,6 +28,9 @@ export default {
     }
   },
   actions: {
+    loadAIHistory(context, history) {
+      context.commit("loadAIHistory", history);
+    },
     clearAIHistory(context) {
       context.commit("clearAIGameHistory");
     },
