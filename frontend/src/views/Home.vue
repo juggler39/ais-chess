@@ -8,7 +8,7 @@
       />
       <div class="home--title">
         <h1 class="main-title">Experience Virtual World of Chess</h1>
-        <p class="subtitle">
+        <p class="content">
           We provide you with an amazing chess application, giving you an
           opportunity to explore the world of online chess.
         </p>
@@ -29,19 +29,22 @@
         prizes.
       </p>
     </div>
-    <router-link :to="{ name: 'News' }">
-      Latest news in the world of chess
+    <router-link :to="{ name: 'News' }" class="subtitle">
+      Latest news in the world of chess 
+      <v-icon dark class="arrow-right">mdi-arrow-right</v-icon>
     </router-link>
+    <News />
   </div>
 </template>
 
 <script>
 import Buttons from "@/components/Buttons";
+import News from "@/components/News";
 // @ is an alias to /src
 
 export default {
   name: "Home",
-  components: { Buttons }
+  components: { Buttons, News }
 };
 </script>
 
@@ -50,6 +53,7 @@ export default {
   display: flex;
   justify-content: space-around;
 
+  
   .home--main_image {
     padding: 5%;
     opacity: 0.7;
@@ -113,7 +117,7 @@ export default {
       animation-delay: 3s;
     }
 
-    .subtitle {
+    .content {
       font-size: 1rem;
       line-height: 1.25rem;
       padding-top: 20px;
@@ -123,8 +127,27 @@ export default {
   }
 }
 
+.subtitle {
+  font-size: 1.5rem;
+  line-height: 1.25rem;
+  color: #fff;
+  text-shadow: 0 0 10px #3d7a97;
+  letter-spacing: 1px;
+  transition: 0.3s ease-in;
+  text-decoration: none;
+
+  &:hover {
+    opacity: 0.7;
+    text-shadow: 0 0 15px #ffffff;
+  }
+
+  &:hover .arrow-right {
+    transform: translate(10px, 0);
+  }
+}
+
 .description {
-  margin: 3em 5em;
+  margin: 3em 5em 5em;
   background-color: #333;
   opacity: 0.5;
   color: #ccc;

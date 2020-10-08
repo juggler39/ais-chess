@@ -103,6 +103,7 @@ export default {
     drawer: false,
     drawerLinks: [
       { icon: "mdi-home", text: "Home", route: "/" },
+      { icon: "mdi-home", text: "News", route: "/news" },
       { icon: "mdi-account", text: "Account", route: "/account" },
       { icon: "mdi-email", text: "Contact", route: "/contact" }
     ]
