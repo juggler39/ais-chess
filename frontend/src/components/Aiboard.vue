@@ -1,9 +1,28 @@
+<template>
+  <v-col
+    class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
+  >
+    <v-card>
+      <Playerbar
+        :color="opponentColor"
+        :username="'StockFish Level ' + $store.state.engineLevel"
+      />
+      <div class="merida">
+        <div ref="board" class="cg-board-wrap"></div>
+      </div>
+      <Playerbar :color="pieceColor" :username="$store.state.loginUser" />
+    </v-card>
+  </v-col>
+</template>
+
 <script>
 import Chessboard from "./Chessboard";
+import Playerbar from "@/components/Playerbar";
 
 export default {
   name: "PlayAi",
   extends: Chessboard,
+  components: { Playerbar },
   data() {
     return {
       aiTurn: false,
@@ -174,6 +193,8 @@ export default {
   mounted() {
     if (this.moves.length > 0) {
       this.$store.state.aiRun = true;
+      this.$store.state.engineLevel = window.localStorage.getItem("aiLevel");
+      this.$store.state.playAiColor = window.localStorage.getItem("aiColor");
     }
     if (window.Worker) {
       this.stockfish = new Worker("js/stockfish.js");

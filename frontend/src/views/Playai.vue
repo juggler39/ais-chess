@@ -33,7 +33,7 @@ export default {
     GameHistory
   },
   methods: {},
-  mounted() {
+  created() {
     if (window.localStorage.getItem("history")) {
       this.$store.dispatch(
         "loadAIHistory",

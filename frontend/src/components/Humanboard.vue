@@ -3,11 +3,11 @@
     class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
   >
     <v-card>
-      <Playerbar color="black" />
+      <Playerbar :color="opponentColor" />
       <div class="merida">
         <div ref="board" class="cg-board-wrap"></div>
       </div>
-      <Playerbar color="white" :username="$store.state.loginUser" />
+      <Playerbar :color="pieceColor" :username="$store.state.loginUser" />
     </v-card>
 
     <div class="d-flex flex-column">
