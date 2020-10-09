@@ -6,6 +6,7 @@ import Account from "../views/Account.vue";
 import Game from "../views/Game.vue";
 import Lobby from "../views/Lobby.vue";
 import Playai from "../views/Playai.vue";
+import NotFound from "../views/NotFound.vue";
 import axios from "axios";
 //import Login from "../components/Login.vue";
 import News from "@/components/News";
@@ -47,6 +48,11 @@ const routes = [
     path: "/news",
     name: "News",
     component: News
+  },
+  {
+    path: "*",
+    name: "Not Found",
+    component: NotFound
   }
 ];
 
