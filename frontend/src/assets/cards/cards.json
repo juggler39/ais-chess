@@ -1,0 +1,22 @@
+{
+  "menuItems": [
+    {
+      "show": false,
+      "img": "news-img2.jpg",
+      "content": "The final line-up of 6 players in this double round-robin event was announced last week. Since then there has been a change as Dutch Grandmaster, Anish Giri, decided to withdraw due to growing concerns around the Covid-19 situation in the Netherlands...", 
+      "title": "Jan-krzysztof Duda to replace anish giri in tournament" 
+    },
+    {
+      "show": false,
+      "img": "news-img1.jpg",
+      "content": "GM Nodirbek Abdusattorov won the 19th Speed Chess Championship Grand Prix, his first victory in the series. The Uzbek grandmaster beat the GM Jose Martinez of Peru 1.5-0.5 in the knockout final. The final Speed Chess Championship Grand Prix...", 
+      "title": "Abdusattorov Wins 19th Speed Chess Grand Prix" 
+    },
+    {
+      "show": false,
+      "img": "news-img3.jpg",
+      "content": "The Starter was published in national newspapers and appeared on their websites. 947 Solutions were submitted, 635 of them correct, and 312 incorrect...", 
+      "title": "Winton British Chess – Starter Round results" 
+    }
+  ]
+}

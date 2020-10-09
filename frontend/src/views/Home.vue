@@ -30,21 +30,21 @@
       </p>
     </div>
     <router-link :to="{ name: 'News' }" class="subtitle">
-      Latest news in the world of chess 
+      Latest news in the world of chess
       <v-icon dark class="arrow-right">mdi-arrow-right</v-icon>
     </router-link>
-    <News />
+    <Card />
   </div>
 </template>
 
 <script>
 import Buttons from "@/components/Buttons";
-import News from "@/components/News";
+import Card from "@/components/Card";
 // @ is an alias to /src
 
 export default {
   name: "Home",
-  components: { Buttons, News }
+  components: { Buttons, Card }
 };
 </script>
 
@@ -52,8 +52,6 @@ export default {
 .main-banner {
   display: flex;
   justify-content: space-around;
-
-  
   .home--main_image {
     padding: 5%;
     opacity: 0.7;
