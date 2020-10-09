@@ -24,8 +24,13 @@ const routes = [
     component: Account
   },
   {
-    path: "/game/:id'",
+    path: "/game/:id",
     name: "Game",
+    component: Game
+  },
+  {
+    path: "/game",
+    name: "HumanGame",
     component: Game
   },
   {

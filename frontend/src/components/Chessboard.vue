@@ -1,15 +1,3 @@
-<template>
-  <v-col
-    class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
-  >
-    <v-card>
-      <div class="merida">
-        <div ref="board" class="cg-board-wrap"></div>
-      </div>
-    </v-card>
-  </v-col>
-</template>
-
 <script>
 import Chess from "chess.js";
 import { Chessground } from "chessground";
@@ -27,6 +15,11 @@ export default {
       timestamp: 0,
       fen: ""
     };
+  },
+  computed: {
+    opponentColor: function() {
+      return this.pieceColor === "white" ? "black" : "white";
+    }
   },
   props: ["moves"],
   watch: {
@@ -78,8 +71,8 @@ export default {
     AIGameHistory() {
       let move = this.game.history({ verbose: true }).pop();
       this.$store.dispatch("updateAIHistory", move);
-      let AIfen = this.game.fen();
-      window.localStorage.setItem("AIfen", AIfen);
+      window.localStorage.setItem("aiLevel", this.$store.state.engineLevel);
+      window.localStorage.setItem("aiColor", this.$store.state.playAiColor);
       window.localStorage.setItem(
         "history",
         JSON.stringify(this.$store.getters.getAIHistory)
@@ -115,21 +108,19 @@ export default {
     },
     loadPosition() {
       this.game = new Chess();
-
+      let lastMove = null;
       if (this.moves != undefined) {
         this.moves.map(move => {
           this.game.move(move.san);
         });
+        lastMove = [
+          this.moves[this.moves.length - 1].from,
+          this.moves[this.moves.length - 1].to
+        ];
       }
-
-      // if (!window.localStorage.getItem("AIfen")) {
-      //   this.game.load(this.fen);
-      // } else {
-      //   this.game.load(window.localStorage.getItem("AIfen"));
-      // }
-
       this.board = Chessground(this.$refs.board, {
         fen: this.game.fen(),
+        lastMove: lastMove,
         movable: {
           color: null,
           free: false,
