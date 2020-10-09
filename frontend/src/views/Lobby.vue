@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     selectGame(game) {
-      this.$router.push({ name: "Game", params: { id: game.id, game: game } });
+      this.$router.push({ name: "Game", params: { id: game.id } });
       console.log(game.id);
     }
   },

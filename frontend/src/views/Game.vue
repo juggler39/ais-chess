@@ -1,7 +1,8 @@
 <template>
   <div class="game">
     <h1 class="text-center">
-      This is a play human page. Game {{ $route.params.game.id }}
+      This is a play human page. Game
+      {{ `${this.$route.params.id ? this.$route.params.id : "test"}` }}
     </h1>
     <v-container>
       <v-row>
@@ -39,7 +40,8 @@ export default {
     Humanboard,
     GameHistory
   },
-  computed: mapGetters(["getPVPHistory"])
+  computed: mapGetters(["getPVPHistory"]),
+  mounted() {}
 };
 </script>
 <style scoped>
