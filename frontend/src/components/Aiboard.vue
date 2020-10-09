@@ -6,11 +6,16 @@
       <Playerbar
         :color="opponentColor"
         :username="'StockFish Level ' + $store.state.engineLevel"
+        :timer="false"
       />
       <div class="merida">
         <div ref="board" class="cg-board-wrap"></div>
       </div>
-      <Playerbar :color="pieceColor" :username="$store.state.loginUser" />
+      <Playerbar
+        :color="pieceColor"
+        :username="$store.state.loginUser"
+        :timer="false"
+      />
     </v-card>
   </v-col>
 </template>
@@ -64,31 +69,29 @@ export default {
     },
     "$store.state.aiRun": function(n) {
       if (n) {
-        if (window.Worker) {
-          const level = this.$store.state.engineLevel;
-          if (level < 5) {
-            this.engineTime = "1";
-          } else if (level < 10) {
-            this.engineTime = "2";
-          } else if (level < 15) {
-            this.engineTime = "3";
-          } else {
-            // Let the engine decide.
-            this.engineTime = "";
-            this.stockfish.postMessage(
-              "setoption name Skill Level value " + level
-            );
-            //set error value in centipawns
-            this.stockfish.postMessage(
-              "setoption name Skill Level Maximum Error value " +
-                Math.round(level * -40 + 800)
-            );
-            // set Probability of Success
-            this.stockfish.postMessage(
-              "setoption name Skill Level Probability value " +
-                Math.round(level * 6.35 + 1)
-            );
-          }
+        const level = this.$store.state.engineLevel;
+        if (level < 5) {
+          this.engineTime = "1";
+        } else if (level < 10) {
+          this.engineTime = "2";
+        } else if (level < 15) {
+          this.engineTime = "3";
+        } else {
+          // Let the engine decide.
+          this.engineTime = "";
+          this.stockfish.postMessage(
+            "setoption name Skill Level value " + level
+          );
+          //set error value in centipawns
+          this.stockfish.postMessage(
+            "setoption name Skill Level Maximum Error value " +
+              Math.round(level * -40 + 800)
+          );
+          // set Probability of Success
+          this.stockfish.postMessage(
+            "setoption name Skill Level Probability value " +
+              Math.round(level * 6.35 + 1)
+          );
         }
       }
       this.board.set({
@@ -196,26 +199,20 @@ export default {
       this.$store.state.engineLevel = window.localStorage.getItem("aiLevel");
       this.$store.state.playAiColor = window.localStorage.getItem("aiColor");
     }
-    if (window.Worker) {
-      this.stockfish = new Worker("js/stockfish.js");
-      this.stockfish.onmessage = event => {
-        const match = event.data.match(
-          /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
-        );
-        if (match) {
-          this.bestMove = { from: match[1], to: match[2], promotion: match[3] };
-          this.aiTurn = true;
-        }
-      };
-      this.stockfish.postMessage("uci");
-    } else {
-      console.log("Sorry! No Web Worker support.");
-    }
+    this.stockfish = new Worker("js/stockfish.js");
+    this.stockfish.onmessage = event => {
+      const match = event.data.match(
+        /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/
+      );
+      if (match) {
+        this.bestMove = { from: match[1], to: match[2], promotion: match[3] };
+        this.aiTurn = true;
+      }
+    };
+    this.stockfish.postMessage("uci");
   },
   destroyed() {
-    if (window.Worker) {
-      this.stockfish.terminate();
-    }
+    this.stockfish.terminate();
     this.$store.state.aiRun = false;
     this.$store.state.aiNewGame = false;
   }
