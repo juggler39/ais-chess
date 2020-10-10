@@ -41,7 +41,10 @@ export default {
     GameHistory
   },
   computed: mapGetters(["getPVPHistory"]),
-  mounted() {}
+  mounted() {
+    console.log("reconected to room");
+    this.$socket.client.emit("joinRoom", this.$route.params.id);
+  }
 };
 </script>
 <style scoped>
