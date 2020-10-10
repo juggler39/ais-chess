@@ -24,6 +24,9 @@ const gauthOption = {
 };
 
 const socket = io("http://localhost:8000");
+socket.on("connect", () => {
+  console.log("main connect");
+});
 
 Vue.use(VueSocketIOExt, socket);
 Vue.use(GoogleAuth, gauthOption);

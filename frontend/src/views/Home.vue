@@ -41,12 +41,7 @@ import Buttons from "@/components/Buttons";
 
 export default {
   name: "Home",
-  components: { Buttons },
-  sockets: {
-    startGame(game) {
-      this.$router.push({ name: "Game", params: { id: game[0].id } });
-    }
-  }
+  components: { Buttons }
 };
 </script>
 
