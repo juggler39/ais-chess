@@ -81,7 +81,10 @@ router.beforeEach((to, from, next) => {
     }
   else next();
   }
-  verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
+  if (routes.find(elem => elem.path === to.path) !== undefined || /\/game/.test(to.path)) verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
+  else {
+    next();
+  }
 });
 
 export default router;
