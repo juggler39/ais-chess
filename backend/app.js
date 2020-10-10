@@ -114,6 +114,7 @@ socketIO.on('connection', (socket) => {
     Game.players.player1Name = info.playerName;
     Game.players.player1Color = info.color;
     Game.timeToGo = info.time;
+    socket.join(Game._id);
     
     Game.save().then(() => {
       OpenGame.find({}, (err, allOpenGames) => {
@@ -121,7 +122,17 @@ socketIO.on('connection', (socket) => {
       });
     })
     .catch(err => console.log(err));
-    
+  })
+
+  socket.on('connectToGame', id => {
+    OpenGame.find({_id:id}, (err, game) => {
+      socket.join(id);
+      socketIO.to(id).emit('startGame', game);
+    });
+  })
+
+  socket.on('joinRoom', id => {
+    socket.join(id);
   })
 })
 
