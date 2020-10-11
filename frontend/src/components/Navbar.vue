@@ -1,10 +1,10 @@
 <template>
   <nav>
-    <v-app-bar  class="container" app>
+    <v-app-bar class="container" app>
       <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
-     <div class="logo">
+      <div class="logo">
         <v-img src="@/assets/new-logo.png"></v-img>
-     </div>
+      </div>
       <v-tooltip v-for="link in menuLinks" :key="link.text" bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
@@ -23,13 +23,20 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn> -->
 
-      <v-btn text @click.prevent="logoutFromAccountTest">
-        <v-icon left>mdi-logout</v-icon>
+      <v-btn v-if="$store.state.loginUser" text to="/account">
+        <span> {{ $store.state.loginUser }} </span>
+      </v-btn>
+      <Login v-if="!$store.state.loginUser" />
+      <v-btn
+        v-if="$store.state.loginUser"
+        text
+        @click.prevent="logoutFromAccountTest"
+      >
         <span class="hidden-sm-and-down">
           logout
         </span>
+        <v-icon right>mdi-logout</v-icon>
       </v-btn>
-      <Login />
       <v-menu bottom left offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn dark icon v-bind="attrs" v-on="on">

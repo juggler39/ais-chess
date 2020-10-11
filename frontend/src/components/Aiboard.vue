@@ -13,7 +13,9 @@
       </div>
       <Playerbar
         :color="pieceColor"
-        :username="$store.state.loginUser"
+        :username="
+          $store.state.loginUser ? $store.state.loginUser : 'Anonymous'
+        "
         :timer="false"
       />
     </v-card>
