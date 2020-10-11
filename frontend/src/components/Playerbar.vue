@@ -10,7 +10,7 @@
         {{ username }}
       </v-card-text>
       <v-spacer></v-spacer>
-      <span class="headline font-weight-bold">{{
+      <span v-if="timer" class="headline font-weight-bold">{{
         color === "white"
           ? whiteMinutes + ":" + whiteSeconds
           : blackMinutes + ":" + blackSeconds
@@ -29,6 +29,10 @@ export default {
     color: {
       type: String,
       default: "white"
+    },
+    timer: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

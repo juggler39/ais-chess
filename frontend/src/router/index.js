@@ -6,6 +6,7 @@ import Account from "../views/Account.vue";
 import Game from "../views/Game.vue";
 import Lobby from "../views/Lobby.vue";
 import Playai from "../views/Playai.vue";
+import NotFound from "../views/NotFound.vue";
 import axios from "axios";
 //import Login from "../components/Login.vue";
 import News from "../views/News.vue";
@@ -47,6 +48,11 @@ const routes = [
     path: "/news",
     name: "News",
     component: News
+  },
+  {
+    path: "*",
+    name: "Not Found",
+    component: NotFound
   }
 ];
 
@@ -75,7 +81,10 @@ router.beforeEach((to, from, next) => {
     }
   else next();
   }
-  verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
+  if (routes.find(elem => elem.path === to.path) !== undefined || /\/game/.test(to.path)) verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
+  else {
+    next();
+  }
 });
 
 export default router;

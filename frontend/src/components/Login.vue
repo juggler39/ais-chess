@@ -1,12 +1,11 @@
-<!-- eslint-disable -->
 <template>
   <v-dialog persistent v-model="dialog">
     <template v-slot:activator="{ on, attrs }">
       <v-btn text v-bind="attrs" v-on="on">
-        <v-icon left>mdi-login</v-icon>
         <span class="hidden-sm-and-down">
           login
         </span>
+        <v-icon right>mdi-login</v-icon>
       </v-btn>
     </template>
     <v-container class="fill-height" fluid>
@@ -23,13 +22,15 @@
             </v-toolbar>
             <v-card-text>
               <v-form>
-                <v-text-field id="Login"
+                <v-text-field
+                  id="Login"
                   label="Login"
                   name="login"
                   prepend-icon="mdi-account"
                   type="text"
                 ></v-text-field>
-                <v-text-field id="Password"
+                <v-text-field
+                  id="Password"
                   label="Password"
                   name="password"
                   prepend-icon="mdi-lock"
@@ -40,11 +41,18 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="secondary" @click.prevent="loginWithGoogle">
-                  <img alt="Google" src="https://img.comss.net/fit-in/200x200/filters:fill(FFFFFF)/logo/google-logo.png" width="18" height="18">
-                  Google
+                <img
+                  alt="Google"
+                  src="https://img.comss.net/fit-in/200x200/filters:fill(FFFFFF)/logo/google-logo.png"
+                  width="18"
+                  height="18"
+                />
+                Google
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click.prevent="loginWithLogin">Login</v-btn>
+              <v-btn color="primary" @click.prevent="loginWithLogin"
+                >Login</v-btn
+              >
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>

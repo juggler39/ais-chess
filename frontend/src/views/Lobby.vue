@@ -3,53 +3,65 @@
     <h1 class="text-center">Game lobby</h1>
     <h2 class="text-center">Choose an open call or create your own game</h2>
     <Creategame class="my-6" />
-    <v-simple-table dark>
-      <template v-slot:default>
-        <thead>
-          <tr class="primary">
-            <th class="text-left">
-              <h2>Player</h2>
-            </th>
-            <th class="text-left">
-              <h2>Time</h2>
-            </th>
-            <th class="text-left">
-              <h2>Color</h2>
-            </th>
-            <th class="text-left">
-              <h2>Game ID</h2>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="game in getGames" :key="game.id" @click="selectGame(game)">
-            <td>{{ game.players.player1Name }}</td>
-            <td>{{ game.timeToGo }}</td>
-            <td>{{ game.players.player1Color }}</td>
-            <td>{{ game.id }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+    <v-row>
+      <v-simple-table dark class="col-12 col-md-9">
+        <template v-slot:default>
+          <thead>
+            <tr class="primary">
+              <th class="text-left">
+                <h2>Player</h2>
+              </th>
+              <th class="text-left">
+                <h2>Time</h2>
+              </th>
+              <th class="text-left">
+                <h2>Color</h2>
+              </th>
+              <th class="text-left">
+                <h2>Game ID</h2>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="game in getGames"
+              :key="game.id"
+              @click="selectGame(game)"
+            >
+              <td>{{ game.players.player1Name }}</td>
+              <td>{{ game.timeToGo }}</td>
+              <td>{{ game.players.player1Color }}</td>
+              <td>{{ game.id }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+      <v-col class="col-12 col-md-3 grey darken-4">
+        <v-container>
+          <Chat />
+        </v-container>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import Creategame from "@/components/dialogs/Creategame";
 import { mapGetters } from "vuex";
+import Chat from "@/components/chat/Chat";
 
 export default {
-  components: { Creategame },
+  components: { Creategame, Chat },
   sockets: {
-    newGameInfo(games) {
-      console.log(games);
-      this.$store.dispatch("updateGamesList", games);
+    connect() {
+      console.log("connected to server");
     }
   },
   methods: {
     selectGame(game) {
-      this.$router.push({ name: "Game", params: { id: game.id } });
-      console.log(game.id);
+      if (game.players.player1Name !== this.$store.state.loginUser) {
+        this.$socket.client.emit("connectToGame", game.id);
+      }
     }
   },
   computed: mapGetters(["getGames"]),

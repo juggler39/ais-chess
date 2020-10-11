@@ -21,7 +21,14 @@ export default {
       return this.pieceColor === "white" ? "black" : "white";
     }
   },
-  props: ["moves"],
+  props: {
+    moves: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    }
+  },
   watch: {
     orientation: function(orientation) {
       this.orientation = orientation;
@@ -109,7 +116,7 @@ export default {
     loadPosition() {
       this.game = new Chess();
       let lastMove = null;
-      if (this.moves != undefined) {
+      if (this.moves.length > 0) {
         this.moves.map(move => {
           this.game.move(move.san);
         });
