@@ -1,7 +1,7 @@
 <template>
-  <div class="cards">
-    <v-card class="mx-auto" v-for="item in menuItems" :key="item.title">
-      <v-img :src="itemImg(item.img)" height="200px"></v-img>
+ <div class="cards">
+   <v-card class="mx-auto" v-for="item in menuItems" :key="item.title" v-bind:count="maxCount">
+    <v-img :src="getImg(item.img)" height="200px"></v-img>
       <v-card-title>
         {{ item.title }}
       </v-card-title>
@@ -19,7 +19,7 @@
             {{ item.content }}
           </v-card-text>
         </div>
-      </v-expand-transition>
+      </v-expand-transition> 
     </v-card>
   </div>
 </template>
@@ -29,16 +29,16 @@ import Json from "@/assets/cards/cards.json";
 
 export default {
   name: "card",
-
+  props: ["maxCount"],
   data() {
     return{
-      menuItems: Json.menuItems
+      menuItems: Json.menuItems.slice(0, this.maxCount)
     }
   },
   methods: {
-    itemImg: function(img) {
+    getImg: function(img) {
       return require("@/assets/cards/" + img);
-    },
+    }
   },
 }
 </script>

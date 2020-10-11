@@ -33,7 +33,7 @@
       Latest news in the world of chess
       <v-icon dark class="arrow-right">mdi-arrow-right</v-icon>
     </router-link>
-    <Card />
+    <Card maxCount="3" />
   </div>
 </template>
 

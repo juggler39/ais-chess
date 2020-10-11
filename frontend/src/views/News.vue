@@ -3,7 +3,7 @@
     <h1 class="subtitle">
       Latest news in the world of chess
     </h1>
-    <Card />
+    <Card maxCount="Infinity" />
   </div>
 </template>
 
