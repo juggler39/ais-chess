@@ -6,11 +6,11 @@ Fully automized and completely working Backend server for [www.ais-chess.com](ht
 
 1. #### Process of authorization
 
-Authorization - main process, which provide an access to protected data / routes and let server to identify a user.
+> Authorization - main process, which provide an access to protected data / routes and let server to identify a user.
 
 ---
 
-- **Authorization with login & pass:**
+##### **_Authorization with login & pass:_**
 
 + *Frontend*
 
