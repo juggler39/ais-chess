@@ -11,3 +11,5 @@ Firstly, our backend mainly use:
 - **Socket io**
 - **JWT**
 - **Mongoose**
+
+    await axios.post('/api/users/google', {...});
