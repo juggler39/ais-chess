@@ -138,7 +138,7 @@ socketIO.on('connection', (socket) => {
     //     { gameId,
     //       player2Name,
     //       player2ID  } 
-    OpenGame.findOneAndUpdate({_id:player2info.gameId}, {isOpen: false}, (err, data) => {
+    OpenGame.findOneAndUpdate({_id: player2info.gameId}, { $set: {isOpen: true, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
         if (err) {
           console.log(err)
         } else {
@@ -147,7 +147,7 @@ socketIO.on('connection', (socket) => {
           });
         }
     });
-    OpenGame.find({_id:player2info.gameId}, (err, game) => {
+    OpenGame.find({_id: player2info.gameId}, (err, game) => {
       socket.join(player2info.gameId);
       socketIO.to(player2info.gameId).emit('startGame', { ...game[0]._doc, ...player2info });
     });
