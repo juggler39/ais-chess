@@ -3,13 +3,15 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const GlobalChatSchema = new Schema({
+  userName: String,
   user: String,
   message: String,
-  time: { type: Date, default: Date.now },
+  time: String,
 });
 
 GlobalChatSchema.methods.toJSON = function() {
     return {
+      userName: this.userName,
       user: this.user,
       message: this.message,
       time: this.time

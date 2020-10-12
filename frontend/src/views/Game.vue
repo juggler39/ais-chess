@@ -16,7 +16,7 @@
             </div>
           </v-card>
           <v-container>
-            <Chat />
+            <Chat :global="false" />
           </v-container>
         </v-col>
       </v-row>
