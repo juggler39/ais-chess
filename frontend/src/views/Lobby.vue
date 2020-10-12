@@ -55,12 +55,24 @@ export default {
   sockets: {
     connect() {
       console.log("connected to server");
+    },
+    newGameInfo(games) {
+      this.$store.dispatch("updateGamesList", games);
+      this.$store.getters.getGames.forEach(game => {
+        if (game.players.player1Name == this.$store.state.loginUser) {
+          this.$socket.client.emit("joinRoom", game.id);
+        }
+      });
     }
   },
   methods: {
     selectGame(game) {
       if (game.players.player1Name !== this.$store.state.loginUser) {
-        this.$socket.client.emit("connectToGame", game.id);
+        this.$socket.client.emit("connectToGame", {
+          gameId: game.id,
+          player2Name: this.$store.state.loginUser,
+          player2ID: this.$store.state.idUser
+        });
       }
     }
   },

@@ -8,7 +8,7 @@ const OpenGameSchema = new Schema({
   timeToGo: Number,
   moves: [{from: String, to: String}],
   chat: [{player: String, message: String}],
-  isOpen: String
+  isOpen: Boolean
 });
 
 OpenGameSchema.methods.toJSON = function() {
@@ -18,7 +18,8 @@ OpenGameSchema.methods.toJSON = function() {
       startDate: this.startDate,
       timeToGo: this.timeToGo,
       moves: this.moves,
-      chat: this.chat
+      chat: this.chat,
+      isOpen: this.isOpen
     };
 };
 

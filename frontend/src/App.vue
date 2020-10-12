@@ -26,17 +26,9 @@ export default {
     connect() {
       console.log("connected to server");
     },
-    newGameInfo(games) {
-      this.$store.dispatch("updateGamesList", games);
-      this.$store.getters.getGames.forEach(game => {
-        if (game.players.player1Name == this.$store.state.loginUser) {
-          console.log("connected " + this.$store.state.loginUser);
-          this.$socket.client.emit("joinRoom", game.id);
-        }
-      });
-    },
     startGame(game) {
-      this.$router.push({ name: "Game", params: { id: game[0].id } });
+      console.log(game);
+      this.$router.push({ name: "Game", params: { id: game.gameId } });
     }
   },
   mounted() {
