@@ -1,10 +1,11 @@
 <script>
 import Chess from "chess.js";
 import { Chessground } from "chessground";
+import Promote from "@/components/dialogs/Promote";
 
 export default {
   name: "Chessboard",
-  components: {},
+  components: { Promote },
   data() {
     return {
       pieceColor: "white",
@@ -13,7 +14,9 @@ export default {
       drawProposal: false,
       timer: null,
       timestamp: 0,
-      fen: ""
+      fen: "",
+      promoteDialog: false,
+      promoteTo: "q"
     };
   },
   computed: {
@@ -110,8 +113,16 @@ export default {
         this.game.undo(); //move is ok, now we can go ahead and check for promotion
         if (!this.game.move({ from: orig, to: dest })) {
           return prompt("q - qween, r - rook, b - bishop, n - knight", "q");
+          //this.promoteDialog = true;
+          //console.log("Promote: " + this.promoteTo);
+          //return this.promoteTo;
         }
       }
+    },
+    getPiece(e) {
+      console.log(e);
+      this.promoteTo = e;
+      this.promoteDialog = false;
     },
     loadPosition() {
       this.game = new Chess();
