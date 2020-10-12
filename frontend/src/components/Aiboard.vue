@@ -19,6 +19,11 @@
         :timer="false"
       />
     </v-card>
+    <Promote
+      v-model="promoteDialog"
+      :color="pieceColor"
+      @piece="getPiece($event)"
+    />
   </v-col>
 </template>
 
@@ -196,6 +201,7 @@ export default {
     }
   },
   mounted() {
+    //this.promoteDialog = true;
     if (this.moves.length > 0) {
       this.$store.state.aiRun = true;
       this.$store.state.engineLevel = window.localStorage.getItem("aiLevel");

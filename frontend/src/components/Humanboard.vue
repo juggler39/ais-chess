@@ -9,7 +9,11 @@
       </div>
       <Playerbar :color="pieceColor" :username="$store.state.loginUser" />
     </v-card>
-
+    <Promote
+      v-model="promoteDialog"
+      :color="pieceColor"
+      @piece="getPiece($event)"
+    />
     <div class="d-flex flex-column">
       <v-btn @click="changeOrientation">Change orientation</v-btn>
       <input type="text" v-model="opponentMoveFrom" class="ms-4 white--text" />
