@@ -2,16 +2,12 @@
 
 ![Chess board](https://baptistandreflector.org/wp-content/uploads/2017/05/chess-game.jpg "Chess, Chess, Mat...")
 
-Fully automized and completely working Backend server for [www.ais-chess.com](http://localhost:8080).
-
 ## Basic explonaton of front-back communication:
 ---
 
-1. ### Process of authorization
+### **Authorization with login & pass:**
 
-> #### **Authorization with login & pass:**
-
-+ ***Frontend***
+> + ***Frontend***
 
 Firstly, after entering login and password is a specified fields, we create an object `userObj`:
 
@@ -29,7 +25,7 @@ and then, send this object to backend server through `axios` request:
                             console.log(error);
                           });
 
-+ ***Backend***
+> - ***Backend***
 
 After we sent an `axios` request from front, accept it on back:
 
@@ -74,7 +70,7 @@ After we sent an `axios` request from front, accept it on back:
 
 as a result, if user is OK and exists in DB, create a `JWT` token and send back to front.
 
-+ ***Frontend***
+> + ***Frontend***
 
 Finally, in callback function of `axios` request, setup header "Authorization" for future indicating user on the server, 
 save **token**, **name** and **id** to *Vue store* & *localStorage*:
@@ -96,9 +92,9 @@ save **token**, **name** and **id** to *Vue store* & *localStorage*:
 
 ---
 
-#### **Authorization with _Google account_:**
+### **Authorization with _Google account_:**
 
-+ ***Frontend***
+> + ***Frontend***
 
 Here, the beggining of the authorization process is absolutely another. After user clicked a **Google** button, he is redirected to special window:
 
@@ -114,7 +110,7 @@ where he can choose a *Google account* to Log in. Then, with a promise we get a 
                         ID: GoogleUser.getAuthResponse().id_token
           }).then( async response => {...})}
 
-+ ***Backend***
+> + ***Backend***
 
 After we sent an `axios` request from front, accept it on back, check userID (if it not exp, created for our app):
 
@@ -154,7 +150,7 @@ and then check if it exists if DB (if no - create one) and return info for front
       }
     })
 
-+ ***Frontend***
+> + ***Frontend***
 
 Finally, in callback function of `axios` request, setup header "Authorization" for future indicating user on the server, 
 save **token**, **name** and **id** to *Vue store* & *localStorage*:
