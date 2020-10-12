@@ -10,6 +10,7 @@ import NotFound from "../views/NotFound.vue";
 import axios from "axios";
 //import Login from "../components/Login.vue";
 import News from "../views/News.vue";
+import Article from "../components/Article.vue";
 
 Vue.use(VueRouter);
 
@@ -50,6 +51,11 @@ const routes = [
     component: News
   },
   {
+    path: "/news/:id",
+    name: "Article",
+    component: Article
+  },
+  {
     path: "*",
     name: "Not Found",
     component: NotFound
@@ -65,7 +71,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   /* eslint-disable */
   // redirect to home page if not logged in and trying to access a restricted page
-  const publicPages = ["/lobby", "/playai", "/", "/contact", "/news"];
+  const publicPages = ["/lobby", "/playai", "/", "/contact", "/news", "/news/:id"];
   const authRequired = !publicPages.includes(to.path);
 
   async function verify() {

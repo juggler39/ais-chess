@@ -2,54 +2,63 @@
   "menuItems": [
     {
       "show": false,
+      "id": 1,
       "img": "news-img2.jpg",
       "content": "The final line-up of 6 players in this double round-robin event was announced last week. Since then there has been a change as Dutch Grandmaster, Anish Giri, decided to withdraw due to growing concerns around the Covid-19 situation in the Netherlands...", 
       "title": "Jan-krzysztof Duda to replace anish giri in tournament" 
     },
     {
       "show": false,
+      "id": 2,
       "img": "news-img1.jpg",
       "content": "GM Nodirbek Abdusattorov won the 19th Speed Chess Championship Grand Prix, his first victory in the series. The Uzbek grandmaster beat the GM Jose Martinez of Peru 1.5-0.5 in the knockout final. The final Speed Chess Championship Grand Prix...", 
       "title": "Abdusattorov Wins 19th Speed Chess Grand Prix" 
     },
     {
       "show": false,
+      "id": 3,
       "img": "news-img3.jpg",
       "content": "The Starter was published in national newspapers and appeared on their websites. 947 Solutions were submitted, 635 of them correct, and 312 incorrect...", 
       "title": "Winton British Chess – Starter Round results" 
     },
     {
       "show": false,
+      "id": 4,
       "img": "news-img.jpg",
       "content": "Beginning today with the U20 Girls Junior Championship, all five of U.S. Chess’ major national tournaments – showcasing the past, present, and future of American chess – will be hosted by the Saint Louis Chess Club through October 29. With consideration to the current global pandemic, for the first time ever these national competitions will be organized and held online, and spectators may watch live at uschesschamps.com as well as the SLCC YouTube and Twitch channels...", 
       "title": "2020 U.S. National Championships In St. Louis" 
     },
     {
       "show": false,
+      "id": 5,
       "img": "news-img5.jpg",
       "content": "Affiliates can now process membership batches again!  This blog will detail how to do this in our new system.  The form for these submissions operates differently than in the past, so please bookmark this information for future reference...", 
       "title": "Processing Memberships As An Affiliate" 
     },
     {
       "show": false,
+      "id": 6,
       "img": "news-img4.jpg",
       "content": "Grandmaster and seven-time US Women's Champion Irina Krush was our most recent guest on Ladies Knight, where she spoke about her chess business, GM Chess, her own training philosophy and her recovery from COVID. This fall, she has been extremely active in top player coaching as a host and a teacher. In October, her company, GM Chess is offering a Top Player workshop series, including a session with Grandmaster Peter Leko on October 10th, National Chess Day...", 
       "title": "WIrina Krush And Her Masterclasses" 
     },
     {
       "show": false,
+      "id": 7,
       "img": "news-img6.jpg",
       "content": "Streaming information updated on 07.30.2020 in the 'How to Watch' section. The U.S. Open premier invitational events for state champions of all ages...", 
       "title": "Posts categorized 'National-events'" 
     },
     {
       "show": false,
+      "id": 8,
       "img": "news-img7.jpg",
       "content": "US Chess has introduced new awards to be distributed at national scholastic events. They are designed to be distinctive and elegant...", 
       "title": "New Awards At US Chess National Scholastics" 
     },
     {
       "show": false,
+      "id": 9,
       "img": "news-img8.png",
       "content": "US Chess has three national events scheduled this spring: 2020 National High School (K-12) Championship, April 3-5 2020 National Junior High (K-9)...", 
       "title": "Spring Nationals And Coronavirus: What You Should Know" 
