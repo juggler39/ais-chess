@@ -6,7 +6,7 @@
         {{ item.title }}
       </v-card-title>
       <v-card-actions class="action">
-        <v-btn color="grey" text>More</v-btn>
+        <p color="grey" class="btn-text">More</p>
         <v-spacer></v-spacer>
         <v-btn icon @click="item.show = !item.show">
           <v-icon>{{ item.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
@@ -68,6 +68,9 @@ export default {
     font-size: 1rem;
     line-height: 1rem;
   } 
+  .btn-text {
+    margin: 0 0 0 10px;
+  }
   .v-card__text {
     padding: 1rem;
     height: 100px;
