@@ -23,9 +23,7 @@ export default {
   name: "App",
   components: { Navbar, Footer },
   sockets: {
-    connect() {
-      console.log("connected to server");
-    },
+    connect() {},
     startGame(game) {
       console.log(game);
       this.$router.push({ name: "Game", params: { id: game.gameId } });

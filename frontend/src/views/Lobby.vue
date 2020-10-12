@@ -38,7 +38,7 @@
       </v-simple-table>
       <v-col class="col-12 col-md-3 grey darken-4">
         <v-container>
-          <Chat :global="true" />
+          <Chat :game="{ global: true }" />
         </v-container>
       </v-col>
     </v-row>

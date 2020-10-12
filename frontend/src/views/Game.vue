@@ -16,7 +16,7 @@
             </div>
           </v-card>
           <v-container>
-            <Chat :global="false" />
+            <Chat :game="{ id: this.$route.params.id, global: false }" />
           </v-container>
         </v-col>
       </v-row>

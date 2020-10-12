@@ -31,18 +31,25 @@ import ChatItem from "@/components/chat/ChatItem";
 
 export default {
   name: "Chat",
-  props: ["global"],
+  props: ["game"],
   sockets: {
     add(value) {
-      if (this.$props.global) {
+      if (this.$props.game.global) {
         this.$store.dispatch("updateGlobalChatHistory", value);
         this.itemData.text = "";
       }
     },
     allMessages(messages) {
-      if (this.$props.global) {
+      if (this.$props.game.global) {
         this.$store.dispatch("loadGlobalChatHistory", messages);
       }
+    },
+    playersChat(messages) {
+      this.$store.dispatch("loadPlayersChatHistory", messages);
+    },
+    newMessage(message) {
+      this.$store.dispatch("updatePlayersChatHistory", message);
+      this.itemData.text = "";
     }
   },
   data() {
@@ -59,8 +66,10 @@ export default {
   },
   methods: {
     getChat() {
-      if (this.$props.global) {
+      if (this.$props.game.global) {
         return this.$store.getters.getGlobalChatHistory;
+      } else {
+        return this.$store.getters.getPlayersChatHistory;
       }
     },
     send() {
@@ -70,14 +79,21 @@ export default {
         id: this.$store.state.idUser,
         time: new Date().toLocaleTimeString()
       };
-      if (this.$props.global) {
+      if (this.$props.game.global) {
         this.$socket.client.emit("send", data);
+      } else {
+        this.$socket.client.emit("playerMessage", {
+          message: data,
+          id: this.$props.game.id
+        });
       }
     }
   },
   mounted() {
-    if (this.$props.global) {
+    if (this.$props.game.global) {
       this.$socket.client.emit("getGlobalChatMessages");
+    } else {
+      this.$socket.client.emit("getPlayersChatMessages", this.$props.game.id);
     }
   }
 };

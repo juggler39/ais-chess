@@ -110,6 +110,22 @@ socketIO.on('connection', (socket) => {
     });
   });
 
+  socket.on('getPlayersChatMessages', (id) => {
+    OpenGame.find({_id: id}, (err, game) => {
+      socketIO.to(id).emit('playersChat', game[0].chat);
+    })
+  })
+
+  socket.on('playerMessage', (data) => {
+    OpenGame.findOneAndUpdate({_id: data.id}, {"$push": { "chat": data.message }}, (err, value) => {
+      if (err)  {
+        console.log(err)
+      } else {
+        socketIO.to(data.id).emit('newMessage', data.message);
+      }
+    })
+  })
+
   socket.on('loadGames', () => {
     OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
       socket.emit('newGameInfo', allOpenGames);
