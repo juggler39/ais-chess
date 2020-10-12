@@ -124,11 +124,14 @@ socketIO.on('connection', (socket) => {
     Game.timeToGo = info.time;
     Game.isOpen = true;
     socket.join(Game._id);
-    
-    Game.save().then(() => {
-      OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
-        socketIO.sockets.emit('newGameInfo', allOpenGames);
-      });
+
+    OpenGame.deleteMany({"players.player1ID": info.playerID}).then(() => {
+      Game.save().then(() => {
+        OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
+          socketIO.sockets.emit('newGameInfo', allOpenGames);
+        })
+        .catch(err => console.log(err));
+      })
     })
     .catch(err => console.log(err));
   })
@@ -138,7 +141,7 @@ socketIO.on('connection', (socket) => {
     //     { gameId,
     //       player2Name,
     //       player2ID  } 
-    OpenGame.findOneAndUpdate({_id: player2info.gameId}, { $set: {isOpen: true, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
+    OpenGame.findOneAndUpdate({_id: player2info.gameId}, { $set: {isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
         if (err) {
           console.log(err)
         } else {
