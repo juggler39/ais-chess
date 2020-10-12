@@ -51,7 +51,7 @@ const routes = [
     component: News
   },
   {
-    path: "/news/:id",
+    path: "/news/:title",
     name: "Article",
     component: Article
   },
@@ -71,7 +71,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   /* eslint-disable */
   // redirect to home page if not logged in and trying to access a restricted page
-  const publicPages = ["/lobby", "/playai", "/", "/contact", "/news", "/news/:id"];
+  const publicPages = ["/lobby", "/playai", "/", "/contact", "/news", "/news/:title"];
   const authRequired = !publicPages.includes(to.path);
 
   async function verify() {

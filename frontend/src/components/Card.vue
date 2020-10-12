@@ -1,6 +1,6 @@
 <template>
  <div class="cards">
-   <v-card class="mx-auto" v-for="item in menuItems" v-bind:key="item.id" v-bind:count="maxCount">
+   <v-card class="mx-auto" v-for="item in menuItems" v-bind:key="item.title" v-bind:count="maxCount">
     <v-img :src="getImg(item.img)" height="200px"></v-img>
       <v-card-title>
         {{ item.title }}
@@ -18,7 +18,7 @@
           <v-card-text>
             {{ item.content }}
           </v-card-text>
-          <router-link :to="{ name: 'Article', params: {id: item.id, title: item.title, img: getImg(item.img), content: item.content }}" class="article-link">
+          <router-link :to="{ name: 'Article', params: { title: item.title, img: getImg(item.img), content: item.content }}" class="article-link">
             Read more
             <v-icon dark class="arrow-right" x-small>mdi-arrow-right</v-icon>
           </router-link>
