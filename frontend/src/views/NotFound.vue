@@ -6,8 +6,8 @@
           <h1>404</h1>
           <h3>page not found</h3>
         </div>
-        <div class="container-ghost">
-          <div class="ghost-copy">
+        <div class="container-figure">
+          <!-- <div class="ghost-copy">
             <div class="one"></div>
             <div class="two"></div>
             <div class="three"></div>
@@ -19,7 +19,8 @@
             <div class="eye-right"></div>
             <div class="mouth"></div>
           </div>
-          </div>
+          </div> -->
+          <div class="chess-figure">&#9822;</div>
           <div class="shadow"></div>
         </div>
       </div>
@@ -86,100 +87,18 @@ export default {
     }
   }
 
-  .container-ghost {
+  .container-figure {
     position: relative;
     width: 250px;
     height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    .ghost {
-      width: 50%;
-      height: 53%;
-      left: 25%;
-      top: 10%;
-      position: absolute;
-      border-radius: 50% 50% 0 0;
-      background: #EDEDED;
-      border: 1px solid #BFC0C0;
-      border-bottom: none;
+    .chess-figure {
+      font-size: 160px;
       animation: float 2s ease-out infinite;
-
-      .face {
-        position: absolute;
-        width: 100%;
-        height: 60%;
-        top: 20%;
-      }
-      .eye, .eye-right {
-        position: absolute;
-        background: #585959;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        top: 40%;
-      }
-
-      .eye {
-        left: 25%;
-      }
-      .eye-right {
-        right: 25%;
-      }
-
-      .mouth {
-        position:absolute;
-        top: 50%;
-        left: 45%;
-        width: 10px;
-        height: 10px;
-        border: 3px solid;
-        border-radius: 50%;
-        border-color: transparent #585959 #585959 transparent;
-        transform: rotate(45deg);
-      }
-    }
-
-    .ghost-copy {
-      width: 50%;
-      height: 53%;
-      left: 25%;
-      top: 10%;
-      position: absolute;
-      border-radius: 50% 50% 0 0;
-      background: #EDEDED;
-      border: 1px solid #BFC0C0;
-      border-bottom: none;
-      animation: float 2s ease-out infinite;
-      z-index: 0;
-
-      .one, .two, .three, .four {
-        position: absolute;
-        background: #EDEDED;
-        top: 85%;
-        width: 25%;
-        height: 23%;
-        border: 1px solid #BFC0C0;
-        z-index: 0;
-      }
-
-      .one {
-        border-radius: 0 0 100% 30%;
-        left: -1px;
-      }
-
-      .two {
-        left: 23%;
-        border-radius: 0 0 50% 50%;
-      }
-
-      .three {
-        left: 50%;
-        border-radius: 0 0 50% 50%;
-      }
-
-      .four {
-        left: 74.5%;
-        border-radius: 0 0 30% 100%;
-      }
+      color:  #e7e7e7;
     }
 
     .shadow {
@@ -187,7 +106,7 @@ export default {
       width: 30%;
       height: 7%;
       background: #BFC0C0;
-      left: 35%;
+      left: 38%;
       top: 80%;
       border-radius: 50%;
       animation: scale 2s infinite;
