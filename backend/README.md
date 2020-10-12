@@ -9,7 +9,7 @@ Fully automized and completely working Backend server for [www.ais-chess.com](ht
 
 1. ### Process of authorization
 
-#### **Authorization with login & pass:**
+> #### **Authorization with login & pass:**
 
 + ***Frontend***
 
