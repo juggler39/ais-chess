@@ -10,6 +10,7 @@ const UsersSchema = new Schema({
   login: String,
   hash: String,
   salt: String,
+  activeGame: String
 });
 
 UsersSchema.methods.setPassword = function(password) {

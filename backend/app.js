@@ -110,6 +110,22 @@ socketIO.on('connection', (socket) => {
     });
   });
 
+  socket.on('getPlayersChatMessages', (id) => {
+    OpenGame.find({_id: id}, (err, game) => {
+      socketIO.to(id).emit('playersChat', game[0].chat);
+    })
+  })
+
+  socket.on('playerMessage', (data) => {
+    OpenGame.findOneAndUpdate({_id: data.id}, {"$push": { "chat": data.message }}, (err, value) => {
+      if (err)  {
+        console.log(err)
+      } else {
+        socketIO.to(data.id).emit('newMessage', data.message);
+      }
+    })
+  })
+
   socket.on('loadGames', () => {
     OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
       socket.emit('newGameInfo', allOpenGames);
@@ -124,11 +140,14 @@ socketIO.on('connection', (socket) => {
     Game.timeToGo = info.time;
     Game.isOpen = true;
     socket.join(Game._id);
-    
-    Game.save().then(() => {
-      OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
-        socketIO.sockets.emit('newGameInfo', allOpenGames);
-      });
+
+    OpenGame.deleteMany({"players.player1ID": info.playerID}).then(() => {
+      Game.save().then(() => {
+        OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
+          socketIO.sockets.emit('newGameInfo', allOpenGames);
+        })
+        .catch(err => console.log(err));
+      })
     })
     .catch(err => console.log(err));
   })
@@ -138,7 +157,7 @@ socketIO.on('connection', (socket) => {
     //     { gameId,
     //       player2Name,
     //       player2ID  } 
-    OpenGame.findOneAndUpdate({_id:player2info.gameId}, {isOpen: false}, (err, data) => {
+    OpenGame.findOneAndUpdate({_id: player2info.gameId}, { $set: {isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
         if (err) {
           console.log(err)
         } else {
@@ -147,7 +166,7 @@ socketIO.on('connection', (socket) => {
           });
         }
     });
-    OpenGame.find({_id:player2info.gameId}, (err, game) => {
+    OpenGame.find({_id: player2info.gameId}, (err, game) => {
       socket.join(player2info.gameId);
       socketIO.to(player2info.gameId).emit('startGame', { ...game[0]._doc, ...player2info });
     });

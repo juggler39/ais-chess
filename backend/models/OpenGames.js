@@ -7,7 +7,7 @@ const OpenGameSchema = new Schema({
   startDate: { type: Date, default: Date.now },
   timeToGo: Number,
   moves: [{from: String, to: String}],
-  chat: [{player: String, message: String}],
+  chat: [{userName: String, user: String, message: String, time: String}],
   isOpen: Boolean
 });
 
