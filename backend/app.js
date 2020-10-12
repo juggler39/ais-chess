@@ -103,7 +103,7 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('loadGames', () => {
-    OpenGame.find({}, (err, allOpenGames) => {
+    OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
       socket.emit('newGameInfo', allOpenGames);
     });
   })
@@ -114,20 +114,34 @@ socketIO.on('connection', (socket) => {
     Game.players.player1Name = info.playerName;
     Game.players.player1Color = info.color;
     Game.timeToGo = info.time;
+    Game.isOpen = true;
     socket.join(Game._id);
     
     Game.save().then(() => {
-      OpenGame.find({}, (err, allOpenGames) => {
-        socket.emit('newGameInfo', allOpenGames);
+      OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
+        socketIO.sockets.emit('newGameInfo', allOpenGames);
       });
     })
     .catch(err => console.log(err));
   })
 
-  socket.on('connectToGame', id => {
-    OpenGame.find({_id:id}, (err, game) => {
-      socket.join(id);
-      socketIO.to(id).emit('startGame', game);
+  socket.on('connectToGame', player2info => {
+    // player2info is information about player2, wich connecting to open game 
+    //     { gameId,
+    //       player2Name,
+    //       player2ID  } 
+    OpenGame.findOneAndUpdate({_id:player2info.gameId}, {isOpen: false}, (err, data) => {
+        if (err) {
+          console.log(err)
+        } else {
+          OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
+            socketIO.sockets.emit('newGameInfo', allOpenGames);
+          });
+        }
+    });
+    OpenGame.find({_id:player2info.gameId}, (err, game) => {
+      socket.join(player2info.gameId);
+      socketIO.to(player2info.gameId).emit('startGame', { ...game[0]._doc, ...player2info });
     });
   })
 
