@@ -110,7 +110,6 @@ where he can choose a *Google account* to Log in. Then, with a promise we get a 
     this.$gAuth
         .signIn()
         .then(async GoogleUser => {
-          // on success send ID to backend
           await axios.post('/api/users/google', {
                         ID: GoogleUser.getAuthResponse().id_token
           }).then( async response => {...})}
@@ -129,30 +128,52 @@ After we sent an `axios` request from front, accept it on back, check userID (if
             idToken: ID,
             audience: "745478166073-6pqqiojeous9m3s3moi88krc0obh6u8d.apps.googleusercontent.com", 
         });
-        
+
     const payload = ticket.getPayload();
     const userid = payload['sub'];
     const email = payload['email'];
     const name = payload['name'];
 
-as a result, if user is OK and exists in DB, create a `JWT` token and send back to front.
+and then check if it exists if DB (if no - create one) and return info for front:
+
+    Users.findOne({ login: userid }, async function( err, isUser) {
+      if (isUser)
+      {
+        const token = await generateJWTGoogle(isUser._id, name);
+        res.json({ user : {email, name, token, id: isUser._id }});
+      }
+      else {
+        const userObj = {
+          email,
+          login: userid,
+          name
+        }
+        const finalUser = new Users(userObj);
+        finalUser.save()
+        .then(() => res.json({ user: finalUser.toAuthJSON() }));
+      }
+    })
 
 + ***Frontend***
 
 Finally, in callback function of `axios` request, setup header "Authorization" for future indicating user on the server, 
 save **token**, **name** and **id** to *Vue store* & *localStorage*:
 
-    axios.post('/api/users/login', userObj).then(async (response) => {
-        if (response.data.user) {
-            axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
-            window.localStorage.setItem("userLog", response.data.user.token);
-            window.localStorage.setItem("userName", response.data.user.name);
-            window.localStorage.setItem("userID", response.data.user.id);
-            this.$store.commit("setLoginUser", response.data.user.name);
-            this.$store.commit("setLoginUserID", response.data.user.id);
-            router.push('/account', () => {});
-            this.dialog = false;
-        }
-        }, (error) => {
-        console.log(error);
-        });
+    this.$gAuth
+        .signIn()
+        .then(async GoogleUser => {
+          await axios.post('/api/users/google', {
+            ID: GoogleUser.getAuthResponse().id_token
+            }).then(async (response) => {
+                axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
+                window.localStorage.setItem("userLog", response.data.user.token);
+                window.localStorage.setItem("userName", response.data.user.name);
+                window.localStorage.setItem("userID", response.data.user.id);
+                this.$store.commit("setLoginUser", response.data.user.name);
+                this.$store.commit("setLoginUserID", response.data.user.id);
+                router.push('/account', () => {});
+                }, (error) => {
+                console.log(error);
+                });
+
+---
