@@ -1,6 +1,6 @@
 export default {
   state: {
-    chatHistory: [],
+    globalChatHistory: [],
     AIGameHistory: [],
     PvPGameHistory: []
   },
@@ -14,8 +14,8 @@ export default {
     clearPvPGameHistory(state) {
       state.PvPGameHistory = [];
     },
-    clearChatHistory(state) {
-      state.chatHistory = [];
+    clearGlobalChatHistory(state) {
+      state.globalChatHistory = [];
     },
     updateAIGameHistory(state, turn) {
       state.AIGameHistory.push(turn);
@@ -23,8 +23,11 @@ export default {
     updatePvPGameHistory(state, turn) {
       state.PvPGameHistory.push(turn);
     },
-    updateChatHistory(state, message) {
-      state.chatHistory.push(message);
+    loadGlobalChatHistory(state, messages) {
+      state.globalChatHistory = messages;
+    },
+    updateGlobalChatHistory(state, message) {
+      state.globalChatHistory.push(message);
     }
   },
   actions: {
@@ -37,8 +40,8 @@ export default {
     clearPvPHistory(context) {
       context.commit("clearPvPGameHistory");
     },
-    clearChatHistory(context) {
-      context.commit("clearChatHistory");
+    clearGlobalChatHistory(context) {
+      context.commit("clearGlobalChatHistory");
     },
     updateAIHistory(context, turn) {
       context.commit("updateAIGameHistory", turn);
@@ -46,8 +49,11 @@ export default {
     updatePvPHistory(context, turn) {
       context.commit("updatePvPGameHistory", turn);
     },
-    updateChatHistory(context, message) {
-      context.commit("updateChatHistory", message);
+    loadGlobalChatHistory(context, messages) {
+      context.commit("loadGlobalChatHistory", messages);
+    },
+    updateGlobalChatHistory(context, message) {
+      context.commit("updateGlobalChatHistory", message);
     }
   },
   getters: {
@@ -57,8 +63,8 @@ export default {
     getPVPHistory(state) {
       return state.PvPGameHistory;
     },
-    getChatHistory(state) {
-      return state.chatHistory;
+    getGlobalChatHistory(state) {
+      return state.globalChatHistory;
     }
   }
 };

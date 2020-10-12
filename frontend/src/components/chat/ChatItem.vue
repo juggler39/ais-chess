@@ -1,7 +1,7 @@
 <template>
   <div class="chat-item">
-    <div class="user-name">{{ data.name + ":" }}</div>
-    <div class="text">{{ data.text }}</div>
+    <div class="user-name">{{ data.userName + ":" }}</div>
+    <div class="text">{{ data.message }}</div>
     <span class="date">{{ data.time }}</span>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
   display: flex;
   margin: 3px;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   background-color: rgb(105, 105, 105);
   padding: 3px;
   width: 98%;
@@ -40,5 +40,7 @@ export default {
   color: goldenrod;
   font-size: 12px;
   text-align: left;
+  width: 60px;
+  overflow-wrap: anywhere;
 }
 </style>

@@ -95,11 +95,19 @@ socketIO.on('connection', (socket) => {
 
   socket.on('send', (msg) => {
     let Message = new GlobalChat();
+    Message.userName = msg.userName;
     Message.user = msg.id;
-    Message.message = msg.text;
+    Message.message = msg.message;
+    Message.time = msg.time;
     Message.save().then(() => {socketIO.sockets.emit('add', msg);})
       .catch(err => console.log(err));
       
+  });
+
+  socket.on('getGlobalChatMessages', () => {
+    GlobalChat.find({}, (err, messages) => {
+      socketIO.sockets.emit('allMessages', messages);
+    });
   });
 
   socket.on('loadGames', () => {

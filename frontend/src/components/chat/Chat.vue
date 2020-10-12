@@ -3,7 +3,7 @@
     <h2 class="text-center">Chat</h2>
     <div class="chat grey darken-3">
       <ChatItem
-        v-for="(message, index) in getChatHistory"
+        v-for="(message, index) in getChat()"
         :key="index"
         :data="message"
       />
@@ -27,14 +27,22 @@
 
 <script>
 import ChatItem from "@/components/chat/ChatItem";
-import { mapGetters } from "vuex";
+//import { mapGetters } from "vuex";
 
 export default {
   name: "Chat",
+  props: ["global"],
   sockets: {
     add(value) {
-      this.$store.dispatch("updateChatHistory", value);
-      this.itemData.text = "";
+      if (this.$props.global) {
+        this.$store.dispatch("updateGlobalChatHistory", value);
+        this.itemData.text = "";
+      }
+    },
+    allMessages(messages) {
+      if (this.$props.global) {
+        this.$store.dispatch("loadGlobalChatHistory", messages);
+      }
     }
   },
   data() {
@@ -42,7 +50,7 @@ export default {
       itemData: {
         text: "",
         name: this.$store.state.loginUser,
-        time: new Date().toLocaleTimeString()
+        time: new Date()
       }
     };
   },
@@ -50,18 +58,28 @@ export default {
     ChatItem
   },
   methods: {
+    getChat() {
+      if (this.$props.global) {
+        return this.$store.getters.getGlobalChatHistory;
+      }
+    },
     send() {
       let data = {
-        text: this.itemData.text,
-        name: this.$store.state.loginUser.split(" ")[0],
+        message: this.itemData.text,
+        userName: this.$store.state.loginUser.split(" ")[0],
         id: this.$store.state.idUser,
         time: new Date().toLocaleTimeString()
       };
-      this.$socket.client.emit("send", data);
+      if (this.$props.global) {
+        this.$socket.client.emit("send", data);
+      }
     }
   },
-  computed: mapGetters(["getChatHistory"]),
-  created() {}
+  mounted() {
+    if (this.$props.global) {
+      this.$socket.client.emit("getGlobalChatMessages");
+    }
+  }
 };
 </script>
 
