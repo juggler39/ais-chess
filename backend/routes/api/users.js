@@ -6,7 +6,6 @@ const Users = mongoose.model('Users');
 const {OAuth2Client} = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 
-
 generateJWTGoogle = function(_id, login) {
   const today = new Date();
   const expirationDate = new Date(today);
@@ -18,7 +17,6 @@ generateJWTGoogle = function(_id, login) {
     exp: parseInt(expirationDate.getTime() / 1000, 10),
   }, 'secret');
 }
-
 
 //POST new user route
 router.post('/register', auth.optional, (req, res, next) => {
@@ -130,38 +128,40 @@ router.post('/login', (req, res, next) => {
 router.post('/google', (req, res, next) => {
   const { body: { ID } } = req;
   const client = new OAuth2Client("745478166073-6pqqiojeous9m3s3moi88krc0obh6u8d.apps.googleusercontent.com");
+
   async function verify() {
     const ticket = await client.verifyIdToken({
         idToken: ID,
         audience: "745478166073-6pqqiojeous9m3s3moi88krc0obh6u8d.apps.googleusercontent.com", 
     });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    const email = payload['email'];
-    const name = payload['name'];
-    
-    Users.findOne({ login: userid }, async function( err, isUser) {
-      if (isUser)
-      {
-        const token = await generateJWTGoogle(isUser._id, name);
-        res.json({ user : {email, name, token, id: isUser._id }});
+
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+  const email = payload['email'];
+  const name = payload['name'];
+  
+  Users.findOne({ login: userid }, async function( err, isUser) {
+    if (isUser)
+    {
+      const token = await generateJWTGoogle(isUser._id, name);
+      res.json({ user : {email, name, token, id: isUser._id }});
+    }
+    else {
+      const userObj = {
+        email,
+        login: userid,
+        name
       }
-      else {
-        const userObj = {
-          email,
-          login: userid,
-          name
-        }
-        const finalUser = new Users(userObj);
-        finalUser.save()
-        .then(() => res.json({ user: finalUser.toAuthJSON() }));
-      }
-    })
+      const finalUser = new Users(userObj);
+      finalUser.save()
+      .then(() => res.json({ user: finalUser.toAuthJSON() }));
+    }
+  })
   }
   verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
 });
 
-//GET current route
+//GET protected route
 router.get('/secret', auth.required, (req, res, next) => {
   const { payload: { id } } = req;
 
