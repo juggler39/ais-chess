@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
-const passport = require('passport');
 const router = require('express').Router();
 const auth = require('../auth');
 const Users = mongoose.model('Users');
-const GlobalChat = mongoose.model('GlobalChat');
 const FinishedGame = mongoose.model('FinishedGame');
 
 router.post('/finish-game', auth.required, (req, res, next) => {
@@ -31,7 +29,6 @@ router.post('/get-finish-game', auth.required, (req, res, next) => {
             return res.json({ user: "Access is denied" });
         }
         //access is allowed
-
         FinishedGame.findById(gameId.id)
             .then((game) => {
                 if(!game) {
