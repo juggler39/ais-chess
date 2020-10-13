@@ -3,8 +3,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import gameHistory from "./modules/gameHistory";
 import openGames from "./modules/openGames";
-// eslint-disable-next-line
-import {getStore} from "../config/utils";
+import { getStore } from "../config/utils";
 
 Vue.use(Vuex);
 

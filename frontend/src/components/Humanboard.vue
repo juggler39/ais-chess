@@ -148,7 +148,7 @@ export default {
           dests: this.possibleMoves()
         }
       });
-      this.gameOver();
+      this.isGameOver();
     },
     playerMove(orig, dest) {
       this.game.move({
