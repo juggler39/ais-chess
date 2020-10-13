@@ -168,7 +168,7 @@ export default {
       }
       return result;
     },
-    gameOver() {
+    isGameOver() {
       if (this.game.game_over()) {
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
