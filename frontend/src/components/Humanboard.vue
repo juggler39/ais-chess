@@ -65,8 +65,19 @@ import OfferDraw from "@/components/dialogs/OfferDraw";
 import Playerbar from "@/components/Playerbar";
 export default {
   name: "Humanboard",
+  props: ["gameId"],
   extends: Chessboard,
   components: { Resign, OfferDraw, Playerbar },
+  sockets: {
+    newMove(move) {
+      //here we gotting every new move
+      this.$store.dispatch("updatePvPHistory", move);
+    },
+    allMoves(moves) {
+      //here we load all moves for example when page reloaded
+      this.$store.dispatch("loadPvPHistory", moves);
+    }
+  },
   data() {
     return {
       dialog: false,
@@ -80,6 +91,7 @@ export default {
   methods: {
     submit() {
       this.$store.dispatch("clearPvPHistory");
+      this.$store.dispatch("clearPlayersChatHistory");
       this.pieceColor = this.radios;
       this.dialog = false;
       this.$store.state.timeWhite = this.$store.state.time;
@@ -119,7 +131,7 @@ export default {
     },
     opponentMove() {
       this.game.move({ from: this.opponentMoveFrom, to: this.opponentMoveTo });
-      this.PvPameHistory();
+      this.PvPGameHistory(this.$props.gameId);
       this.board.set({
         fen: this.game.fen(),
         lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
@@ -137,7 +149,7 @@ export default {
         to: dest,
         promotion: this.promote(orig, dest)
       });
-      this.PvPameHistory();
+      this.PvPGameHistory(this.$props.gameId);
       this.board.set({
         fen: this.game.fen(),
         turnColor: this.toColor(),

@@ -92,8 +92,6 @@ export default {
   mounted() {
     if (this.$props.game.global) {
       this.$socket.client.emit("getGlobalChatMessages");
-    } else {
-      this.$socket.client.emit("getPlayersChatMessages", this.$props.game.id);
     }
   }
 };

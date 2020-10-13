@@ -88,9 +88,11 @@ export default {
         JSON.stringify(this.$store.getters.getAIHistory)
       );
     },
-    PvPameHistory() {
+    PvPGameHistory(id) {
       let move = this.game.history({ verbose: true }).pop();
-      this.$store.dispatch("updatePvPHistory", move);
+      if (id) {
+        this.$socket.client.emit("move", { game: id, move: move });
+      }
     },
     playerMove() {
       return (orig, dest) => {

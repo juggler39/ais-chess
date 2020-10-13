@@ -24,6 +24,9 @@ export default {
     updateAIGameHistory(state, turn) {
       state.AIGameHistory.push(turn);
     },
+    loadPvPHistory(state, moves) {
+      state.PvPGameHistory = moves;
+    },
     updatePvPGameHistory(state, turn) {
       state.PvPGameHistory.push(turn);
     },
@@ -58,6 +61,9 @@ export default {
     },
     updateAIHistory(context, turn) {
       context.commit("updateAIGameHistory", turn);
+    },
+    loadPvPHistory(context, moves) {
+      context.commit("loadPvPHistory", moves);
     },
     updatePvPHistory(context, turn) {
       context.commit("updatePvPGameHistory", turn);
