@@ -104,21 +104,25 @@ socketIO.on('connection', (socket) => {
       
   });
 
+  socket.on('move', (data) => {
+    OpenGame.findOneAndUpdate({_id: data.game}, {"$push": { "moves": data.move }}, (err, game) => {
+      if (err) {
+        console.log(err)
+      } else {
+        socketIO.to(data.game).emit('newMove', data.move);
+      }
+    })
+  })
+
   socket.on('getGlobalChatMessages', () => {
     GlobalChat.find({}, (err, messages) => {
       socketIO.sockets.emit('allMessages', messages);
     });
   });
 
-  socket.on('getPlayersChatMessages', (id) => {
-    OpenGame.find({_id: id}, (err, game) => {
-      socketIO.to(id).emit('playersChat', game[0].chat);
-    })
-  })
-
   socket.on('playerMessage', (data) => {
     OpenGame.findOneAndUpdate({_id: data.id}, {"$push": { "chat": data.message }}, (err, value) => {
-      if (err)  {
+      if (err) {
         console.log(err)
       } else {
         socketIO.to(data.id).emit('newMessage', data.message);
@@ -153,10 +157,6 @@ socketIO.on('connection', (socket) => {
   })
 
   socket.on('connectToGame', player2info => {
-    // player2info is information about player2, wich connecting to open game 
-    //     { gameId,
-    //       player2Name,
-    //       player2ID  } 
     OpenGame.findOneAndUpdate({_id: player2info.gameId}, { $set: {isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
         if (err) {
           console.log(err)
@@ -174,6 +174,16 @@ socketIO.on('connection', (socket) => {
 
   socket.on('joinRoom', id => {
     socket.join(id);
+    OpenGame.find({_id: id}, (err, game) => {
+      if (err) {
+        console.log(err)
+      } else if (id && game[0]) {
+        console.log('load');
+        socketIO.to(id).emit('allMoves', game[0].moves);
+        socketIO.to(id).emit('playersChat', game[0].chat);
+      }
+    })
+
   })
 })
 

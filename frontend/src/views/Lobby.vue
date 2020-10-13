@@ -67,7 +67,10 @@ export default {
   },
   methods: {
     selectGame(game) {
-      if (game.players.player1Name !== this.$store.state.loginUser && this.$store.state.loginUser !== null) {
+      if (
+        game.players.player1Name !== this.$store.state.loginUser &&
+        this.$store.state.loginUser !== null
+      ) {
         this.$socket.client.emit("connectToGame", {
           gameId: game.id,
           player2Name: this.$store.state.loginUser,
