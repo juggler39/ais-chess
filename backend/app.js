@@ -16,7 +16,6 @@ const app = express();
 const server = http.createServer(app);
 const socketIO = io(server);
 
-
 //Configure our app
 app.use(cors());
 app.use(require('morgan')('dev'));
@@ -28,10 +27,6 @@ app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave
 if(!isProduction) {
   app.use(errorHandler());
 }
-
-//Configure Mongoose
-// mongoose.connect('mongodb://TapeGhad:1985Chess1985@chess-shard-00-00.mc0lt.mongodb.net:27017,chess-shard-00-01.mc0lt.mongodb.net:27017,chess-shard-00-02.mc0lt.mongodb.net:27017/Chess?ssl=true&replicaSet=atlas-i2izt9-shard-0&authSource=admin&retryWrites=true&w=majority');
-// mongoose.set('debug', true);
 
 mongoose.Promise = global.Promise
 mongoose.set('debug', true)
@@ -56,7 +51,6 @@ app.use(require('./routes'));
 if(!isProduction) {
   app.use((err, req, res) => {
     res.status(err.status || 500);
-
     res.json({
       errors: {
         message: err.message,
@@ -68,7 +62,6 @@ if(!isProduction) {
 
 app.use((err, req, res) => {
   res.status(err.status || 500);
-
   res.json({
     errors: {
       message: err.message,
@@ -101,7 +94,6 @@ socketIO.on('connection', (socket) => {
     Message.time = msg.time;
     Message.save().then(() => {socketIO.sockets.emit('add', msg);})
       .catch(err => console.log(err));
-      
   });
 
   socket.on('move', (data) => {
@@ -121,7 +113,7 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('playerMessage', (data) => {
-    OpenGame.findOneAndUpdate({_id: data.id}, {"$push": { "chat": data.message }}, (err, value) => {
+    OpenGame.findOneAndUpdate({ _id: data.id }, { "$push": { "chat": data.message }}, (err, value) => {
       if (err) {
         console.log(err)
       } else {
@@ -138,14 +130,16 @@ socketIO.on('connection', (socket) => {
 
   socket.on('newGame', (info) => {
     let Game = new OpenGame();
+
     Game.players.player1ID = info.playerID;
     Game.players.player1Name = info.playerName;
     Game.players.player1Color = info.color;
     Game.timeToGo = info.time;
     Game.isOpen = true;
+
     socket.join(Game._id);
 
-    OpenGame.deleteMany({"players.player1ID": info.playerID}).then(() => {
+    OpenGame.deleteMany({ "players.player1ID": info.playerID }).then(() => {
       Game.save().then(() => {
         OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
           socketIO.sockets.emit('newGameInfo', allOpenGames);
@@ -157,7 +151,7 @@ socketIO.on('connection', (socket) => {
   })
 
   socket.on('connectToGame', player2info => {
-    OpenGame.findOneAndUpdate({_id: player2info.gameId}, { $set: {isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
+    OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
         if (err) {
           console.log(err)
         } else {
@@ -166,7 +160,7 @@ socketIO.on('connection', (socket) => {
           });
         }
     });
-    OpenGame.find({_id: player2info.gameId}, (err, game) => {
+    OpenGame.find({ _id: player2info.gameId }, (err, game) => {
       socket.join(player2info.gameId);
       socketIO.to(player2info.gameId).emit('startGame', { ...game[0]._doc, ...player2info });
     });
@@ -174,16 +168,15 @@ socketIO.on('connection', (socket) => {
 
   socket.on('joinRoom', id => {
     socket.join(id);
-    OpenGame.find({_id: id}, (err, game) => {
+
+    OpenGame.find({ _id: id }, (err, game) => {
       if (err) {
         console.log(err)
       } else if (id && game[0]) {
-        console.log('load');
         socketIO.to(id).emit('allMoves', game[0].moves);
         socketIO.to(id).emit('playersChat', game[0].chat);
       }
     })
-
   })
 })
 
