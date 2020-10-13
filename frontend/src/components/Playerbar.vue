@@ -11,9 +11,7 @@
       </v-card-text>
       <v-spacer></v-spacer>
       <span v-if="timer" class="headline font-weight-bold">{{
-        color === "white"
-          ? whiteMinutes + ":" + whiteSeconds
-          : blackMinutes + ":" + blackSeconds
+        minutes + ":" + seconds
       }}</span>
     </v-app-bar>
   </v-card>
@@ -30,27 +28,23 @@ export default {
       type: String,
       default: "white"
     },
+    time: {
+      type: Number,
+      default: 0
+    },
+
     timer: {
       type: Boolean,
       default: true
     }
   },
   computed: {
-    whiteMinutes: function() {
-      return Math.floor(this.$store.state.timeWhite / 60000);
+    minutes: function() {
+      return Math.floor(this.time / 60000);
     },
-    blackMinutes: function() {
-      return Math.floor(this.$store.state.timeBlack / 60000);
-    },
-    whiteSeconds: function() {
-      return (
-        "00" + Math.floor((this.$store.state.timeWhite / 1000) % 60).toString()
-      ).slice(-2);
-    },
-    blackSeconds: function() {
-      return (
-        "00" + Math.floor((this.$store.state.timeBlack / 1000) % 60).toString()
-      ).slice(-2);
+
+    seconds: function() {
+      return ("00" + Math.floor((this.time / 1000) % 60).toString()).slice(-2);
     }
   }
 };

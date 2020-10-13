@@ -1,3 +1,4 @@
+"use strict";
 import Vue from "vue";
 import Vuex from "vuex";
 import gameHistory from "./modules/gameHistory";
@@ -11,14 +12,8 @@ const user = getStore("userName");
 const id = getStore("userID");
 
 export default new Vuex.Store({
+  strict: process.env.NODE_ENV !== "production",
   state: {
-    time: 600000,
-    timeWhite: 0,
-    timeBlack: 0,
-    playAiColor: "",
-    engineLevel: 0,
-    aiRun: false,
-    aiNewGame: false,
     loginUser: user,
     idUser: id
   },

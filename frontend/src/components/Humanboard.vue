@@ -3,11 +3,18 @@
     class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
   >
     <v-card>
-      <Playerbar :color="opponentColor" />
+      <Playerbar
+        :color="opponentColor"
+        :time="opponentColor === 'white' ? timeWhite : timeBlack"
+      />
       <div class="merida">
         <div ref="board" class="cg-board-wrap"></div>
       </div>
-      <Playerbar :color="pieceColor" :username="$store.state.loginUser" />
+      <Playerbar
+        :color="pieceColor"
+        :username="$store.state.loginUser"
+        :time="pieceColor === 'white' ? timeWhite : timeBlack"
+      />
     </v-card>
     <Promote
       v-model="promoteDialog"
@@ -94,8 +101,8 @@ export default {
       this.$store.dispatch("clearPlayersChatHistory");
       this.pieceColor = this.radios;
       this.dialog = false;
-      this.$store.state.timeWhite = this.$store.state.time;
-      this.$store.state.timeBlack = this.$store.state.time;
+      this.timeWhite = this.time;
+      this.timeBlack = this.time;
       this.game.reset();
       this.loadPosition();
       this.board.set({

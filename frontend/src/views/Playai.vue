@@ -3,7 +3,11 @@
     <h1 class="text-center">Play against the Artificial Intelligence</h1>
     <v-container>
       <v-row>
-        <Aiboard v-bind:moves="getAIHistory" />
+        <Aiboard
+          v-bind:moves="getAIHistory"
+          v-bind:newGame="newGame"
+          @newGame="newGame.start = $event"
+        />
         <v-col class="col-12 col-md-3 grey darken-4">
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
@@ -12,7 +16,7 @@
             </div>
           </v-card>
           <v-container>
-            <SetUpAiGame />
+            <SetUpAiGame @newGame="newGame = $event" />
           </v-container>
         </v-col>
       </v-row>
@@ -31,6 +35,15 @@ export default {
     Aiboard,
     SetUpAiGame,
     GameHistory
+  },
+  data() {
+    return {
+      newGame: {
+        start: false,
+        color: "",
+        level: 1
+      }
+    };
   },
   methods: {},
   created() {
