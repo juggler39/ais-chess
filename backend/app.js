@@ -159,11 +159,13 @@ socketIO.on('connection', (socket) => {
             socketIO.sockets.emit('newGameInfo', allOpenGames);
           });
         }
+    }).then(() => {
+      OpenGame.find({ _id: player2info.gameId }, (err, game) => {
+        socket.join(player2info.gameId);
+        socketIO.to(player2info.gameId).emit('startGame', game);
+      });
     });
-    OpenGame.find({ _id: player2info.gameId }, (err, game) => {
-      socket.join(player2info.gameId);
-      socketIO.to(player2info.gameId).emit('startGame', { ...game[0]._doc, ...player2info });
-    });
+
   })
 
   socket.on('joinRoom', id => {

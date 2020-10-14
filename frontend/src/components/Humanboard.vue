@@ -5,6 +5,13 @@
     <v-card>
       <Playerbar
         :color="opponentColor"
+        :username="
+          gameInfo
+            ? gameInfo.players.player1Name === $store.state.loginUser
+              ? gameInfo.players.player2Name
+              : gameInfo.players.player1Name
+            : null
+        "
         :time="opponentColor === 'white' ? timeWhite : timeBlack"
       />
       <div class="merida">
@@ -92,7 +99,8 @@ export default {
       opponentMoveFrom: "e7",
       opponentMoveTo: "e5",
       orientation: "white",
-      pieceColor: "white"
+      pieceColor: "white",
+      gameInfo: null
     };
   },
   methods: {
@@ -167,6 +175,16 @@ export default {
       });
     }
   },
-  mounted() {}
+  mounted() {
+    if (!this.$store.state.gameInfo.length) {
+      this.$store.dispatch(
+        "setGameInfo",
+        JSON.parse(window.localStorage.getItem("gameInfo"))
+      );
+      this.gameInfo = this.$store.getters.getGameInfo;
+    } else {
+      this.gameInfo = this.$store.getters.getGameInfo;
+    }
+  }
 };
 </script>
