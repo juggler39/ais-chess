@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
-const passport = require('passport');
 const router = require('express').Router();
 const auth = require('../auth');
 const Users = mongoose.model('Users');
-const GlobalChat = mongoose.model('GlobalChat');
 const OpenedGame = mongoose.model('OpenGame');
-
 
 router.post('/open-game', auth.required, (req, res, next) => {
     const { payload: { id } } = req;
@@ -32,7 +29,6 @@ router.post('/open-game-message', auth.required, (req, res, next) => {
             return res.json({ user: "Access is denied" });
         }
         //access is allowed
-
         OpenedGame.findById(gameUser.id)
             .then((game) => {
                 if(!game) {
@@ -45,7 +41,9 @@ router.post('/open-game-message', auth.required, (req, res, next) => {
                 arr.push(message);
                 game.chat = arr;
 
-                game.save().then(() => res.json({ game: game.toJSON() })).catch(err => console.log(err));
+                game.save()
+                    .then(() => res.json({ game: game.toJSON() }))
+                    .catch(err => console.log(err));
                 }).catch((err) => {res.json({error: err})});
         }).catch((err) => {res.json({error: err})});
 });
@@ -60,7 +58,6 @@ router.post('/open-game-move', auth.required, (req, res, next) => {
             return res.json({ user: "Access is denied" });
         }
         //access is allowed
-
         OpenedGame.findById(gameUser.id)
             .then((game) => {
                 if(!game) {
@@ -73,7 +70,9 @@ router.post('/open-game-move', auth.required, (req, res, next) => {
                 arr.push(move);
                 game.moves = arr;
                 
-                game.save().then(() => res.json({ game: game.toJSON() })).catch(err => console.log(err));
+                game.save()
+                    .then(() => res.json({ game: game.toJSON() }))
+                    .catch(err => console.log(err));
                 }).catch((err) => {res.json({error: err})});
         }).catch((err) => {res.json({error: err})});
 });

@@ -1,6 +1,7 @@
 export default {
   state: {
     globalChatHistory: [],
+    playersChatHistory: [],
     AIGameHistory: [],
     PvPGameHistory: []
   },
@@ -14,14 +15,26 @@ export default {
     clearPvPGameHistory(state) {
       state.PvPGameHistory = [];
     },
+    clearPlayersChatHistory(state) {
+      state.playersChatHistory = [];
+    },
     clearGlobalChatHistory(state) {
       state.globalChatHistory = [];
     },
     updateAIGameHistory(state, turn) {
       state.AIGameHistory.push(turn);
     },
+    loadPvPHistory(state, moves) {
+      state.PvPGameHistory = moves;
+    },
     updatePvPGameHistory(state, turn) {
       state.PvPGameHistory.push(turn);
+    },
+    loadPlayersChatHistory(state, messages) {
+      state.playersChatHistory = messages;
+    },
+    updatePlayersChatHistory(state, message) {
+      state.playersChatHistory.push(message);
     },
     loadGlobalChatHistory(state, messages) {
       state.globalChatHistory = messages;
@@ -40,14 +53,26 @@ export default {
     clearPvPHistory(context) {
       context.commit("clearPvPGameHistory");
     },
+    clearPlayersChatHistory(context) {
+      context.commit("clearPlayersChatHistory");
+    },
     clearGlobalChatHistory(context) {
       context.commit("clearGlobalChatHistory");
     },
     updateAIHistory(context, turn) {
       context.commit("updateAIGameHistory", turn);
     },
+    loadPvPHistory(context, moves) {
+      context.commit("loadPvPHistory", moves);
+    },
     updatePvPHistory(context, turn) {
       context.commit("updatePvPGameHistory", turn);
+    },
+    loadPlayersChatHistory(context, messages) {
+      context.commit("loadPlayersChatHistory", messages);
+    },
+    updatePlayersChatHistory(context, message) {
+      context.commit("updatePlayersChatHistory", message);
     },
     loadGlobalChatHistory(context, messages) {
       context.commit("loadGlobalChatHistory", messages);
@@ -65,6 +90,9 @@ export default {
     },
     getGlobalChatHistory(state) {
       return state.globalChatHistory;
+    },
+    getPlayersChatHistory(state) {
+      return state.playersChatHistory;
     }
   }
 };

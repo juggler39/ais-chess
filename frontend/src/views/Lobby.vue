@@ -38,7 +38,7 @@
       </v-simple-table>
       <v-col class="col-12 col-md-3 grey darken-4">
         <v-container>
-          <Chat :global="true" />
+          <Chat :game="{ global: true }" />
         </v-container>
       </v-col>
     </v-row>
@@ -67,7 +67,10 @@ export default {
   },
   methods: {
     selectGame(game) {
-      if (game.players.player1Name !== this.$store.state.loginUser) {
+      if (
+        game.players.player1Name !== this.$store.state.loginUser &&
+        this.$store.state.loginUser !== null
+      ) {
         this.$socket.client.emit("connectToGame", {
           gameId: game.id,
           player2Name: this.$store.state.loginUser,

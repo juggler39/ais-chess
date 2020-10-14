@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const OpenGameSchema = new Schema({
-  players: {player1ID: String, player1Name: String, player1Color: String, player2ID: String, player2Name: String, player2Color: String},
+  players: { player1ID: String, player1Name: String, player1Color: String, player2ID: String, player2Name: String, player2Color: String },
   startDate: { type: Date, default: Date.now },
   timeToGo: Number,
-  moves: [{from: String, to: String}],
-  chat: [{player: String, message: String}],
+  moves: [ Object ],
+  chat: [{ userName: String, user: String, message: String, time: String }],
   isOpen: Boolean
 });
 

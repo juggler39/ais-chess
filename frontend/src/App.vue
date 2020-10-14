@@ -23,17 +23,15 @@ export default {
   name: "App",
   components: { Navbar, Footer },
   sockets: {
-    connect() {
-      console.log("connected to server");
-    },
+    connect() {},
     startGame(game) {
       console.log(game);
+      this.$store.dispatch("clearPvPHistory");
+      this.$store.dispatch("clearPlayersChatHistory");
       this.$router.push({ name: "Game", params: { id: game.gameId } });
     }
   },
-  mounted() {
-    this.$socket.client.emit("loadGames");
-  }
+  mounted() {}
 };
 </script>
 

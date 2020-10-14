@@ -12,6 +12,9 @@ export default {
       orientation: "white",
       resign: false,
       drawProposal: false,
+      time: 600000,
+      timeWhite: 0,
+      timeBlack: 0,
       timer: null,
       timestamp: 0,
       fen: "",
@@ -48,8 +51,8 @@ export default {
     },
     countDown() {
       this.game.turn() === "w"
-        ? (this.$store.state.timeWhite -= Date.now() - this.timestamp)
-        : (this.$store.state.timeBlack -= Date.now() - this.timestamp);
+        ? (this.timeWhite -= Date.now() - this.timestamp)
+        : (this.timeBlack -= Date.now() - this.timestamp);
       this.timestamp = Date.now();
     },
     changeOrientation() {
@@ -78,19 +81,11 @@ export default {
       }
       return moves;
     },
-    AIGameHistory() {
+    PvPGameHistory(id) {
       let move = this.game.history({ verbose: true }).pop();
-      this.$store.dispatch("updateAIHistory", move);
-      window.localStorage.setItem("aiLevel", this.$store.state.engineLevel);
-      window.localStorage.setItem("aiColor", this.$store.state.playAiColor);
-      window.localStorage.setItem(
-        "history",
-        JSON.stringify(this.$store.getters.getAIHistory)
-      );
-    },
-    PvPameHistory() {
-      let move = this.game.history({ verbose: true }).pop();
-      this.$store.dispatch("updatePvPHistory", move);
+      if (id) {
+        this.$socket.client.emit("move", { game: id, move: move });
+      }
     },
     playerMove() {
       return (orig, dest) => {
@@ -153,7 +148,7 @@ export default {
     checkEndReason() {
       const result = {};
       if (this.game.in_checkmate()) {
-        result.color = this.turn === "white" ? "black" : "white";
+        result.color = this.game.turn === "white" ? "black" : "white";
         result.reason = "checkmate";
       } else if (this.game.in_stalemate()) {
         result.color = "draw";
@@ -173,7 +168,7 @@ export default {
       }
       return result;
     },
-    gameOver() {
+    isGameOver() {
       if (this.game.game_over()) {
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);

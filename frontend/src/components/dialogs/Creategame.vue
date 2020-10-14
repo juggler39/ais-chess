@@ -50,13 +50,15 @@ export default {
   },
   methods: {
     send() {
-      this.dialog = false;
-      this.$socket.client.emit("newGame", {
-        playerID: this.$store.state.idUser,
-        playerName: this.$store.state.loginUser,
-        time: this.time,
-        color: this.color
-      });
+      if (this.$store.state.loginUser !== null) {
+        this.dialog = false;
+        this.$socket.client.emit("newGame", {
+          playerID: this.$store.state.idUser,
+          playerName: this.$store.state.loginUser,
+          time: this.time,
+          color: this.color
+        });
+      }
     }
   }
 };

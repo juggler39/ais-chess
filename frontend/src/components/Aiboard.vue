@@ -5,7 +5,7 @@
     <v-card>
       <Playerbar
         :color="opponentColor"
-        :username="'StockFish Level ' + $store.state.engineLevel"
+        :username="'StockFish Level ' + level"
         :timer="false"
       />
       <div class="merida">
@@ -32,110 +32,57 @@ import Chessboard from "./Chessboard";
 import Playerbar from "@/components/Playerbar";
 
 export default {
-  name: "PlayAi",
+  name: "Aiboard",
   extends: Chessboard,
   components: { Playerbar },
   data() {
     return {
+      color: "white",
+      level: 0,
       aiTurn: false,
       stockfish: null,
-      bestMove: {},
-      engineTime: "1"
+      bestMove: {}
     };
   },
+  computed: {
+    engineDepth: function() {
+      if (this.level < 5) {
+        return 1;
+      } else if (this.level < 10) {
+        return 5;
+      } else if (this.level < 15) {
+        return 10;
+      } else {
+        return 12;
+      }
+    }
+  },
+  props: {
+    newGame: {
+      type: Object,
+      default: function() {
+        return { start: false, color: "", level: 1 };
+      }
+    }
+  },
   watch: {
-    "$store.state.aiNewGame": function(n) {
+    "newGame.start": function(n) {
       if (n) {
+        this.color = this.newGame.color;
+        this.level = this.newGame.level;
+        this.prepareEngine();
         this.game.reset();
         this.board.set({
           fen: this.game.fen(),
           lastMove: null,
-          orientation: this.$store.state.playAiColor,
-          movable: {
-            dests: this.possibleMoves()
-          }
+          orientation: this.color
         });
-        if (this.$store.state.playAiColor === "white") {
-          this.board.set({
-            turnColor: "white",
-            movable: {
-              color: "white",
-              events: {
-                after: (orig, dest) => {
-                  this.humanMove(orig, dest);
-                }
-              }
-            }
-          });
+        if (this.color === "white") {
+          this.setMovableColor("white");
         } else {
           this.engineAnalyse();
         }
-        this.$store.state.aiNewGame = false;
-        this.$store.state.aiRun = true;
-      }
-    },
-    "$store.state.aiRun": function(n) {
-      if (n) {
-        const level = this.$store.state.engineLevel;
-        if (level < 5) {
-          this.engineTime = "1";
-        } else if (level < 10) {
-          this.engineTime = "2";
-        } else if (level < 15) {
-          this.engineTime = "3";
-        } else {
-          // Let the engine decide.
-          this.engineTime = "";
-          this.stockfish.postMessage(
-            "setoption name Skill Level value " + level
-          );
-          //set error value in centipawns
-          this.stockfish.postMessage(
-            "setoption name Skill Level Maximum Error value " +
-              Math.round(level * -40 + 800)
-          );
-          // set Probability of Success
-          this.stockfish.postMessage(
-            "setoption name Skill Level Probability value " +
-              Math.round(level * 6.35 + 1)
-          );
-        }
-      }
-      this.board.set({
-        orientation: this.$store.state.playAiColor,
-        movable: {
-          dests: this.possibleMoves()
-        }
-      });
-      //if the user left the page and then came back, let continue the game
-      if (this.aiTurn) {
-        this.engineAnalyse();
-      } else {
-        if (this.$store.state.playAiColor === "white") {
-          this.board.set({
-            turnColor: "white",
-            movable: {
-              color: "white",
-              events: {
-                after: (orig, dest) => {
-                  this.humanMove(orig, dest);
-                }
-              }
-            }
-          });
-        } else {
-          this.board.set({
-            turnColor: "black",
-            movable: {
-              color: "black",
-              events: {
-                after: (orig, dest) => {
-                  this.humanMove(orig, dest);
-                }
-              }
-            }
-          });
-        }
+        this.$emit("newGame", false);
       }
     },
     aiTurn: function(n) {
@@ -150,18 +97,10 @@ export default {
           animation: {
             duration: 500
           },
-          lastMove: [this.bestMove.from, this.bestMove.to],
-          movable: {
-            color: this.toColor(),
-            dests: this.possibleMoves(),
-            events: {
-              after: (orig, dest) => {
-                this.humanMove(orig, dest);
-              }
-            }
-          }
+          lastMove: [this.bestMove.from, this.bestMove.to]
         });
-        this.gameOver();
+        this.setMovableColor(this.toColor());
+        this.isGameOver();
       }
     }
   },
@@ -174,39 +113,90 @@ export default {
       });
       this.AIGameHistory();
       this.board.set({
-        fen: this.game.fen(),
-        turnColor: this.$store.state.playAiColor,
+        turnColor: this.color,
         movable: {
-          color: this.$store.state.playAiColor,
+          color: this.color,
           dests: this.possibleMoves(),
           events: {
             after: this.engineAnalyse()
           }
         }
       });
-      this.gameOver();
+      this.isGameOver();
     },
     engineAnalyse() {
       this.stockfish.postMessage("position startpos moves" + this.getMoves());
       this.stockfish.postMessage(
-        "go " + (this.engineTime ? "depth " + this.engineTime : "")
+        "go " + (this.engineDepth ? "depth " + this.engineDepth : "")
       );
     },
-    gameOver() {
+    prepareEngine() {
+      this.stockfish.postMessage(
+        "setoption name Skill Level value " + this.level
+      );
+      //set error value in centipawns
+      this.stockfish.postMessage(
+        "setoption name Skill Level Maximum Error value " +
+          this.level * -50 +
+          1000
+      );
+      // set Probability of Success
+      this.stockfish.postMessage(
+        "setoption name Skill Level Probability value " +
+          Math.round(this.level * 6.35 + 1)
+      );
+    },
+    continueGame() {
+      //if the user left the page and then came back, let continue the game
+      this.board.set({
+        orientation: this.color
+      });
+      if (this.aiTurn) {
+        this.engineAnalyse();
+      } else {
+        if (this.color === "white") {
+          this.setMovableColor("white");
+        } else {
+          this.setMovableColor("black");
+        }
+      }
+    },
+    setMovableColor(color) {
+      this.board.set({
+        turnColor: color,
+        movable: {
+          dests: this.possibleMoves(),
+          color: color,
+          events: {
+            after: (orig, dest) => {
+              this.humanMove(orig, dest);
+            }
+          }
+        }
+      });
+    },
+
+    isGameOver() {
       if (this.game.game_over()) {
         this.aiTurn = false;
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
       }
+    },
+    AIGameHistory() {
+      let move = this.game.history({ verbose: true }).pop();
+      this.$store.dispatch("updateAIHistory", move);
+      window.localStorage.setItem("aiLevel", this.level);
+      window.localStorage.setItem("aiColor", this.color);
+      window.localStorage.setItem("aiTurn", this.aiTurn);
+      window.localStorage.setItem(
+        "history",
+        JSON.stringify(this.$store.getters.getAIHistory)
+      );
     }
   },
+
   mounted() {
-    //this.promoteDialog = true;
-    if (this.moves.length > 0) {
-      this.$store.state.aiRun = true;
-      this.$store.state.engineLevel = window.localStorage.getItem("aiLevel");
-      this.$store.state.playAiColor = window.localStorage.getItem("aiColor");
-    }
     this.stockfish = new Worker("js/stockfish.js");
     this.stockfish.onmessage = event => {
       const match = event.data.match(
@@ -218,11 +208,16 @@ export default {
       }
     };
     this.stockfish.postMessage("uci");
+    if (this.moves.length > 0) {
+      this.level = window.localStorage.getItem("aiLevel");
+      this.color = window.localStorage.getItem("aiColor");
+      this.aiTurn = JSON.parse(window.localStorage.getItem("aiTurn"));
+      this.prepareEngine();
+      this.continueGame();
+    }
   },
   destroyed() {
     this.stockfish.terminate();
-    this.$store.state.aiRun = false;
-    this.$store.state.aiNewGame = false;
   }
 };
 </script>

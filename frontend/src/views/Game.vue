@@ -6,17 +6,17 @@
     </h1>
     <v-container>
       <v-row>
-        <Humanboard />
+        <Humanboard :gameId="this.$route.params.id" />
 
         <v-col class="col-12 col-md-3 grey darken-4">
           <v-card class="mx-auto">
             <h2 class="text-center">Moves</h2>
             <div class="history">
-              <GameHistory v-bind:moves="getPVPHistory" />
+              <GameHistory :moves="getPVPHistory" />
             </div>
           </v-card>
           <v-container>
-            <Chat :global="false" />
+            <Chat :game="{ id: this.$route.params.id, global: false }" />
           </v-container>
         </v-col>
       </v-row>
@@ -42,8 +42,9 @@ export default {
   },
   computed: mapGetters(["getPVPHistory"]),
   mounted() {
-    console.log("reconected to room");
-    this.$socket.client.emit("joinRoom", this.$route.params.id);
+    if (this.$route.params.id) {
+      this.$socket.client.emit("joinRoom", this.$route.params.id);
+    }
   }
 };
 </script>
