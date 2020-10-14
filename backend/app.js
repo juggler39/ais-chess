@@ -155,9 +155,32 @@ socketIO.on('connection', (socket) => {
         if (err) {
           console.log(err)
         } else {
-          OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
-            socketIO.sockets.emit('newGameInfo', allOpenGames);
-          });
+          //define color for second player
+          if (gameFound.players.player1Color === "white") gameFound.players.player2Color = "black";
+          else if (gameFound.players.player1Color === "black") gameFound.players.player2Color = "white";
+          else {
+            console.log("1");
+            let choise = Math.floor(Math.random() * Math.floor(2));
+            console.log("2");
+            console.log(choise);
+            if (choise === 1 ) {
+              console.log("111");
+              gameFound.players.player1Color = "white";
+              gameFound.players.player2Color = "black";
+            }
+            else {
+              console.log("1222");
+              gameFound.players.player1Color = "black";
+              gameFound.players.player2Color = "white"
+            }
+            console.log("3");
+          }
+          gameFound.save().then(() => {
+            console.log("4");
+            OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
+              socketIO.sockets.emit('newGameInfo', allOpenGames);
+            });
+          })
         }
     });
     OpenGame.find({ _id: player2info.gameId }, (err, game) => {
