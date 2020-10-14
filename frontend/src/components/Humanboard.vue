@@ -5,13 +5,7 @@
     <v-card>
       <Playerbar
         :color="opponentColor"
-        :username="
-          gameInfo
-            ? gameInfo.players.player1Name === $store.state.loginUser
-              ? gameInfo.players.player2Name
-              : gameInfo.players.player1Name
-            : null
-        "
+        :username="opponent"
         :time="opponentColor === 'white' ? timeWhite : timeBlack"
       />
       <div class="merida">
@@ -86,6 +80,7 @@ export default {
     newMove(move) {
       //here we gotting every new move
       this.$store.dispatch("updatePvPHistory", move);
+      this.sendMoveToOpponent(move);
     },
     allMoves(moves) {
       //here we load all moves for example when page reloaded
@@ -100,14 +95,40 @@ export default {
       opponentMoveTo: "e5",
       orientation: "white",
       pieceColor: "white",
-      gameInfo: null
+      gameInfo: [],
+      opponent: ""
     };
   },
   methods: {
+    sendMoveToOpponent(move) {
+      let color = this.game.turn() === "w" ? "white" : "black";
+      if (
+        this.gameInfo.players.player1Name === this.$store.state.loginUser &&
+        this.gameInfo.players.player1Color !== color
+      ) {
+        this.opponentMoveFrom = move.from;
+        this.opponentMoveTo = move.to;
+        this.opponentMove();
+      } else if (
+        this.gameInfo.players.player2Name === this.$store.state.loginUser &&
+        this.gameInfo.players.player2Color !== color
+      ) {
+        this.opponentMoveFrom = move.from;
+        this.opponentMoveTo = move.to;
+        this.opponentMove();
+      }
+    },
+    opponentName() {
+      if (this.gameInfo.players.player1Name === this.$store.state.loginUser) {
+        return this.gameInfo.players.player2Name;
+      } else {
+        return this.gameInfo.players.player1Name;
+      }
+    },
     submit() {
       this.$store.dispatch("clearPvPHistory");
       this.$store.dispatch("clearPlayersChatHistory");
-      this.pieceColor = this.radios;
+      //this.pieceColor = this.radios;
       this.dialog = false;
       this.timeWhite = this.time;
       this.timeBlack = this.time;
@@ -146,7 +167,6 @@ export default {
     },
     opponentMove() {
       this.game.move({ from: this.opponentMoveFrom, to: this.opponentMoveTo });
-      this.PvPGameHistory(this.$props.gameId);
       this.board.set({
         fen: this.game.fen(),
         lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
@@ -176,12 +196,22 @@ export default {
     }
   },
   mounted() {
-    if (!this.$store.state.gameInfo.length) {
+    if (
+      !this.$store.state.gameInfo.length &&
+      window.localStorage.getItem("gameInfo")
+    ) {
       this.$store.dispatch(
         "setGameInfo",
         JSON.parse(window.localStorage.getItem("gameInfo"))
       );
       this.gameInfo = this.$store.getters.getGameInfo;
+      if (this.gameInfo.players.player1Name === this.$store.state.loginUser) {
+        this.pieceColor = this.gameInfo.players.player1Color;
+      } else {
+        this.pieceColor = this.gameInfo.players.player2Color;
+      }
+      this.opponent = this.opponentName();
+      this.submit();
     } else {
       this.gameInfo = this.$store.getters.getGameInfo;
     }
