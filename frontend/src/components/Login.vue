@@ -16,47 +16,12 @@
     </template>
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="4">
-          <v-card class="elevation-12">
+        <v-col sm="8" md="4">
+          <v-card>
             <ModalTabs />
             <v-btn icon large @click="dialog = false" class="btn-close">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-card-text>
-              <v-form>
-                <v-text-field
-                  id="Login"
-                  label="Login"
-                  name="login"
-                  prepend-icon="mdi-account"
-                  type="text"
-                ></v-text-field>
-                <v-text-field
-                  id="Password"
-                  label="Password"
-                  name="password"
-                  prepend-icon="mdi-lock"
-                  type="password"
-                ></v-text-field>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="secondary" @click.prevent="loginWithGoogle">
-                <img
-                  alt="Google"
-                  src="https://img.comss.net/fit-in/200x200/filters:fill(FFFFFF)/logo/google-logo.png"
-                  width="18"
-                  height="18"
-                />
-                Google
-              </v-btn>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" @click.prevent="loginWithLogin"
-                >Login</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
