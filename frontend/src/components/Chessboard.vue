@@ -169,6 +169,7 @@ export default {
       return result;
     },
     isGameOver() {
+      window.localStorage.removeItem("gameInfo");
       if (this.game.game_over()) {
         const result = this.checkEndReason();
         alert(`Game over!, ${result.color}, ${result.reason}`);
