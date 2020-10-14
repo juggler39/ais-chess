@@ -148,7 +148,7 @@ export default {
     checkEndReason() {
       const result = {};
       if (this.game.in_checkmate()) {
-        result.color = this.game.turn === "white" ? "black" : "white";
+        result.color = this.game.turn() === "w" ? "black" : "white";
         result.reason = "checkmate";
       } else if (this.game.in_stalemate()) {
         result.color = "draw";
