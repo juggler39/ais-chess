@@ -22,6 +22,7 @@
       :color="pieceColor"
       @piece="getPiece($event)"
     />
+    <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
     <div class="d-flex flex-column">
       <v-btn @click="changeOrientation">Change orientation</v-btn>
       <input type="text" v-model="opponentMoveFrom" class="ms-4 white--text" />

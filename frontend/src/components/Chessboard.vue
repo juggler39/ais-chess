@@ -2,10 +2,11 @@
 import Chess from "chess.js";
 import { Chessground } from "chessground";
 import Promote from "@/components/dialogs/Promote";
+import GameOver from "@/components/dialogs/GameOver";
 
 export default {
   name: "Chessboard",
-  components: { Promote },
+  components: { Promote, GameOver },
   data() {
     return {
       pieceColor: "white",
@@ -19,7 +20,9 @@ export default {
       timestamp: 0,
       fen: "",
       promoteDialog: false,
-      promoteTo: "q"
+      gameOverDialog: false,
+      promoteTo: "q",
+      result: {}
     };
   },
   computed: {
@@ -171,8 +174,8 @@ export default {
     isGameOver() {
       window.localStorage.removeItem("gameInfo");
       if (this.game.game_over()) {
-        const result = this.checkEndReason();
-        alert(`Game over!, ${result.color}, ${result.reason}`);
+        this.result = this.checkEndReason();
+        this.$refs.GameOver.pop();
         clearInterval(this.timer);
       }
     }

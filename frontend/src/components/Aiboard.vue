@@ -24,6 +24,7 @@
       :color="pieceColor"
       @piece="getPiece($event)"
     />
+    <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
   </v-col>
 </template>
 
@@ -178,9 +179,8 @@ export default {
 
     isGameOver() {
       if (this.game.game_over()) {
-        this.aiTurn = false;
-        const result = this.checkEndReason();
-        alert(`Game over!, ${result.color}, ${result.reason}`);
+        this.result = this.checkEndReason();
+        this.$refs.GameOver.pop();
       }
     },
     AIGameHistory() {
