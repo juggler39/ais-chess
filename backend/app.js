@@ -145,30 +145,34 @@ socketIO.on('connection', (socket) => {
   })
 
   socket.on('connectToGame', player2info => {
-    OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
+    OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, async (err, gameFound) => {
         if (err) {
           console.log(err)
         } else {
           //define color for second player
-          if (gameFound.players.player1Color === "white") gameFound.players.player2Color = "black";
-          else if (gameFound.players.player1Color === "black") gameFound.players.player2Color = "white";
-          else {
-            let choise = Math.floor(Math.random() * Math.floor(2));
-
-            if (choise === 1 ) {
-              gameFound.players.player1Color = "white";
-              gameFound.players.player2Color = "black";
-            }
+          async function changeColor() {
+            if (gameFound.players.player1Color === "white") gameFound.players.player2Color = "black";
+            else if (gameFound.players.player1Color === "black") gameFound.players.player2Color = "white";
             else {
-              gameFound.players.player1Color = "black";
-              gameFound.players.player2Color = "white"
+              let choise = Math.floor(Math.random() * Math.floor(2));
+
+              if (choise === 1 ) {
+                gameFound.players.player1Color = "white";
+                gameFound.players.player2Color = "black";
+              }
+              else {
+                gameFound.players.player1Color = "black";
+                gameFound.players.player2Color = "white"
+              }
             }
           }
-          gameFound.save().then(() => {
-            OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
-              socketIO.sockets.emit('newGameInfo', allOpenGames);
+          changeColor().then(() => {
+            gameFound.save().then(() => {
+              OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
+                socketIO.sockets.emit('newGameInfo', allOpenGames);
+              });
             });
-          })
+          });
         }
     }).then(() => {
       OpenGame.find({ _id: player2info.gameId }, (err, game) => {
