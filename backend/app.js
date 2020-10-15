@@ -97,13 +97,10 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('move', (data) => {
-    OpenGame.findOneAndUpdate({_id: data.game}, {"$push": { "moves": data.move }}, (err, game) => {
-      if (err) {
-        console.log(err)
-      } else {
-        socketIO.to(data.game).emit('newMove', data.move);
-      }
+    OpenGame.updateOne({_id: data.game}, {"$push": { "moves": data.move }}).then(() => {
+      socketIO.to(data.game).emit('newMove', data.move);
     })
+    .catch(err => console.log(err));
   })
 
   socket.on('getGlobalChatMessages', () => {
@@ -113,13 +110,10 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('playerMessage', (data) => {
-    OpenGame.findOneAndUpdate({ _id: data.id }, { "$push": { "chat": data.message }}, (err, value) => {
-      if (err) {
-        console.log(err)
-      } else {
-        socketIO.to(data.id).emit('newMessage', data.message);
-      }
+    OpenGame.updateOne({ _id: data.id }, { "$push": { "chat": data.message }}).then(() => {
+      socketIO.to(data.id).emit('newMessage', data.message);
     })
+    .catch(err => console.log(err));
   })
 
   socket.on('loadGames', () => {
