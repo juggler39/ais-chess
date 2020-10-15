@@ -17,11 +17,7 @@
         :time="pieceColor === 'white' ? timeWhite : timeBlack"
       />
     </v-card>
-    <Promote
-      v-model="promoteDialog"
-      :color="pieceColor"
-      @piece="getPiece($event)"
-    />
+    <Promote ref="Promote" :color="pieceColor" />
     <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
     <div class="d-flex flex-column">
       <v-btn @click="changeOrientation">Change orientation</v-btn>
@@ -179,11 +175,11 @@ export default {
       });
       this.isGameOver();
     },
-    playerMove(orig, dest) {
+    async playerMove(orig, dest) {
       this.game.move({
         from: orig,
         to: dest,
-        promotion: this.promote(orig, dest)
+        promotion: await this.promote(orig, dest)
       });
       this.PvPGameHistory(this.$props.gameId);
       this.board.set({

@@ -90,19 +90,7 @@ export default {
         this.$socket.client.emit("move", { game: id, move: move });
       }
     },
-    playerMove() {
-      return (orig, dest) => {
-        this.game.move({ from: orig, to: dest });
-        this.board.set({
-          fen: this.game.fen(),
-          turnColor: this.toColor(),
-          movable: {
-            color: this.toColor(),
-            dests: this.possibleMoves()
-          }
-        });
-      };
-    },
+
     toColor() {
       return this.game.turn() === "w" ? "white" : "black";
     },
@@ -110,17 +98,11 @@ export default {
       if (this.game.move({ from: orig, to: dest, promotion: "q" })) {
         this.game.undo(); //move is ok, now we can go ahead and check for promotion
         if (!this.game.move({ from: orig, to: dest })) {
-          return prompt("q - qween, r - rook, b - bishop, n - knight", "q");
-          //this.promoteDialog = true;
-          //console.log("Promote: " + this.promoteTo);
-          //return this.promoteTo;
+          return this.$refs.Promote.pop().then(success => {
+            return success;
+          });
         }
       }
-    },
-    getPiece(e) {
-      console.log(e);
-      this.promoteTo = e;
-      this.promoteDialog = false;
     },
     loadPosition() {
       this.game = new Chess();
