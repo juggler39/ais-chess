@@ -46,10 +46,6 @@ export default {
   },
 
   methods: {
-    choosePiece() {
-      this.$emit("piece", this.piece);
-      this.dialog = false;
-    },
     pop() {
       this.dialog = true;
       // eslint-disable-next-line no-unused-vars
