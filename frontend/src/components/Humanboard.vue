@@ -90,6 +90,7 @@ export default {
       radios: "white",
       opponentMoveFrom: "e7",
       opponentMoveTo: "e5",
+      promotion: "q",
       orientation: "white",
       pieceColor: "white",
       gameInfo: [],
@@ -105,6 +106,7 @@ export default {
       ) {
         this.opponentMoveFrom = move.from;
         this.opponentMoveTo = move.to;
+        this.promotion = move.promotion;
         this.opponentMove();
       } else if (
         this.gameInfo.players.player2Name === this.$store.state.loginUser &&
@@ -112,6 +114,7 @@ export default {
       ) {
         this.opponentMoveFrom = move.from;
         this.opponentMoveTo = move.to;
+        this.promotion = move.promotion;
         this.opponentMove();
       }
     },
@@ -163,7 +166,11 @@ export default {
       }
     },
     opponentMove() {
-      this.game.move({ from: this.opponentMoveFrom, to: this.opponentMoveTo });
+      this.game.move({
+        from: this.opponentMoveFrom,
+        to: this.opponentMoveTo,
+        promotion: this.promotion
+      });
       this.board.set({
         fen: this.game.fen(),
         lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
