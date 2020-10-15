@@ -145,7 +145,7 @@ socketIO.on('connection', (socket) => {
   })
 
   socket.on('connectToGame', player2info => {
-    OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, async (err, gameFound) => {
+    OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
         if (err) {
           console.log(err)
         } else {
