@@ -6,7 +6,7 @@
     </h1>
     <v-container>
       <v-row>
-        <Humanboard :gameId="this.$route.params.id" />
+        <Humanboard ref="humanBoard" :gameId="this.$route.params.id" />
 
         <v-col class="col-12 col-md-3 grey darken-4">
           <v-card class="mx-auto">
@@ -15,6 +15,10 @@
               <GameHistory :moves="getPVPHistory" />
             </div>
           </v-card>
+          <div class="d-flex ma-2">
+            <Resign @resign="resign" />
+            <OfferDraw @drawProposal="drawProposal" />
+          </div>
           <v-container>
             <Chat :game="{ id: this.$route.params.id, global: false }" />
           </v-container>
@@ -26,6 +30,8 @@
 
 <script>
 import Humanboard from "@/components/Humanboard";
+import Resign from "@/components/dialogs/Resign";
+import OfferDraw from "@/components/dialogs/OfferDraw";
 import Chat from "@/components/chat/Chat";
 import GameHistory from "@/components/chat/GameHistory";
 import { mapGetters } from "vuex";
@@ -38,9 +44,19 @@ export default {
   components: {
     Chat,
     Humanboard,
-    GameHistory
+    GameHistory,
+    Resign,
+    OfferDraw
   },
   computed: mapGetters(["getPVPHistory"]),
+  methods: {
+    resign: function() {
+      this.$refs.humanBoard.resign();
+    },
+    drawProposal: function() {
+      this.$refs.humanBoard.drawProposal();
+    }
+  },
   mounted() {
     if (this.$route.params.id) {
       this.$socket.client.emit("joinRoom", this.$route.params.id);

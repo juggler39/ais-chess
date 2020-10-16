@@ -19,70 +19,27 @@
     </v-card>
     <Promote ref="Promote" :color="pieceColor" />
     <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
-    <div class="d-flex flex-column">
-      <v-btn @click="changeOrientation">Change orientation</v-btn>
-      <input type="text" v-model="opponentMoveFrom" class="ms-4 white--text" />
-      <input type="text" v-model="opponentMoveTo" class="ms-4 white--text" />
-      <v-btn @click="opponentMove()" color="primary" class="ms-4" dark
-        >Move</v-btn
-      >
-      <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="290">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="success" dark v-bind="attrs" v-on="on">
-              New Game
-            </v-btn>
-            <p>{{ pieceColor }}</p>
-          </template>
-          <v-card>
-            <v-toolbar dark color="primary">
-              <v-toolbar-title>Choose color</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon dark @click="dialog = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-toolbar>
-
-            <v-container fluid>
-              <v-radio-group v-model="radios">
-                <v-radio label="White" value="white"></v-radio>
-                <v-radio label="Black" value="black"></v-radio>
-              </v-radio-group>
-            </v-container>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="success" dark @click="submit">OK</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-      <v-spacer></v-spacer>
-      <Resign />
-      <OfferDraw />
-    </div>
   </v-col>
 </template>
 
 <script>
 import Chessboard from "./Chessboard";
-import Resign from "@/components/dialogs/Resign";
-import OfferDraw from "@/components/dialogs/OfferDraw";
 import Playerbar from "@/components/Playerbar";
 export default {
   name: "Humanboard",
   props: ["gameId"],
   extends: Chessboard,
-  components: { Resign, OfferDraw, Playerbar },
+  components: { Playerbar },
   sockets: {
     newMove(data) {
-      //here we gotting every new move
+      //here we are getting every new move
       if (data.move.color === "w") {
         this.timeWhite = data.playerTime;
       } else {
         this.timeBlack = data.playerTime;
       }
       this.$store.dispatch("updatePvPHistory", data.move);
-      this.sendMoveToOpponent(data.move);
+      this.opponentMove(data.move);
     },
     allMoves(moves) {
       //here we load all moves for example when page reloaded
@@ -91,11 +48,9 @@ export default {
   },
   data() {
     return {
-      dialog: false,
       radios: "white",
       opponentMoveFrom: "e7",
       opponentMoveTo: "e5",
-      promotion: "q",
       orientation: "white",
       pieceColor: "white",
       gameInfo: [],
@@ -103,25 +58,11 @@ export default {
     };
   },
   methods: {
-    sendMoveToOpponent(move) {
-      let color = this.game.turn() === "w" ? "white" : "black";
-      if (
-        this.gameInfo.players.player1Name === this.$store.state.loginUser &&
-        this.gameInfo.players.player1Color !== color
-      ) {
-        this.opponentMoveFrom = move.from;
-        this.opponentMoveTo = move.to;
-        this.promotion = move.promotion;
-        this.opponentMove();
-      } else if (
-        this.gameInfo.players.player2Name === this.$store.state.loginUser &&
-        this.gameInfo.players.player2Color !== color
-      ) {
-        this.opponentMoveFrom = move.from;
-        this.opponentMoveTo = move.to;
-        this.promotion = move.promotion;
-        this.opponentMove();
-      }
+    resign() {
+      console.log("resign");
+    },
+    drawProposal() {
+      console.log("propose a draw");
     },
     opponentName() {
       if (this.gameInfo.players.player1Name === this.$store.state.loginUser) {
@@ -133,14 +74,11 @@ export default {
     submit() {
       this.$store.dispatch("clearPvPHistory");
       this.$store.dispatch("clearPlayersChatHistory");
-      //this.pieceColor = this.radios;
-      this.dialog = false;
       this.timeWhite = this.time;
       this.timeBlack = this.time;
       this.game.reset();
       this.loadPosition();
       this.board.set({
-        fen: this.game.fen(),
         lastMove: null,
         orientation: this.pieceColor
       });
@@ -170,15 +108,15 @@ export default {
         });
       }
     },
-    opponentMove() {
+    opponentMove(move) {
       this.game.move({
-        from: this.opponentMoveFrom,
-        to: this.opponentMoveTo,
-        promotion: this.promotion
+        from: move.from,
+        to: move.to,
+        promotion: move.promotion
       });
       this.board.set({
         fen: this.game.fen(),
-        lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
+        lastMove: [move.from, move.to],
         turnColor: this.toColor(),
         movable: {
           color: this.pieceColor,

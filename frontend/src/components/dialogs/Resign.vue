@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     submit() {
+      this.$emit("resign", true);
       this.dialog = false;
     }
   }

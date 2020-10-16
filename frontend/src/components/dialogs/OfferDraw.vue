@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="success" dark v-bind="attrs" v-on="on">
-          Offer a draw
+          Draw
         </v-btn>
       </template>
       <v-card>
@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     submit() {
+      this.$emit("drawProposal", true);
       this.dialog = false;
     }
   }
