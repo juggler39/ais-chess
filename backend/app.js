@@ -174,7 +174,6 @@ socketIO.on('connection', (socket) => {
             }).then(() => {
               OpenGame.find({ _id: player2info.gameId }, (err, game) => {
                 socket.join(player2info.gameId);
-                console.log(game);
                 socketIO.to(player2info.gameId).emit('startGame', game);
               });
             });
