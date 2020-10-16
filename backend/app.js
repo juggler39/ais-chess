@@ -171,16 +171,16 @@ socketIO.on('connection', (socket) => {
               OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
                 socketIO.sockets.emit('newGameInfo', allOpenGames);
               });
+            }).then(() => {
+              OpenGame.find({ _id: player2info.gameId }, (err, game) => {
+                socket.join(player2info.gameId);
+                console.log(game);
+                socketIO.to(player2info.gameId).emit('startGame', game);
+              });
             });
           });
         }
-    }).then(() => {
-      OpenGame.find({ _id: player2info.gameId }, (err, game) => {
-        socket.join(player2info.gameId);
-        socketIO.to(player2info.gameId).emit('startGame', game);
-      });
-    });
-
+    })
   })
 
   socket.on('joinRoom', id => {
