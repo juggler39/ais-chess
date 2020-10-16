@@ -11,8 +11,6 @@ export default {
     return {
       pieceColor: "white",
       orientation: "white",
-      resign: false,
-      drawProposal: false,
       time: 600000,
       timeWhite: 0,
       timeBlack: 0,
@@ -57,10 +55,6 @@ export default {
         ? (this.timeWhite -= Date.now() - this.timestamp)
         : (this.timeBlack -= Date.now() - this.timestamp);
       this.timestamp = Date.now();
-    },
-    changeOrientation() {
-      this.orientation = this.orientation === "white" ? "black" : "white";
-      return;
     },
     possibleMoves() {
       const dests = new Map();
