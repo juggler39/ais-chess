@@ -87,7 +87,12 @@ export default {
     PvPGameHistory(id) {
       let move = this.game.history({ verbose: true }).pop();
       if (id) {
-        this.$socket.client.emit("move", { game: id, move: move });
+        let playerTime = move.color === "w" ? this.timeWhite : this.timeBlack;
+        this.$socket.client.emit("move", {
+          game: id,
+          move: move,
+          playerTime
+        });
       }
     },
 
@@ -154,8 +159,8 @@ export default {
       return result;
     },
     isGameOver() {
-      window.localStorage.removeItem("gameInfo");
       if (this.game.game_over()) {
+        window.localStorage.removeItem("gameInfo");
         this.result = this.checkEndReason();
         this.$refs.GameOver.pop();
         clearInterval(this.timer);

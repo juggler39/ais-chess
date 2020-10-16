@@ -74,10 +74,15 @@ export default {
   extends: Chessboard,
   components: { Resign, OfferDraw, Playerbar },
   sockets: {
-    newMove(move) {
+    newMove(data) {
       //here we gotting every new move
-      this.$store.dispatch("updatePvPHistory", move);
-      this.sendMoveToOpponent(move);
+      if (data.move.color === "w") {
+        this.timeWhite = data.playerTime;
+      } else {
+        this.timeBlack = data.playerTime;
+      }
+      this.$store.dispatch("updatePvPHistory", data.move);
+      this.sendMoveToOpponent(data.move);
     },
     allMoves(moves) {
       //here we load all moves for example when page reloaded
@@ -215,6 +220,7 @@ export default {
         this.pieceColor = this.gameInfo.players.player2Color;
       }
       this.opponent = this.opponentName();
+      this.time = this.gameInfo.timeToGo * 60000;
       this.submit();
     } else {
       this.gameInfo = this.$store.getters.getGameInfo;
