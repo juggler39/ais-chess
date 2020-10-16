@@ -98,7 +98,7 @@ socketIO.on('connection', (socket) => {
 
   socket.on('move', (data) => {
     OpenGame.updateOne({_id: data.game}, {"$push": { "moves": data.move }}).then(() => {
-      socketIO.to(data.game).emit('newMove', data.move);
+      socketIO.to(data.game).emit('newMove', data);
     })
     .catch(err => console.log(err));
   })
