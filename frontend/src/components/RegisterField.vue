@@ -1,19 +1,15 @@
 <template>
   <div class="card">
-    <v-card-text>
-      <v-form>
+      <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation
+      >
         <v-text-field
-          v-model="firstname"
+          v-model="username"
           :rules="nameRules"
-          :counter="10"
-          label="First name"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="lastname"
-          :rules="nameRules"
-          :counter="10"
-          label="Last name"
+          :counter="20"
+          label="Username"
           required
         ></v-text-field>
         <v-text-field
@@ -21,6 +17,17 @@
           :rules="emailRules"
           label="E-mail"
           required
+        ></v-text-field>
+        <v-text-field
+          v-model="password"
+          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+          :rules="[rules.required, rules.min]"
+          :type="show ? 'text' : 'password'"
+          name="input"
+          label="Password"
+          hint="At least 4 characters"
+          counter
+          @click:append="show = !show"
         ></v-text-field>
         <v-checkbox
           v-model="checkbox"
@@ -30,27 +37,22 @@
         ></v-checkbox>
         <v-btn
         class="mr-4"
-        @click="submit"
+        @click="validate"
       >
         submit
       </v-btn>
-      <v-btn @click="clear">
-        clear
-      </v-btn>
       </v-form>
-    </v-card-text>
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    valid: false,
-    firstname: '',
-    lastname: '',
+    valid: true,
+    username: '',
     nameRules: [
-      v => !!v || 'Name is required',
-      v => v.length <= 10 || 'Name must be less than 10 characters',
+      v => !!v || 'First Name is required',
+      v => v.length <= 20 || 'Name must be less than 10 characters',
     ],
     email: '',
     emailRules: [
@@ -58,9 +60,18 @@ export default {
       v => /.+@.+/.test(v) || 'E-mail must be valid',
     ],
     checkbox: false,
+    show: false,
+    password: '',
+    rules: {
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 4 || 'Min 4 characters',
+      emailMatch: () => ('The email and password you entered don\'t match'),
+    },
   }),
   methods: {
-    
+    validate() {
+      this.$refs.form.validate();
+    },
   }
 }
 </script>
