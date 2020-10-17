@@ -168,6 +168,11 @@ export default {
 </script>
 
 <style>
+.board-container {
+  max-width: 90vmin;
+  margin: auto;
+}
+
 .cg-wrap .black {
   background-color: transparent !important;
 }
@@ -176,16 +181,16 @@ export default {
 }
 
 .cg-wrap {
-  width: 512px;
-  height: 512px;
   position: relative;
   display: block;
+  height: 0;
+  padding-bottom: 100%;
+  width: 100%;
 }
 cg-helper {
   position: absolute;
   width: 12.5%;
   padding-bottom: 12.5%;
-  display: table; /* hack: round to full pixel size in chrome */
   bottom: 0;
 }
 

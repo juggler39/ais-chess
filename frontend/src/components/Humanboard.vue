@@ -2,14 +2,16 @@
   <v-col
     class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
   >
-    <v-card>
+    <v-card class="col-12 col-md-8">
       <Playerbar
         :color="opponentColor"
         :username="opponent"
         :time="opponentColor === 'white' ? timeWhite : timeBlack"
       />
-      <div class="merida">
-        <div ref="board" class="cg-board-wrap"></div>
+      <div class="board-container">
+        <div class="merida">
+          <div ref="board" class="cg-board-wrap"></div>
+        </div>
       </div>
       <Playerbar
         :color="pieceColor"
@@ -48,10 +50,6 @@ export default {
   },
   data() {
     return {
-      radios: "white",
-      opponentMoveFrom: "e7",
-      opponentMoveTo: "e5",
-      orientation: "white",
       pieceColor: "white",
       gameInfo: [],
       opponent: ""
