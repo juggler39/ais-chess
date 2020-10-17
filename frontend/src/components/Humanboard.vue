@@ -25,6 +25,7 @@
 <script>
 import Chessboard from "./Chessboard";
 import Playerbar from "@/components/Playerbar";
+import axios from "axios"
 export default {
   name: "Humanboard",
   props: ["gameId"],
@@ -59,7 +60,15 @@ export default {
   },
   methods: {
     resign() {
-      console.log("resign");
+      console.log("Resign!");
+      axios.post('/api/finished-games/finish-game', {
+                        game: {
+                          id: this.$props.gameId,
+                          userLose: window.localStorage.getItem("userID") //here can also take from store
+                        }
+                      }).then(() => {
+                        //somethig else if needed (redirect and etc.)
+                      })
     },
     drawProposal() {
       console.log("propose a draw");

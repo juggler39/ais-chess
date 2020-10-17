@@ -6,7 +6,7 @@ const FinishedGameSchema = new Schema({
   gameDate: { type: Date, default: Date.now },
   players: { player1ID: String, player1Name: String, player1Color: String, player2ID: String, player2Name: String, player2Color: String },
   timeToGo: Number,
-  moves: [ String ],
+  moves: [ Object ],
   winner: String
 });
 

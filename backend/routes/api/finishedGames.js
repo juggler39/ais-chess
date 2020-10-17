@@ -23,7 +23,8 @@ router.post('/finish-game', auth.required, (req, res, next) => {
                 newGame.players = gameFound.players;
                 newGame.moves = gameFound.moves;
                 newGame.timeToGo = gameFound.timeToGo;
-                newGame.winner = game.winner;
+                if (gameFound.players.player1ID === game.userLose) newGame.winner = gameFound.players.player2ID;
+                else newGame.winner = gameFound.players.player1ID;
                 newGame.save().then(() => res.json({ game: newGame.toJSON() }));
             }
         })
