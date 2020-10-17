@@ -46,7 +46,7 @@ router.post('/get-finish-game', auth.required, (req, res, next) => {
                     return res.json({ game: "Game doesn't exists" });
                 }
                 //game exists
-                res.json({ game: game.toJSON() }).catch(err => console.log(err));
+                res.json({ game: game.toJSON() });
                 }).catch((err) => {res.json({error: err})});
         }).catch((err) => {res.json({error: err})});
 });
