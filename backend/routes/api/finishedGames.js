@@ -3,6 +3,7 @@ const router = require('express').Router();
 const auth = require('../auth');
 const Users = mongoose.model('Users');
 const FinishedGame = mongoose.model('FinishedGame');
+const OpenedGame = mongoose.model('OpenGame');
 
 router.post('/finish-game', auth.required, (req, res, next) => {
     const { payload: { id } } = req;
@@ -14,9 +15,19 @@ router.post('/finish-game', auth.required, (req, res, next) => {
             return res.json({ user: "Access is denied" });
         }
         //access is allowed
-        const newGame = new FinishedGame(game);
-        newGame.save().then(() => res.json({ game: newGame.toJSON() }))
-        });
+        OpenedGame.findByIdAndDelete(game.id, (err, gameFound) => {
+            if (err){
+              console.log(err);  
+            } else {
+                const newGame = new FinishedGame();
+                newGame.players = gameFound.players;
+                newGame.moves = gameFound.moves;
+                newGame.timeToGo = gameFound.timeToGo;
+                newGame.winner = game.winner;
+                newGame.save().then(() => res.json({ game: newGame.toJSON() }));
+            }
+        })
+    });
 });
 
 router.post('/get-finish-game', auth.required, (req, res, next) => {
