@@ -5,6 +5,7 @@
     <v-card>
       <Playerbar
         :color="opponentColor"
+        :username="opponent"
         :time="opponentColor === 'white' ? timeWhite : timeBlack"
       />
       <div class="merida">
@@ -16,69 +17,29 @@
         :time="pieceColor === 'white' ? timeWhite : timeBlack"
       />
     </v-card>
-    <Promote
-      v-model="promoteDialog"
-      :color="pieceColor"
-      @piece="getPiece($event)"
-    />
-    <div class="d-flex flex-column">
-      <v-btn @click="changeOrientation">Change orientation</v-btn>
-      <input type="text" v-model="opponentMoveFrom" class="ms-4 white--text" />
-      <input type="text" v-model="opponentMoveTo" class="ms-4 white--text" />
-      <v-btn @click="opponentMove()" color="primary" class="ms-4" dark
-        >Move</v-btn
-      >
-      <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="290">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="success" dark v-bind="attrs" v-on="on">
-              New Game
-            </v-btn>
-            <p>{{ pieceColor }}</p>
-          </template>
-          <v-card>
-            <v-toolbar dark color="primary">
-              <v-toolbar-title>Choose color</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon dark @click="dialog = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-toolbar>
-
-            <v-container fluid>
-              <v-radio-group v-model="radios">
-                <v-radio label="White" value="white"></v-radio>
-                <v-radio label="Black" value="black"></v-radio>
-              </v-radio-group>
-            </v-container>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="success" dark @click="submit">OK</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-      <v-spacer></v-spacer>
-      <Resign />
-      <OfferDraw />
-    </div>
+    <Promote ref="Promote" :color="pieceColor" />
+    <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
   </v-col>
 </template>
 
 <script>
 import Chessboard from "./Chessboard";
-import Resign from "@/components/dialogs/Resign";
-import OfferDraw from "@/components/dialogs/OfferDraw";
 import Playerbar from "@/components/Playerbar";
 export default {
   name: "Humanboard",
   props: ["gameId"],
   extends: Chessboard,
-  components: { Resign, OfferDraw, Playerbar },
+  components: { Playerbar },
   sockets: {
-    newMove(move) {
-      //here we gotting every new move
-      this.$store.dispatch("updatePvPHistory", move);
+    newMove(data) {
+      //here we are getting every new move
+      if (data.move.color === "w") {
+        this.timeWhite = data.playerTime;
+      } else {
+        this.timeBlack = data.playerTime;
+      }
+      this.$store.dispatch("updatePvPHistory", data.move);
+      this.opponentMove(data.move);
     },
     allMoves(moves) {
       //here we load all moves for example when page reloaded
@@ -87,26 +48,37 @@ export default {
   },
   data() {
     return {
-      dialog: false,
       radios: "white",
       opponentMoveFrom: "e7",
       opponentMoveTo: "e5",
       orientation: "white",
-      pieceColor: "white"
+      pieceColor: "white",
+      gameInfo: [],
+      opponent: ""
     };
   },
   methods: {
+    resign() {
+      console.log("resign");
+    },
+    drawProposal() {
+      console.log("propose a draw");
+    },
+    opponentName() {
+      if (this.gameInfo.players.player1Name === this.$store.state.loginUser) {
+        return this.gameInfo.players.player2Name;
+      } else {
+        return this.gameInfo.players.player1Name;
+      }
+    },
     submit() {
       this.$store.dispatch("clearPvPHistory");
       this.$store.dispatch("clearPlayersChatHistory");
-      this.pieceColor = this.radios;
-      this.dialog = false;
       this.timeWhite = this.time;
       this.timeBlack = this.time;
       this.game.reset();
       this.loadPosition();
       this.board.set({
-        fen: this.game.fen(),
         lastMove: null,
         orientation: this.pieceColor
       });
@@ -136,12 +108,15 @@ export default {
         });
       }
     },
-    opponentMove() {
-      this.game.move({ from: this.opponentMoveFrom, to: this.opponentMoveTo });
-      this.PvPGameHistory(this.$props.gameId);
+    opponentMove(move) {
+      this.game.move({
+        from: move.from,
+        to: move.to,
+        promotion: move.promotion
+      });
       this.board.set({
         fen: this.game.fen(),
-        lastMove: [this.opponentMoveFrom, this.opponentMoveTo],
+        lastMove: [move.from, move.to],
         turnColor: this.toColor(),
         movable: {
           color: this.pieceColor,
@@ -150,11 +125,11 @@ export default {
       });
       this.isGameOver();
     },
-    playerMove(orig, dest) {
+    async playerMove(orig, dest) {
       this.game.move({
         from: orig,
         to: dest,
-        promotion: this.promote(orig, dest)
+        promotion: await this.promote(orig, dest)
       });
       this.PvPGameHistory(this.$props.gameId);
       this.board.set({
@@ -167,6 +142,27 @@ export default {
       });
     }
   },
-  mounted() {}
+  mounted() {
+    if (
+      !this.$store.state.gameInfo.length &&
+      window.localStorage.getItem("gameInfo")
+    ) {
+      this.$store.dispatch(
+        "setGameInfo",
+        JSON.parse(window.localStorage.getItem("gameInfo"))
+      );
+      this.gameInfo = this.$store.getters.getGameInfo;
+      if (this.gameInfo.players.player1Name === this.$store.state.loginUser) {
+        this.pieceColor = this.gameInfo.players.player1Color;
+      } else {
+        this.pieceColor = this.gameInfo.players.player2Color;
+      }
+      this.opponent = this.opponentName();
+      this.time = this.gameInfo.timeToGo * 60000;
+      this.submit();
+    } else {
+      this.gameInfo = this.$store.getters.getGameInfo;
+    }
+  }
 };
 </script>

@@ -19,11 +19,8 @@
         :timer="false"
       />
     </v-card>
-    <Promote
-      v-model="promoteDialog"
-      :color="pieceColor"
-      @piece="getPiece($event)"
-    />
+    <Promote ref="Promote" :color="pieceColor" />
+    <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
   </v-col>
 </template>
 
@@ -105,11 +102,11 @@ export default {
     }
   },
   methods: {
-    humanMove(orig, dest) {
+    async humanMove(orig, dest) {
       this.game.move({
         from: orig,
         to: dest,
-        promotion: this.promote(orig, dest)
+        promotion: await this.promote(orig, dest)
       });
       this.AIGameHistory();
       this.board.set({
@@ -137,8 +134,8 @@ export default {
       //set error value in centipawns
       this.stockfish.postMessage(
         "setoption name Skill Level Maximum Error value " +
-          this.level * -50 +
-          1000
+          this.level * -20 +
+          400
       );
       // set Probability of Success
       this.stockfish.postMessage(
@@ -178,9 +175,8 @@ export default {
 
     isGameOver() {
       if (this.game.game_over()) {
-        this.aiTurn = false;
-        const result = this.checkEndReason();
-        alert(`Game over!, ${result.color}, ${result.reason}`);
+        this.result = this.checkEndReason();
+        this.$refs.GameOver.pop();
       }
     },
     AIGameHistory() {

@@ -2,16 +2,15 @@
 import Chess from "chess.js";
 import { Chessground } from "chessground";
 import Promote from "@/components/dialogs/Promote";
+import GameOver from "@/components/dialogs/GameOver";
 
 export default {
   name: "Chessboard",
-  components: { Promote },
+  components: { Promote, GameOver },
   data() {
     return {
       pieceColor: "white",
       orientation: "white",
-      resign: false,
-      drawProposal: false,
       time: 600000,
       timeWhite: 0,
       timeBlack: 0,
@@ -19,7 +18,9 @@ export default {
       timestamp: 0,
       fen: "",
       promoteDialog: false,
-      promoteTo: "q"
+      gameOverDialog: false,
+      promoteTo: "q",
+      result: {}
     };
   },
   computed: {
@@ -55,10 +56,6 @@ export default {
         : (this.timeBlack -= Date.now() - this.timestamp);
       this.timestamp = Date.now();
     },
-    changeOrientation() {
-      this.orientation = this.orientation === "white" ? "black" : "white";
-      return;
-    },
     possibleMoves() {
       const dests = new Map();
       this.game.SQUARES.forEach(s => {
@@ -84,22 +81,15 @@ export default {
     PvPGameHistory(id) {
       let move = this.game.history({ verbose: true }).pop();
       if (id) {
-        this.$socket.client.emit("move", { game: id, move: move });
+        let playerTime = move.color === "w" ? this.timeWhite : this.timeBlack;
+        this.$socket.client.emit("move", {
+          game: id,
+          move: move,
+          playerTime
+        });
       }
     },
-    playerMove() {
-      return (orig, dest) => {
-        this.game.move({ from: orig, to: dest });
-        this.board.set({
-          fen: this.game.fen(),
-          turnColor: this.toColor(),
-          movable: {
-            color: this.toColor(),
-            dests: this.possibleMoves()
-          }
-        });
-      };
-    },
+
     toColor() {
       return this.game.turn() === "w" ? "white" : "black";
     },
@@ -107,17 +97,11 @@ export default {
       if (this.game.move({ from: orig, to: dest, promotion: "q" })) {
         this.game.undo(); //move is ok, now we can go ahead and check for promotion
         if (!this.game.move({ from: orig, to: dest })) {
-          return prompt("q - qween, r - rook, b - bishop, n - knight", "q");
-          //this.promoteDialog = true;
-          //console.log("Promote: " + this.promoteTo);
-          //return this.promoteTo;
+          return this.$refs.Promote.pop().then(success => {
+            return success;
+          });
         }
       }
-    },
-    getPiece(e) {
-      console.log(e);
-      this.promoteTo = e;
-      this.promoteDialog = false;
     },
     loadPosition() {
       this.game = new Chess();
@@ -148,7 +132,7 @@ export default {
     checkEndReason() {
       const result = {};
       if (this.game.in_checkmate()) {
-        result.color = this.game.turn === "white" ? "black" : "white";
+        result.color = this.game.turn() === "w" ? "black" : "white";
         result.reason = "checkmate";
       } else if (this.game.in_stalemate()) {
         result.color = "draw";
@@ -170,8 +154,9 @@ export default {
     },
     isGameOver() {
       if (this.game.game_over()) {
-        const result = this.checkEndReason();
-        alert(`Game over!, ${result.color}, ${result.reason}`);
+        window.localStorage.removeItem("gameInfo");
+        this.result = this.checkEndReason();
+        this.$refs.GameOver.pop();
         clearInterval(this.timer);
       }
     }

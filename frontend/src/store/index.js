@@ -14,9 +14,13 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
   state: {
     loginUser: user,
-    idUser: id
+    idUser: id,
+    gameInfo: []
   },
   mutations: {
+    setGameInfo(state, game) {
+      state.gameInfo = game;
+    },
     setLoginUser(state, user) {
       state.loginUser = user;
     },
@@ -30,7 +34,11 @@ export default new Vuex.Store({
       state.idUser = null;
     }
   },
-  actions: {},
+  actions: {
+    setGameInfo(context, game) {
+      context.commit("setGameInfo", game);
+    }
+  },
   modules: {
     gameHistory,
     openGames
@@ -38,6 +46,9 @@ export default new Vuex.Store({
   getters: {
     getLoginUserInfo(state) {
       return state.loginUser;
+    },
+    getGameInfo(state) {
+      return state.gameInfo;
     }
   }
 });

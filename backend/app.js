@@ -97,13 +97,10 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('move', (data) => {
-    OpenGame.findOneAndUpdate({_id: data.game}, {"$push": { "moves": data.move }}, (err, game) => {
-      if (err) {
-        console.log(err)
-      } else {
-        socketIO.to(data.game).emit('newMove', data.move);
-      }
+    OpenGame.updateOne({_id: data.game}, {"$push": { "moves": data.move }}).then(() => {
+      socketIO.to(data.game).emit('newMove', data);
     })
+    .catch(err => console.log(err));
   })
 
   socket.on('getGlobalChatMessages', () => {
@@ -113,13 +110,10 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('playerMessage', (data) => {
-    OpenGame.findOneAndUpdate({ _id: data.id }, { "$push": { "chat": data.message }}, (err, value) => {
-      if (err) {
-        console.log(err)
-      } else {
-        socketIO.to(data.id).emit('newMessage', data.message);
-      }
+    OpenGame.updateOne({ _id: data.id }, { "$push": { "chat": data.message }}).then(() => {
+      socketIO.to(data.id).emit('newMessage', data.message);
     })
+    .catch(err => console.log(err));
   })
 
   socket.on('loadGames', () => {
@@ -155,15 +149,37 @@ socketIO.on('connection', (socket) => {
         if (err) {
           console.log(err)
         } else {
-          OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
-            socketIO.sockets.emit('newGameInfo', allOpenGames);
+          //define color for second player
+          async function changeColor() {
+            if (gameFound.players.player1Color === "white") gameFound.players.player2Color = "black";
+            else if (gameFound.players.player1Color === "black") gameFound.players.player2Color = "white";
+            else {
+              let choise = Math.floor(Math.random() * Math.floor(2));
+
+              if (choise === 1 ) {
+                gameFound.players.player1Color = "white";
+                gameFound.players.player2Color = "black";
+              }
+              else {
+                gameFound.players.player1Color = "black";
+                gameFound.players.player2Color = "white"
+              }
+            }
+          }
+          changeColor().then(() => {
+            gameFound.save().then(() => {
+              OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
+                socketIO.sockets.emit('newGameInfo', allOpenGames);
+              });
+            }).then(() => {
+              OpenGame.find({ _id: player2info.gameId }, (err, game) => {
+                socket.join(player2info.gameId);
+                socketIO.to(player2info.gameId).emit('startGame', game);
+              });
+            });
           });
         }
-    });
-    OpenGame.find({ _id: player2info.gameId }, (err, game) => {
-      socket.join(player2info.gameId);
-      socketIO.to(player2info.gameId).emit('startGame', { ...game[0]._doc, ...player2info });
-    });
+    })
   })
 
   socket.on('joinRoom', id => {

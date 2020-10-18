@@ -25,10 +25,11 @@ export default {
   sockets: {
     connect() {},
     startGame(game) {
-      console.log(game);
+      window.localStorage.setItem("gameInfo", JSON.stringify(game[0]));
+      this.$store.dispatch("setGameInfo", game[0]);
       this.$store.dispatch("clearPvPHistory");
       this.$store.dispatch("clearPlayersChatHistory");
-      this.$router.push({ name: "Game", params: { id: game.gameId } });
+      this.$router.push({ name: "Game", params: { id: game[0].id } });
     }
   },
   mounted() {}
