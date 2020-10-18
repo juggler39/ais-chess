@@ -20,14 +20,14 @@
       />
     </v-card>
     <Promote ref="Promote" :color="pieceColor" />
-    <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
+    <GameOver ref="GameOver" />
   </v-col>
 </template>
 
 <script>
 import Chessboard from "./Chessboard";
 import Playerbar from "@/components/Playerbar";
-import axios from "axios"
+import axios from "axios";
 export default {
   name: "Humanboard",
   props: ["gameId"],
@@ -58,15 +58,10 @@ export default {
   },
   methods: {
     resign() {
-      console.log("Resign!");
-      axios.post('/api/finished-games/finish-game', {
-                        game: {
-                          id: this.$props.gameId,
-                          userLose: window.localStorage.getItem("userID") //here can also take from store
-                        }
-                      }).then(() => {
-                        //somethig else if needed (redirect and etc.)
-                      })
+      this.stopGameAndStoreResult({
+        color: this.pieceColor === "white" ? "black" : "white",
+        reason: "resignation"
+      });
     },
     drawProposal() {
       console.log("propose a draw");
@@ -92,27 +87,9 @@ export default {
 
       this.startTimer();
       if (this.pieceColor === "white") {
-        this.board.set({
-          movable: {
-            color: "white",
-            events: {
-              after: (orig, dest) => {
-                this.playerMove(orig, dest);
-              }
-            }
-          }
-        });
+        this.setMovableColor("white");
       } else {
-        this.board.set({
-          movable: {
-            color: null,
-            events: {
-              after: (orig, dest) => {
-                this.playerMove(orig, dest);
-              }
-            }
-          }
-        });
+        this.setMovableColor(null);
       }
     },
     opponentMove(move) {
@@ -130,7 +107,9 @@ export default {
           dests: this.possibleMoves()
         }
       });
-      this.isGameOver();
+      if (this.game.game_over()) {
+        this.stopGameAndStoreResult();
+      }
     },
     async playerMove(orig, dest) {
       this.game.move({
@@ -147,6 +126,31 @@ export default {
           dests: this.possibleMoves()
         }
       });
+      if (this.game.game_over()) {
+        this.stopGameAndStoreResult();
+      }
+    },
+    stopGameAndStoreResult(result) {
+      if (!result) result = this.checkEndReason();
+      this.gameOver(result);
+      if (this.pieceColor === "white") {
+        axios
+          .post("/api/finished-games/finish-game", {
+            game: {
+              id: this.$props.gameId,
+              userLose: window.localStorage.getItem("userID") //here can also take from store
+              //color: color who wins: white, black or draw
+              //timeWhite: this.timeWhite,
+              //timeBlack: this.timeBlack
+            }
+          })
+          .then(() => {
+            //somethig else if needed (redirect and etc.)
+          });
+      }
+
+      window.localStorage.removeItem("gameInfo");
+      clearInterval(this.timer);
     }
   },
   mounted() {
