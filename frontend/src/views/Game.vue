@@ -6,7 +6,11 @@
     </h1>
     <v-container>
       <v-row>
-        <Humanboard ref="humanBoard" :gameId="this.$route.params.id" />
+        <Humanboard
+          ref="humanBoard"
+          :gameId="this.$route.params.id"
+          :moves="getPVPHistory"
+        />
 
         <v-col class="col-12 col-md-3 grey darken-4">
           <v-card class="mx-auto">
@@ -55,6 +59,14 @@ export default {
     },
     drawProposal: function() {
       this.$refs.humanBoard.drawProposal();
+    }
+  },
+  created() {
+    if (window.localStorage.getItem("playersHistory")) {
+      this.$store.dispatch(
+        "loadPvPHistory",
+        JSON.parse(window.localStorage.getItem("playersHistory"))
+      );
     }
   },
   mounted() {

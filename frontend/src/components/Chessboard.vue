@@ -155,6 +155,7 @@ export default {
     isGameOver() {
       if (this.game.game_over()) {
         window.localStorage.removeItem("gameInfo");
+        window.localStorage.removeItem("runningGameId");
         this.result = this.checkEndReason();
         this.$refs.GameOver.pop();
         clearInterval(this.timer);

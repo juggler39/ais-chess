@@ -25,6 +25,8 @@ export default {
   sockets: {
     connect() {},
     startGame(game) {
+      window.localStorage.removeItem("playersHistory");
+      window.localStorage.removeItem("playersTimer");
       window.localStorage.setItem("gameInfo", JSON.stringify(game[0]));
       this.$store.dispatch("setGameInfo", game[0]);
       this.$store.dispatch("clearPvPHistory");
