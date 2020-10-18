@@ -138,10 +138,9 @@ export default {
           .post("/api/finished-games/finish-game", {
             game: {
               id: this.$props.gameId,
-              userLose: window.localStorage.getItem("userID") //here can also take from store
-              //color: color who wins: white, black or draw
-              //timeWhite: this.timeWhite,
-              //timeBlack: this.timeBlack
+              winner: result.color,
+              timeWhite: this.timeWhite,
+              timeBlack: this.timeBlack
             }
           })
           .then(() => {
