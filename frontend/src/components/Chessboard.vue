@@ -19,8 +19,7 @@ export default {
       fen: "",
       promoteDialog: false,
       gameOverDialog: false,
-      promoteTo: "q",
-      result: {}
+      promoteTo: "q"
     };
   },
   computed: {
@@ -55,6 +54,20 @@ export default {
         ? (this.timeWhite -= Date.now() - this.timestamp)
         : (this.timeBlack -= Date.now() - this.timestamp);
       this.timestamp = Date.now();
+      if (this.timeWhite <= 0) {
+        this.timeWhite = 0;
+        this.stopGameAndStoreResult({
+          color: "black",
+          reason: "timeout"
+        });
+      }
+      if (this.timeBlack <= 0) {
+        this.timeBlack = 0;
+        this.stopGameAndStoreResult({
+          color: "white",
+          reason: "timeout"
+        });
+      }
     },
     possibleMoves() {
       const dests = new Map();
@@ -78,6 +91,20 @@ export default {
       }
       return moves;
     },
+    setMovableColor(color) {
+      this.board.set({
+        turnColor: color,
+        movable: {
+          dests: this.possibleMoves(),
+          color: color,
+          events: {
+            after: (orig, dest) => {
+              this.playerMove(orig, dest);
+            }
+          }
+        }
+      });
+    },
     PvPGameHistory(id) {
       let move = this.game.history({ verbose: true }).pop();
       if (id) {
@@ -89,7 +116,6 @@ export default {
         });
       }
     },
-
     toColor() {
       return this.game.turn() === "w" ? "white" : "black";
     },
@@ -143,22 +169,19 @@ export default {
       } else if (this.game.insufficient_material()) {
         result.color = "draw";
         result.reason = "insufficient material";
-      } else if (this.game.in_draw()) {
+      } else {
         result.color = "draw";
         result.reason = "50-move rule";
-      } else {
-        result.color = "player who loose"; //insert color of player, who capitulated
-        result.reason = "capitulation";
       }
       return result;
     },
-    isGameOver() {
-      if (this.game.game_over()) {
-        window.localStorage.removeItem("gameInfo");
-        this.result = this.checkEndReason();
-        this.$refs.GameOver.pop();
-        clearInterval(this.timer);
-      }
+    gameOver(result) {
+      this.board.set({
+        movable: {
+          color: null
+        }
+      });
+      this.$refs.GameOver.pop(result);
     }
   },
   mounted() {
