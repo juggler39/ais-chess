@@ -22,7 +22,7 @@
       />
     </v-card>
     <Promote ref="Promote" :color="pieceColor" />
-    <GameOver ref="GameOver" :result="result.color" :reason="result.reason" />
+    <GameOver ref="GameOver" />
   </v-col>
 </template>
 
@@ -99,12 +99,12 @@ export default {
           lastMove: [this.bestMove.from, this.bestMove.to]
         });
         this.setMovableColor(this.toColor());
-        this.isGameOver();
+        if (this.game.game_over()) this.gameOver(this.checkEndReason());
       }
     }
   },
   methods: {
-    async humanMove(orig, dest) {
+    async playerMove(orig, dest) {
       this.game.move({
         from: orig,
         to: dest,
@@ -121,7 +121,7 @@ export default {
           }
         }
       });
-      this.isGameOver();
+      if (this.game.game_over()) this.gameOver(this.checkEndReason());
     },
     engineAnalyse() {
       this.stockfish.postMessage("position startpos moves" + this.getMoves());
@@ -160,27 +160,6 @@ export default {
         }
       }
     },
-    setMovableColor(color) {
-      this.board.set({
-        turnColor: color,
-        movable: {
-          dests: this.possibleMoves(),
-          color: color,
-          events: {
-            after: (orig, dest) => {
-              this.humanMove(orig, dest);
-            }
-          }
-        }
-      });
-    },
-
-    isGameOver() {
-      if (this.game.game_over()) {
-        this.result = this.checkEndReason();
-        this.$refs.GameOver.pop();
-      }
-    },
     AIGameHistory() {
       let move = this.game.history({ verbose: true }).pop();
       this.$store.dispatch("updateAIHistory", move);
@@ -193,7 +172,6 @@ export default {
       );
     }
   },
-
   mounted() {
     this.stockfish = new Worker("js/stockfish.js");
     this.stockfish.onmessage = event => {
