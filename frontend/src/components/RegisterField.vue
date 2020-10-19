@@ -1,74 +1,67 @@
 <template>
   <div class="card">
-      <v-form
-      ref="form"
-      v-model="valid"
-      lazy-validation
-      >
-        <v-text-field
-          v-model="username"
-          :rules="nameRules"
-          :counter="20"
-          label="Username"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="password"
-          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.min]"
-          :type="show ? 'text' : 'password'"
-          name="input"
-          label="Password"
-          hint="At least 4 characters"
-          counter
-          @click:append="show = !show"
-        ></v-text-field>
-        <v-checkbox
-          v-model="checkbox"
-          :rules="[v => !!v || 'You must agree to continue!']"
-          label="Do you agree?"
-          required
-        ></v-checkbox>
-        <v-btn
-        class="mr-4"
-        @click="validate"
-      >
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field
+        v-model="username"
+        :rules="nameRules"
+        :counter="20"
+        label="Username"
+        required
+      ></v-text-field>
+      <v-text-field
+        v-model="email"
+        :rules="emailRules"
+        label="E-mail"
+        required
+      ></v-text-field>
+      <v-text-field
+        v-model="password"
+        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+        :rules="[rules.required, rules.min]"
+        :type="show ? 'text' : 'password'"
+        name="input"
+        label="Password"
+        hint="At least 4 characters"
+        counter
+        @click:append="show = !show"
+      ></v-text-field>
+      <v-checkbox
+        v-model="checkbox"
+        :rules="[v => !!v || 'You must agree to continue!']"
+        label="Do you agree?"
+        required
+      ></v-checkbox>
+      <v-btn class="mr-4" @click="validate">
         submit
       </v-btn>
-      </v-form>
+    </v-form>
   </div>
 </template>
 
 <script>
-import router from '../router/index';
+import router from "../router/index";
 import axios from "axios";
 export default {
   data: () => ({
     valid: true,
-    username: '',
+    username: "",
     nameRules: [
-      v => !!v || 'First Name is required',
-      v => v.length <= 20 || 'Name must be less than 20 characters',
+      v => !!v || "First Name is required",
+      v => v.length <= 20 || "Name must be less than 20 characters"
     ],
-    email: '',
+    email: "",
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+/.test(v) || 'E-mail must be valid',
+      v => !!v || "E-mail is required",
+      v => /.+@.+/.test(v) || "E-mail must be valid"
     ],
     checkbox: false,
     show: false,
-    password: '',
+    password: "",
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 4 || 'Min 4 characters',
-      emailMatch: () => ('The email and password you entered don\'t match'),
-    },
+      required: value => !!value || "Required.",
+      min: v => v.length >= 4 || "Min 4 characters",
+      emailMatch: () => "The email and password you entered don't match"
+    }
   }),
   methods: {
     validate() {
@@ -79,26 +72,31 @@ export default {
             password: this.password,
             email: this.email
           }
-        }
-        axios.post('/api/users/register', userObj).then(async (response) => {
-                              if (response.data.user) {
-                                axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
-                                window.localStorage.setItem("userLog", response.data.user.token);
-                                window.localStorage.setItem("userName", response.data.user.name);
-                                window.localStorage.setItem("userID", response.data.user.id);
-                                this.$store.commit("setLoginUser", response.data.user.name);
-                                this.$store.commit("setLoginUserID", response.data.user.id);
-                                router.push('/account', () => {});
-                                this.dialog = false;
-                              }
-                              else {//here if Login info is incorrect
-                                console.log(response.data.errors);
-                              }
-                            }, (error) => {
-                              console.log(error);
-                            });
-        }
-    },
+        };
+        axios.post("/api/users/register", userObj).then(
+          async response => {
+            if (response.data.user) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Token ${response.data.user.token}`;
+              window.localStorage.setItem("userLog", response.data.user.token);
+              window.localStorage.setItem("userName", response.data.user.name);
+              window.localStorage.setItem("userID", response.data.user.id);
+              this.$store.commit("setLoginUser", response.data.user.name);
+              this.$store.commit("setLoginUserID", response.data.user.id);
+              router.push("/account", () => {});
+              this.dialog = false;
+            } else {
+              //here if Login info is incorrect
+              console.log(response.data.errors);
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+    }
   }
-}
+};
 </script>
