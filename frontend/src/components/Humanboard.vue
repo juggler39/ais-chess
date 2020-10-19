@@ -62,6 +62,14 @@ export default {
       if (!window.localStorage.getItem("playersHistory")) {
         this.$store.dispatch("loadPvPHistory", moves);
       }
+    },
+    drawProposal() {
+      // here code for draw proposal
+      console.log("Opponent offering draw");
+    },
+    opponentResign() {
+      // here code for resign
+      console.log("opponent resigned");
     }
   },
   data() {
@@ -79,6 +87,7 @@ export default {
   },
   methods: {
     resign() {
+      this.$socket.client.emit("resign", this.gameInfo.id);
       this.stopGameAndStoreResult({
         color: this.pieceColor === "white" ? "black" : "white",
         reason: "resignation"
@@ -86,6 +95,7 @@ export default {
     },
     drawProposal() {
       console.log("propose a draw");
+      this.$socket.client.emit("draw", this.gameInfo.id);
     },
     opponentName() {
       if (this.gameInfo.players.player1Name === this.$store.state.loginUser) {
