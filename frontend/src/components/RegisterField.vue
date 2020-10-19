@@ -46,13 +46,15 @@
 </template>
 
 <script>
+import router from '../router/index';
+import axios from "axios";
 export default {
   data: () => ({
     valid: true,
     username: '',
     nameRules: [
       v => !!v || 'First Name is required',
-      v => v.length <= 20 || 'Name must be less than 10 characters',
+      v => v.length <= 20 || 'Name must be less than 20 characters',
     ],
     email: '',
     emailRules: [
@@ -70,7 +72,32 @@ export default {
   }),
   methods: {
     validate() {
-      this.$refs.form.validate();
+      if (this.$refs.form.validate()) {
+        let userObj = {
+          user: {
+            login: this.username,
+            password: this.password,
+            email: this.email
+          }
+        }
+        axios.post('/api/users/register', userObj).then(async (response) => {
+                              if (response.data.user) {
+                                axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
+                                window.localStorage.setItem("userLog", response.data.user.token);
+                                window.localStorage.setItem("userName", response.data.user.name);
+                                window.localStorage.setItem("userID", response.data.user.id);
+                                this.$store.commit("setLoginUser", response.data.user.name);
+                                this.$store.commit("setLoginUserID", response.data.user.id);
+                                router.push('/account', () => {});
+                                this.dialog = false;
+                              }
+                              else {//here if Login info is incorrect
+                                console.log(response.data.errors);
+                              }
+                            }, (error) => {
+                              console.log(error);
+                            });
+        }
     },
   }
 }

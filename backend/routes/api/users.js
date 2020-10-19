@@ -23,7 +23,7 @@ router.post('/register', auth.optional, (req, res, next) => {
   const { body: { user } } = req;
 
   if(!user.email) {
-    return res.status(422).json({
+    return res.json({
       errors: {
         email: 'is required',
       },
@@ -31,7 +31,7 @@ router.post('/register', auth.optional, (req, res, next) => {
   }
 
   if(!user.login) {
-    return res.status(422).json({
+    return res.json({
       errors: {
         login: 'is required',
       },
@@ -39,7 +39,7 @@ router.post('/register', auth.optional, (req, res, next) => {
   }
 
   if(!user.password) {
-    return res.status(422).json({
+    return res.json({
       errors: {
         password: 'is required',
       },
@@ -52,7 +52,7 @@ router.post('/register', auth.optional, (req, res, next) => {
   Users.findOne({ login: user.login }, function( err, user_login) {
     if (user_login)
      {
-      return res.status(422).json({
+      return res.json({
         errors: {
           login: 'already exists',
         },
@@ -62,7 +62,7 @@ router.post('/register', auth.optional, (req, res, next) => {
         Users.findOne({ email: user.email }, function( err, user_email) {
           if (user_email)
           {
-            return res.status(422).json({
+            return res.json({
               errors: {
                 email: 'already exists',
               },
