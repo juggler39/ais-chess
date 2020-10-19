@@ -52,7 +52,10 @@ export default {
         "playersHistory",
         JSON.stringify(this.getPVPHistory)
       );
-      this.opponentMove(data.move);
+      const color = data.move.color === "w" ? "white" : "black";
+      if (color !== this.pieceColor) {
+        this.opponentMove(data.move);
+      }
     },
     allMoves(moves) {
       //here we load all moves for example when page reloaded
@@ -80,7 +83,6 @@ export default {
         color: this.pieceColor === "white" ? "black" : "white",
         reason: "resignation"
       });
-
     },
     drawProposal() {
       console.log("propose a draw");

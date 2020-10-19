@@ -16,10 +16,7 @@ export default {
       timeBlack: 0,
       timer: null,
       timestamp: 0,
-      fen: "",
-      promoteDialog: false,
-      gameOverDialog: false,
-      promoteTo: "q"
+      fen: ""
     };
   },
   computed: {
