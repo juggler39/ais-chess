@@ -18,6 +18,9 @@
         ></v-text-field>
       </v-form>
     </v-card-text>
+     <p class="forgot-password text-right mt-2 mb-4">
+        <router-link to="/forgot-password">Forgot password ?</router-link>
+      </p>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="secondary" @click.prevent="loginWithGoogle">
@@ -39,9 +42,9 @@
 </template>
 
 <script>
-
-import router from '../router/index';
+import router from "../router/index";
 import axios from "axios";
+
 export default {
 name: "LoginField",
 methods: {

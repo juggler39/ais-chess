@@ -8,7 +8,6 @@ import Lobby from "../views/Lobby.vue";
 import Playai from "../views/Playai.vue";
 import NotFound from "../views/NotFound.vue";
 import axios from "axios";
-//import Login from "../components/Login.vue";
 import News from "../views/News.vue";
 import Article from "../components/Article.vue";
 

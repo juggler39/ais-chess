@@ -1,13 +1,7 @@
 <template>
   <v-dialog persistent v-model="dialog">
     <template v-slot:activator="{ on, attrs }">
-       <!-- <v-btn text v-bind="attrs" v-on="on">
-        <span class="hidden-sm-and-down">
-          register
-        </span>
-        <v-icon right>mdi-lead-pencil</v-icon>
-      </v-btn> -->
-       <v-btn text v-bind="attrs" v-on="on" class="btn-for-after">
+      <v-btn text v-bind="attrs" v-on="on" class="btn-for-after">
         <span class="hidden-sm-and-down">
           login
         </span>
@@ -31,8 +25,6 @@
 
 <script>
 /* eslint-disable */
-import router from '../router/index';
-import axios from "axios";
 import ModalTabs from "./ModalTabs";
 
 export default {
