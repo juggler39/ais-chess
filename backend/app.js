@@ -182,6 +182,14 @@ socketIO.on('connection', (socket) => {
     })
   })
 
+  socket.on('draw', id => {
+    socket.broadcast.to(id).emit('drawProposal');
+  })
+
+  socket.on('resign', id => {
+    socket.broadcast.to(id).emit('opponentResign');
+  })
+
   socket.on('joinRoom', id => {
     socket.join(id);
 

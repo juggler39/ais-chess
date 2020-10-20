@@ -3,13 +3,13 @@
     <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
         <v-toolbar dark color="primary">
-          <v-toolbar-title>{{ result }}</v-toolbar-title>
+          <v-toolbar-title>{{ result.color }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-card-text class="pa-5"> {{ reason }}</v-card-text>
+        <v-card-text class="pa-5"> {{ result.reason }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="success" dark @click="dialog = false">YES</v-btn>
@@ -23,19 +23,18 @@
 export default {
   data() {
     return {
-      dialog: false
+      dialog: false,
+      result: {}
     };
-  },
-  props: {
-    result: String,
-    reason: String
   },
   methods: {
     submit() {
       this.show = false;
     },
-    pop() {
+    pop(result) {
       this.dialog = true;
+      this.result.color = result.color;
+      this.result.reason = result.reason;
     }
   }
 };

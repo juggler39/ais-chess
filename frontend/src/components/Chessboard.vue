@@ -16,11 +16,7 @@ export default {
       timeBlack: 0,
       timer: null,
       timestamp: 0,
-      fen: "",
-      promoteDialog: false,
-      gameOverDialog: false,
-      promoteTo: "q",
-      result: {}
+      fen: ""
     };
   },
   computed: {
@@ -55,6 +51,20 @@ export default {
         ? (this.timeWhite -= Date.now() - this.timestamp)
         : (this.timeBlack -= Date.now() - this.timestamp);
       this.timestamp = Date.now();
+      if (this.timeWhite <= 0) {
+        this.timeWhite = 0;
+        this.stopGameAndStoreResult({
+          color: "black",
+          reason: "timeout"
+        });
+      }
+      if (this.timeBlack <= 0) {
+        this.timeBlack = 0;
+        this.stopGameAndStoreResult({
+          color: "white",
+          reason: "timeout"
+        });
+      }
     },
     possibleMoves() {
       const dests = new Map();
@@ -78,6 +88,20 @@ export default {
       }
       return moves;
     },
+    setMovableColor(color) {
+      this.board.set({
+        turnColor: color,
+        movable: {
+          dests: this.possibleMoves(),
+          color: color,
+          events: {
+            after: (orig, dest) => {
+              this.playerMove(orig, dest);
+            }
+          }
+        }
+      });
+    },
     PvPGameHistory(id) {
       let move = this.game.history({ verbose: true }).pop();
       if (id) {
@@ -89,7 +113,6 @@ export default {
         });
       }
     },
-
     toColor() {
       return this.game.turn() === "w" ? "white" : "black";
     },
@@ -143,22 +166,19 @@ export default {
       } else if (this.game.insufficient_material()) {
         result.color = "draw";
         result.reason = "insufficient material";
-      } else if (this.game.in_draw()) {
+      } else {
         result.color = "draw";
         result.reason = "50-move rule";
-      } else {
-        result.color = "player who loose"; //insert color of player, who capitulated
-        result.reason = "capitulation";
       }
       return result;
     },
-    isGameOver() {
-      if (this.game.game_over()) {
-        window.localStorage.removeItem("gameInfo");
-        this.result = this.checkEndReason();
-        this.$refs.GameOver.pop();
-        clearInterval(this.timer);
-      }
+    gameOver(result) {
+      this.board.set({
+        movable: {
+          color: null
+        }
+      });
+      this.$refs.GameOver.pop(result);
     }
   },
   mounted() {
@@ -168,6 +188,11 @@ export default {
 </script>
 
 <style>
+.board-container {
+  max-width: 90vmin;
+  margin: auto;
+}
+
 .cg-wrap .black {
   background-color: transparent !important;
 }
@@ -176,16 +201,16 @@ export default {
 }
 
 .cg-wrap {
-  width: 512px;
-  height: 512px;
   position: relative;
   display: block;
+  height: 0;
+  padding-bottom: 100%;
+  width: 100%;
 }
 cg-helper {
   position: absolute;
   width: 12.5%;
   padding-bottom: 12.5%;
-  display: table; /* hack: round to full pixel size in chrome */
   bottom: 0;
 }
 
