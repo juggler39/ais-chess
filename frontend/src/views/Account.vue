@@ -17,6 +17,11 @@
             temporibus eos eligendi incidunt ipsa at corporis voluptatum quod
             soluta, ab nisi enim?
           </p>
+          <input 
+            type="file"
+            @change="onFileSelect"
+            ref="inputLogo">
+          <button @click="onUpload">Загрузить</button>
         </v-col>
       </v-row>
     </v-container>
@@ -24,5 +29,32 @@
 </template>
 
 <script>
-export default {};
+import axios from 'axios';
+//import axios from "axios";
+
+export default {
+  name: "Account",
+  data () { 
+    return {
+      selectedFile: null
+    }
+  },
+  methods: {
+      onFileSelect(event) {
+        this.selectedFile = event.target.files[0];
+      },
+      onUpload () {
+        if (this.selectedFile === null) return;
+        
+        let formData = new FormData();
+
+        formData.set('file', this.selectedFile);
+
+        axios.post('/api/users/setlogo', formData, {
+          headers: {
+          'content-type': 'multipart/form-data'
+          }}).then(response => console.log(response));
+      }
+    }
+};
 </script>
