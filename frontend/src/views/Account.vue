@@ -4,11 +4,7 @@
     <v-container class="my-6">
       <v-row>
         <v-col class="col-12 col-md-9">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
-            eum error animi, accusamus modi rem aliquid eaque quidem placeat, ut
-            adipisci dicta. Sequi, quos qui deserunt magnam earum dolor eveniet?
-          </p>
+          <Avatar />
         </v-col>
         <v-col outline class="col-12 col-md-3">
           <p>
@@ -24,5 +20,10 @@
 </template>
 
 <script>
-export default {};
+import Avatar from "@/components/Avatar";
+
+export default {
+  name: "Account",
+  components: { Avatar }
+};
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <v-form ref="form" v-model="model" lazy-validation>
+    <v-form ref="form" lazy-validation>
       <v-text-field
         id="username"
         v-model="username"
@@ -35,7 +35,7 @@
         required
       ></v-checkbox>
       <v-layout>
-        <v-btn color="secondary" @submit="register">
+        <v-btn color="secondary" @click="submit">
           submit
         </v-btn>
       </v-layout>
@@ -65,6 +65,11 @@ export default {
       min: v => v.length >= 4 || "Min 4 characters",
       emailMatch: () => "The email and password you entered don't match"
     }
-  })
+  }),
+  methods: {
+    submit() {
+      console.log("submit");
+    }
+  }
 };
 </script>
