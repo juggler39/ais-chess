@@ -8,6 +8,6 @@ cache:
 before_install:
   - npm i -g frontend
   - npm i -g backend
-  - npm i -g @vue/cli-service-global
+  - npm i -g @vue/cli-service
 
-script: npm run serve --prefix frontend
+script: npm run build --prefix frontend
