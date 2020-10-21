@@ -6,6 +6,7 @@ cache:
     - "node_modules"
 
 before_install:
-  - npm i -g
+  - npm i -g frontend
+  - npm i -g backend
 
 script: npm run serve --prefix frontend
