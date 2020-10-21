@@ -17,7 +17,12 @@
               </v-list-item>
             </v-list>
           </v-card>
-          <FormDialog />
+          <FormDialog
+            :username.sync="items[0].content"
+            :email.sync="items[1].content"
+            :password.sync="password"
+            :bio.sync="items[2].content"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -34,10 +39,11 @@ export default {
   data() {
     return {
       dialog: false,
+      password: "",
       items: [
-        { title: "Name: ", content: "test" },
-        { title: "Email: ", content: "test" },
-        { title: "Interests: ", content: "test" }
+        { title: "Name: ", content: "name" },
+        { title: "Email: ", content: "test@gmail.com" },
+        { title: "Bio: ", content: "test" }
       ]
     };
   }
