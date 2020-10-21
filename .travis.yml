@@ -3,9 +3,12 @@ node_js:
  - "node"
 
 cache: npm
+   directories:
+     - "node_modules"
 
 before_install:
-  - npm i frontend
-  - npm i backend
+  - npm i -g frontend
+  - npm i -g backend
+  - npm i -g @vue/cli-service-global
 
 script: npm run build --prefix frontend
