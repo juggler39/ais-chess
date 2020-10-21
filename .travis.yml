@@ -7,8 +7,7 @@ cache: npm
      - "node_modules"
 
 before_install:
-  - npm i -g frontend
-  - npm i -g backend
-  - npm i -g @vue/cli-service
+  - npm i frontend
+  - npm i backend
 
 script: npm run build --prefix frontend
