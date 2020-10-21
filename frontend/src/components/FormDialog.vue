@@ -12,37 +12,41 @@
           <span class="headline">Edit Your Information</span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field label="UserName"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  label="New Password"
-                  name="password"
-                  type="password"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  label="Confirm Password"
-                  name="confirmPassword"
-                  type="password"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="items"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
+          <v-form ref="form" lazy-validation>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="UserName"
+                    :rules="nameRules"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Email"
+                    :rules="emailRules"
+                    :counter="20"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12">
+                  <v-text-field
+                    label="New Password"
+                    name="password"
+                    type="password"
+                    :rules="passwordRules"
+                    :counter="10"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-autocomplete
+                    :items="items"
+                    label="Interests"
+                    multiple
+                  ></v-autocomplete>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -72,6 +76,15 @@ export default {
       "Writing",
       "Coding",
       "Base"
+    ],
+    valid: true,
+    username: "",
+    nameRules: [v => v.length <= 20 || "Name must be less than 20 characters"],
+    email: "",
+    emailRules: [v => /.+@.+/.test(v) || "E-mail must be valid"],
+    password: "",
+    passwordRules: [
+      v => v.length <= 10 || "Password must be less than 10 characters"
     ]
   })
 };

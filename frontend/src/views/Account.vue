@@ -11,7 +11,8 @@
             <v-list>
               <v-list-item v-for="item in items" :key="item.title">
                 <v-list-item-content>
-                  <v-list-item-title v-text="item.title"></v-list-item-title>
+                  {{ item.title }}
+                  {{ item.content }}
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -34,9 +35,9 @@ export default {
     return {
       dialog: false,
       items: [
-        { title: "Name: test" },
-        { title: "Email: test@test.com" },
-        { title: "Interests: test, test" }
+        { title: "Name: ", content: "test" },
+        { title: "Email: ", content: "test" },
+        { title: "Interests: ", content: "test" }
       ]
     };
   }
