@@ -46,6 +46,17 @@ export default {
         { title: "Bio: ", content: "test" }
       ]
     };
+  },
+  mounted() {
+    if (localStorage.username) {
+      this.items[0].content = localStorage.username;
+    }
+    if (localStorage.email) {
+      this.items[1].content = localStorage.email;
+    }
+    if (localStorage.bio) {
+      this.items[2].content = localStorage.bio;
+    }
   }
 };
 </script>

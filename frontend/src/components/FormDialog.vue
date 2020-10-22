@@ -75,17 +75,6 @@
 export default {
   data: () => ({
     dialog: false,
-    items: [
-      " Skiing",
-      " Ice hockey",
-      " Soccer",
-      " Basketball",
-      " Hockey",
-      " Reading",
-      " Writing",
-      " Coding",
-      " Base"
-    ],
     valid: true,
     props: ["username", "email", "password", "bio"],
     username: "",
