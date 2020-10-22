@@ -8,4 +8,4 @@ before_install:
    - npm ci backend
   
 
-script: npm run build --prefix frontend
+script: npm run serve --prefix frontend
