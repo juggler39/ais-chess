@@ -5,10 +5,7 @@ import axios from "axios";
 
 // Full config:  https://github.com/axios/axios#request-config
 // eslint-disable-next-line
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "production"
-    ? "http://chess.edu2020.devais.work"
-    : "http://localhost:8000";
+axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 if (localStorage.getItem("userLog"))
   axios.defaults.headers.common[
     "Authorization"
