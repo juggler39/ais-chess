@@ -5,6 +5,7 @@ const auth = require('../auth');
 const Users = mongoose.model('Users');
 const {OAuth2Client} = require('google-auth-library');
 const jwt = require('jsonwebtoken');
+let multer  = require('multer')();
 
 generateJWTGoogle = function(_id, login) {
   const today = new Date();
@@ -159,6 +160,23 @@ router.post('/google', (req, res, next) => {
   })
   }
   verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
+});
+
+router.post('/setlogo', [auth.required, multer.single("file")], (req, res, next) => {
+  const { payload: { id } } = req;
+
+  return Users.findById(id)
+    .then((userFound) => {
+      if(!userFound) {
+        return res.json({ user: "Access is denied" });
+      }
+      if (req.file.size > 1048576) res.json("File is too big");
+      else {
+        userFound.logo = req.file;
+        userFound.save().then(() => res.json("Logo saved"));
+      }
+
+    });
 });
 
 //GET protected route

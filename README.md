@@ -1,4 +1,4 @@
-# Chess portal
+# Chess portal [![Build Status](https://travis-ci.org/juggler39/ais-chess.svg?branch=master)](https://travis-ci.org/juggler39/ais-chess)
 ![Frontpage](screenshots/frontpage.jpg)
 ## Description
 AIS-chess is a chess portal where people can meet to play chess, communicate about chess and get information about chess. 
