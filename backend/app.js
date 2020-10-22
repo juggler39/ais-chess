@@ -37,7 +37,7 @@ mongoose.connection
         const info = mongoose.connections[0]
         console.log(`Connection to ${info.host}:${info.port}/${info.name}`)
     })
-mongoose.connect('mongodb://ChessUser:1905Chess@chess-shard-00-00.c41mp.mongodb.net:27017,chess-shard-00-01.c41mp.mongodb.net:27017,chess-shard-00-02.c41mp.mongodb.net:27017/Chess?ssl=true&replicaSet=atlas-xlzo6d-shard-0&authSource=admin&retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect('mongodb://ChessUser:1905Chess@chess-shard-00-00.c41mp.mongodb.net:27017,chess-shard-00-01.c41mp.mongodb.net:27017,chess-shard-00-02.c41mp.mongodb.net:27017/Chess?ssl=true&replicaSet=atlas-xlzo6d-shard-0&authSource=admin&retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true})
 
 //Models & routes
 require('./models/Users');
