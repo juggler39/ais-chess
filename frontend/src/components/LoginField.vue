@@ -30,39 +30,37 @@
         Google
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" @click.prevent="loginWithLogin"
-        >Login</v-btn
-      >
+      <v-btn color="secondary" @click.prevent="loginWithLogin">Login</v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
   </div>
 </template>
 
 <script>
-
-import router from '../router/index';
+import router from "../router/index";
 import axios from "axios";
+
 export default {
-name: "LoginField",
-methods: {
-    loginWithGoogle () {
+  name: "LoginField",
+  methods: {
+    loginWithGoogle() {
       this.$gAuth
         .signIn()
         .then(async GoogleUser => {
           // on success send ID to backend
           await axios.post('/api/users/google', {
-                        ID: GoogleUser.getAuthResponse().id_token
-                      }).then(async (response) => {
-                            axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
-                            window.localStorage.setItem("userLog", response.data.user.token);
-                            window.localStorage.setItem("userName", response.data.user.name);
-                            window.localStorage.setItem("userID", response.data.user.id);
-                            this.$store.commit("setLoginUser", response.data.user.name);
-                            this.$store.commit("setLoginUserID", response.data.user.id);
-                            router.push('/account', () => {});
-                          }, (error) => {
-                            console.log(error);
-                          });
+            ID: GoogleUser.getAuthResponse().id_token
+            }).then(async (response) => {
+                axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
+                window.localStorage.setItem("userLog", response.data.user.token);
+                window.localStorage.setItem("userName", response.data.user.name);
+                window.localStorage.setItem("userID", response.data.user.id);
+                this.$store.commit("setLoginUser", response.data.user.name);
+                this.$store.commit("setLoginUserID", response.data.user.id);
+                router.push('/account', () => {});
+              }, (error) => {
+                console.log(error);
+              });
           router.push('/', () => {})
           this.dialog = false;
         })
