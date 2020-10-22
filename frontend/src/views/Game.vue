@@ -1,11 +1,11 @@
 <template>
   <div class="game">
-    <h1 class="text-center">
+    <h1 v-if="this.$route.params.id" class="text-center">
       This is a play human page. Game
-      {{ `${this.$route.params.id ? this.$route.params.id : "test"}` }}
+      {{ this.$route.params.id }}
     </h1>
     <v-container>
-      <v-row>
+      <v-row v-if="this.$route.params.id">
         <Humanboard
           ref="humanBoard"
           :gameId="this.$route.params.id"
@@ -27,6 +27,12 @@
             <Chat :game="{ id: this.$route.params.id, global: false }" />
           </v-container>
         </v-col>
+      </v-row>
+      <v-row v-else>
+        <h1>
+          You have no active game. Please, visit <a href="/lobby">lobby</a> to
+          choose or create new game
+        </h1>
       </v-row>
     </v-container>
   </div>
@@ -54,6 +60,15 @@ export default {
   },
   computed: mapGetters(["getPVPHistory"]),
   methods: {
+    redirectToGame() {
+      this.$router.push({
+        name: "Game",
+        params: { id: window.localStorage.getItem("runningGameId") }
+      });
+    },
+    runningGame() {
+      return window.localStorage.getItem("runningGameId");
+    },
     resign: function() {
       this.$refs.humanBoard.resign();
     },
@@ -72,6 +87,8 @@ export default {
   mounted() {
     if (this.$route.params.id) {
       this.$socket.client.emit("joinRoom", this.$route.params.id);
+    } else if (window.localStorage.getItem("runningGameId")) {
+      this.redirectToGame();
     }
   }
 };
