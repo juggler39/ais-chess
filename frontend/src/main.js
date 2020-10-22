@@ -23,7 +23,11 @@ const gauthOption = {
   prompt: "select_account"
 };
 
-const socket = io('http://chess.edu2020.devais.work');
+const socket = io(
+  process.env.NODE_ENV === "production"
+    ? "http://chess.edu2020.devais.work"
+    : "http://localhost:8000"
+);
 socket.on("connect", () => {
   console.log("main connect");
 });
