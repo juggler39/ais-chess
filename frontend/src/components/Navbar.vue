@@ -105,7 +105,7 @@ export default {
       { icon: "mdi-home", text: "Home", route: "/" },
       { icon: "mdi-store", text: "Lobby", route: "/lobby" },
       { icon: "mdi-mouse", text: "Play AI", route: "/playai" },
-      { icon: "mdi-face", text: "Play Human", route: "/game" }
+      { icon: "mdi-face", text: "My game", route: "/game" }
     ],
     drawer: false,
     drawerLinks: [
