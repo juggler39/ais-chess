@@ -5,9 +5,9 @@
         <p class="nav_header">Menu</p>
         <ul>
           <li v-for="link in menuLinks" :key="link.point">
-            <router-link :to="link.route" class="footer-link">{{
-              link.point
-            }}</router-link>
+            <router-link :to="link.route" class="footer-link">
+              {{ link.point }}
+            </router-link>
           </li>
         </ul>
       </nav>
@@ -15,7 +15,11 @@
         <p class="nav_header">Contact Us</p>
         <ul class="social-buttons">
           <li v-for="link in socialLinks" :key="link.text">
-            <router-link :to="'//' + link.url" class="social-btn" target="_blank">
+            <router-link
+              :to="'//' + link.url"
+              class="social-btn"
+              target="_blank"
+            >
               <v-icon center>{{ link.icon }}</v-icon>
             </router-link>
           </li>
@@ -33,11 +37,11 @@
           </button>
         </div>
       </form>
-     
     </div>
-    <span class="small-txt"
-      >Made by the best team &copy; {{ new Date().getFullYear() }}</span
-    >
+    <span class="small-txt">
+      Made by the best team &copy;
+      {{ new Date().getFullYear() }}
+    </span>
   </v-footer>
 </template>
 
@@ -53,7 +57,7 @@ export default {
     socialLinks: [
       { text: "Twitter", icon: "mdi-twitter", url: "www.twitter.com" },
       { text: "Vkontakte", icon: "mdi-vk", url: "vk.com" },
-      { text: "LinkedIn", icon: "mdi-linkedin", url: "www.linkedin.com"},
+      { text: "LinkedIn", icon: "mdi-linkedin", url: "www.linkedin.com" },
       { text: "Gmail", icon: "mdi-gmail", url: "mail.google.com" }
     ],
     email: null
