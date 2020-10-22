@@ -10,7 +10,10 @@ before_install:
    - cd ..
    - cd frontend
    - npm i
-
+   - cd ..
+ 
+script: 
   
-
-script: npm run build
+  - cd frontend
+  - npm run build
+  - cd ..
