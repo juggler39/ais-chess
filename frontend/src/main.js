@@ -23,7 +23,7 @@ const gauthOption = {
   prompt: "select_account"
 };
 
-const socket = io("http://localhost:8000");
+const socket = io('http://chess.edu2020.devais.work');
 socket.on("connect", () => {
   console.log("main connect");
 });
