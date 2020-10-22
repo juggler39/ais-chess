@@ -8,7 +8,7 @@ import axios from "axios";
 axios.defaults.baseURL =
   process.env.baseURL ||
   process.env.apiUrl ||
-  'https:chess.edu2020.devais.work';
+  'http://chess.edu2020.devais.work';
 if (localStorage.getItem("userLog"))
   axios.defaults.headers.common[
     "Authorization"
@@ -17,10 +17,10 @@ if (localStorage.getItem("userLog"))
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 let config = {
-  baseURL:
-    process.env.baseURL ||
-    process.env.apiUrl ||
-    'http://chess.edu2020.devais.work',
+  // baseURL:
+  //   process.env.baseURL ||
+  //   process.env.apiUrl ||
+  //   'http://chess.edu2020.devais.work',
   timeout: 0,
   withCredentials: false,
 };
