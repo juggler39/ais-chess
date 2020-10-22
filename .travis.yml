@@ -2,10 +2,11 @@ language: node_js
 node_js:
  - "node"
 
-before_install:
-  - npm i -g frontend
-  - npm i -g backend
-  - npm i -g @vue/cli-service
+cache: npm
+# before_install:
+#   - npm i -g frontend
+#   - npm i -g backend
+#   - npm i -g @vue/cli-service
   
 
 script: npm run build --prefix frontend
