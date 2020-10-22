@@ -6,9 +6,9 @@ import axios from "axios";
 // Full config:  https://github.com/axios/axios#request-config
 // eslint-disable-next-line
 axios.defaults.baseURL =
-  process.env.baseURL ||
-  process.env.apiUrl ||
-  'http://chess.edu2020.devais.work';
+  process.env.NODE_ENV === "production"
+    ? "http://chess.edu2020.devais.work"
+    : "http://localhost:8000";
 if (localStorage.getItem("userLog"))
   axios.defaults.headers.common[
     "Authorization"
@@ -22,7 +22,7 @@ let config = {
   //   process.env.apiUrl ||
   //   'http://chess.edu2020.devais.work',
   timeout: 0,
-  withCredentials: false,
+  withCredentials: false
 };
 
 const _axios = axios.create(config);
