@@ -48,25 +48,38 @@ export default {
         .signIn()
         .then(async GoogleUser => {
           // on success send ID to backend
-          await axios.post('/api/users/google', {
-            ID: GoogleUser.getAuthResponse().id_token
-            }).then(async (response) => {
-                axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
-                window.localStorage.setItem("userLog", response.data.user.token);
-                window.localStorage.setItem("userName", response.data.user.name);
+          await axios
+            .post("/api/users/google", {
+              ID: GoogleUser.getAuthResponse().id_token
+            })
+            .then(
+              async response => {
+                axios.defaults.headers.common[
+                  "Authorization"
+                ] = `Token ${response.data.user.token}`;
+                window.localStorage.setItem(
+                  "userLog",
+                  response.data.user.token
+                );
+                window.localStorage.setItem(
+                  "userName",
+                  response.data.user.name
+                );
                 window.localStorage.setItem("userID", response.data.user.id);
                 this.$store.commit("setLoginUser", response.data.user.name);
                 this.$store.commit("setLoginUserID", response.data.user.id);
-                router.push('/account', () => {});
-              }, (error) => {
+                router.push("/account", () => {});
+              },
+              error => {
                 console.log(error);
-              });
-          router.push('/', () => {})
+              }
+            );
+          router.push("/", () => {});
           this.dialog = false;
         })
         .catch(error => {
-          console.log('error', error)
-        })
+          console.log("error", error);
+        });
     },
     loginWithLogin() {
       let userObj = {
@@ -74,25 +87,28 @@ export default {
           login: document.getElementById("Login").value,
           password: document.getElementById("Password").value
         }
-      }
-      axios.post('/api/users/login', userObj).then(async (response) => {
-                            if (response.data.user) {
-                              axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
-                              window.localStorage.setItem("userLog", response.data.user.token);
-                              window.localStorage.setItem("userName", response.data.user.name);
-                              window.localStorage.setItem("userID", response.data.user.id);
-                              this.$store.commit("setLoginUser", response.data.user.name);
-                              this.$store.commit("setLoginUserID", response.data.user.id);
-                              router.push('/account', () => {});
-                              this.dialog = false;
-                            }
-
-                            //here if Login info is incorrect
-
-                          }, (error) => {
-                            console.log(error);
-                          });
+      };
+      axios.post("/api/users/login", userObj).then(
+        async response => {
+          if (response.data.user) {
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Token ${response.data.user.token}`;
+            window.localStorage.setItem("userLog", response.data.user.token);
+            window.localStorage.setItem("userName", response.data.user.name);
+            window.localStorage.setItem("userID", response.data.user.id);
+            this.$store.commit("setLoginUser", response.data.user.name);
+            this.$store.commit("setLoginUserID", response.data.user.id);
+            router.push("/account", () => {});
+            this.dialog = false;
+          }
+          //here if Login info is incorrect
+        },
+        error => {
+          console.log(error);
+        }
+      );
     }
-  },
-}
+  }
+};
 </script>
