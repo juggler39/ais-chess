@@ -4,8 +4,12 @@ node_js:
 
 cache: npm
 before_install:
-   - npm ci frontend
-   - npm ci backend
+
+   - cd backend
+   - npm i
+   - cd frontend
+   - npm i
+
   
 
-script: npm run serve --prefix frontend
+script: npm run build
