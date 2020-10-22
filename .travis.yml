@@ -4,8 +4,8 @@ node_js:
 
 cache: npm
 before_install:
-   - npm ci -g frontend
-   - npm ci -g backend
+   - npm ci frontend
+   - npm ci backend
   
 
 script: npm run build --prefix frontend
