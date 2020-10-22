@@ -4,10 +4,10 @@ node_js:
 
 cache: npm
 before_install:
-#   - npm i -g frontend
-#   - npm i -g backend
+   - npm i -g --prefix frontend
+   - npm i -g --prefix backend
    - npm i -g @vue/cli-service
-   - npm i -g @vue/cli-plugin-babel
+
   
 
 script: npm run build --prefix frontend
