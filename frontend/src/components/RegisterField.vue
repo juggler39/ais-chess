@@ -1,7 +1,8 @@
 <template>
   <div class="card">
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <v-form ref="form" lazy-validation>
       <v-text-field
+        id="username"
         v-model="username"
         :rules="nameRules"
         :counter="20"
@@ -9,12 +10,14 @@
         required
       ></v-text-field>
       <v-text-field
+        id="email"
         v-model="email"
         :rules="emailRules"
         label="E-mail"
         required
       ></v-text-field>
       <v-text-field
+        id="password"
         v-model="password"
         :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
         :rules="[rules.required, rules.min]"
@@ -31,16 +34,16 @@
         label="Do you agree?"
         required
       ></v-checkbox>
-      <v-btn class="mr-4" @click="validate">
-        submit
-      </v-btn>
+      <v-layout>
+        <v-btn color="secondary" @click="submit">
+          submit
+        </v-btn>
+      </v-layout>
     </v-form>
   </div>
 </template>
 
 <script>
-import router from "../router/index";
-import axios from "axios";
 export default {
   data: () => ({
     valid: true,
@@ -64,38 +67,8 @@ export default {
     }
   }),
   methods: {
-    validate() {
-      if (this.$refs.form.validate()) {
-        let userObj = {
-          user: {
-            login: this.username,
-            password: this.password,
-            email: this.email
-          }
-        };
-        axios.post("/api/users/register", userObj).then(
-          async response => {
-            if (response.data.user) {
-              axios.defaults.headers.common[
-                "Authorization"
-              ] = `Token ${response.data.user.token}`;
-              window.localStorage.setItem("userLog", response.data.user.token);
-              window.localStorage.setItem("userName", response.data.user.name);
-              window.localStorage.setItem("userID", response.data.user.id);
-              this.$store.commit("setLoginUser", response.data.user.name);
-              this.$store.commit("setLoginUserID", response.data.user.id);
-              router.push("/account", () => {});
-              this.dialog = false;
-            } else {
-              //here if Login info is incorrect
-              console.log(response.data.errors);
-            }
-          },
-          error => {
-            console.log(error);
-          }
-        );
-      }
+    submit() {
+      console.log("submit");
     }
   }
 };

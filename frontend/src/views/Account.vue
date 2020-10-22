@@ -1,27 +1,28 @@
 <template>
   <div class="account">
-    <h1>This is an account page</h1>
+    <h1>User Profile</h1>
     <v-container class="my-6">
       <v-row>
-        <v-col class="col-12 col-md-9">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
-            eum error animi, accusamus modi rem aliquid eaque quidem placeat, ut
-            adipisci dicta. Sequi, quos qui deserunt magnam earum dolor eveniet?
-          </p>
+        <v-col class="col-12 col-md-5">
+          <Avatar />
         </v-col>
-        <v-col outline class="col-12 col-md-3">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-            quis nostrum nesciunt quas inventore cumque, minima debitis
-            temporibus eos eligendi incidunt ipsa at corporis voluptatum quod
-            soluta, ab nisi enim?
-          </p>
-          <input 
-            type="file"
-            @change="onFileSelect"
-            ref="inputLogo">
-          <button @click="onUpload">Загрузить</button>
+        <v-col outline class="col-12 col-md-7">
+          <v-card class="mb-2">
+            <v-list>
+              <v-list-item v-for="item in items" :key="item.title">
+                <v-list-item-content>
+                  {{ item.title }}
+                  {{ item.content }}
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+          <FormDialog
+            :username.sync="items[0].content"
+            :email.sync="items[1].content"
+            :password.sync="password"
+            :bio.sync="items[2].content"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -29,32 +30,41 @@
 </template>
 
 <script>
-import axios from 'axios';
-//import axios from "axios";
+import Avatar from "@/components/Avatar";
+import FormDialog from "@/components/FormDialog";
 
 export default {
   name: "Account",
-  data () { 
+  components: { Avatar, FormDialog },
+  data() {
     return {
-      selectedFile: null
-    }
+      dialog: false,
+      password: "",
+      items: [
+        { title: "Name: ", content: "name" },
+        { title: "Email: ", content: "test@gmail.com" },
+        { title: "Bio: ", content: "test" }
+      ]
+    };
   },
-  methods: {
-      onFileSelect(event) {
-        this.selectedFile = event.target.files[0];
-      },
-      onUpload () {
-        if (this.selectedFile === null) return;
-        
-        let formData = new FormData();
-
-        formData.set('file', this.selectedFile);
-
-        axios.post('/api/users/setlogo', formData, {
-          headers: {
-          'content-type': 'multipart/form-data'
-          }}).then(response => console.log(response));
-      }
+  mounted() {
+    if (localStorage.username) {
+      this.items[0].content = localStorage.username;
     }
+    if (localStorage.email) {
+      this.items[1].content = localStorage.email;
+    }
+    if (localStorage.bio) {
+      this.items[2].content = localStorage.bio;
+    }
+  }
 };
 </script>
+
+<style lang="scss" scoped>
+.v-list-item {
+  &:not(:last-child) {
+    border-bottom: 1px solid #181818;
+  }
+}
+</style>

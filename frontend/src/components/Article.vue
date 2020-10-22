@@ -1,24 +1,30 @@
 <template>
- <article class="col-sm-12">
-  <nav aria-label="breadcrumbs">
-    <ul class="breadcrumbs">
-      <li class="breadcrumb-item"><router-link :to="'/'">Home</router-link></li>
-      <span>/</span>
-      <li class="breadcrumb-item active" aria-current="page">{{ $route.params.title }}</li>
-    </ul>
-  </nav>
-  <div class="card">
-    <h1 class="header">{{ $route.params.title }}</h1>
-    <p class="content"><img class="image" :src="$route.params.img" alt="">{{ $route.params.content }}</p>
-  </div>
- </article>
+  <article class="col-sm-12">
+    <nav aria-label="breadcrumbs">
+      <ul class="breadcrumbs">
+        <li class="breadcrumb-item">
+          <router-link :to="'/'">Home</router-link>
+        </li>
+        <span>/</span>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ $route.params.title }}
+        </li>
+      </ul>
+    </nav>
+    <div class="card">
+      <h1 class="header">{{ $route.params.title }}</h1>
+      <p class="content">
+        <img class="image" :src="$route.params.img" alt="" />
+        {{ $route.params.content }}
+      </p>
+    </div>
+  </article>
 </template>
 
 <script>
-
 export default {
   name: "Article"
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -28,7 +34,8 @@ export default {
   margin: 0;
   display: flex;
 
-  .breadcrumb-item, span {
+  .breadcrumb-item,
+  span {
     margin: 10px 5px;
     font-size: 12px;
     color: #464646;
@@ -41,7 +48,7 @@ export default {
       }
     }
     &.active {
-      color:  #7a7a7a;
+      color: #7a7a7a;
     }
   }
 }
