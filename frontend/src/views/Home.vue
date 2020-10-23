@@ -4,7 +4,7 @@
       <img
         class="home--main_image"
         slot="image"
-        :src="require('@/assets/chess-img.gif')"
+        :src="require('@/assets/chess-imgmin.gif')"
       />
       <div class="home--title">
         <h1 class="main-title">Experience Virtual World of Chess</h1>
@@ -54,7 +54,7 @@ export default {
   justify-content: space-around;
   .home--main_image {
     padding: 5%;
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   .home--title {
