@@ -22,10 +22,13 @@ script:
 - npm run build
 - cd ..
 
+before_deploy:
+  - chmod +x .travis/deploy.sh
+
 deploy:
 - provider: script
-  script: chmod +x .travis/deploy.sh && .travis/deploy.sh
   skip_cleanup: true
+  # script: chmod +x .travis/deploy.sh && .travis/deploy.sh
   script: ".travis/deploy.sh"
   on:
     branch: dev
