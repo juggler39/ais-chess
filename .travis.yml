@@ -22,6 +22,9 @@ script:
 - npm run build
 - cd ..
 
+addons:
+  ssh_known_hosts: 165.227.158.125
+
 before_deploy:
   - chmod +x .travis/deploy.sh
 
