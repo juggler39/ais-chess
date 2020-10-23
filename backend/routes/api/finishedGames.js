@@ -27,7 +27,17 @@ router.post('/finish-game', auth.required, (req, res, next) => {
                 newGame.timeBlack = game.timeBlack;
                 newGame.winner = game.winner;
 
-                newGame.save().then(() => res.json({ game: newGame.toJSON() }));
+                newGame.save().then(async () => {
+                    await  Users.findOne({_id: gameFound.players.player1ID}).then(userFound => {
+                        userFound.activeGame = "";
+                        userFound.save();
+                      })
+                    await  Users.findOne({_id: gameFound.players.player2ID}).then(userFound => {
+                        userFound.activeGame = "";
+                        userFound.save();
+                      })
+                    res.json({ game: newGame.toJSON() });
+                });
             }
         })
     });
