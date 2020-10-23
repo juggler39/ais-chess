@@ -39,11 +39,27 @@ export default {
   sockets: {
     newMove(data) {
       //here we are getting every new move
+<<<<<<< HEAD
+=======
+      // window.localStorage.setItem(
+      //   "playerTurn",
+      //   data.move.color === "w" ? "black" : "white"
+      // );
+      //this.saveTimer();
+>>>>>>> ab55158... get moves and timers when not on my game tab #144
       if (data.move.color === "w") {
         this.timeWhite = data.playerTime;
       } else {
         this.timeBlack = data.playerTime;
       }
+<<<<<<< HEAD
+=======
+      // this.$store.dispatch("updatePvPHistory", data.move);
+      // window.localStorage.setItem(
+      //   "playersHistory",
+      //   JSON.stringify(this.getPVPHistory)
+      // );
+>>>>>>> ab55158... get moves and timers when not on my game tab #144
       const color = data.move.color === "w" ? "white" : "black";
       //filtering own moves
       if (color !== this.pieceColor) {
