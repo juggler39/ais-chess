@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
 const http = require('http');
 const io = require('socket.io');
+const { UserRefreshClient } = require('google-auth-library');
 
 //Configure isProduction variable
 const isProduction = process.env.NODE_ENV === 'production';
@@ -37,7 +38,7 @@ mongoose.connection
         const info = mongoose.connections[0]
         console.log(`Connection to ${info.host}:${info.port}/${info.name}`)
     })
-mongoose.connect('mongodb://ChessUser:1905Chess@chess-shard-00-00.c41mp.mongodb.net:27017,chess-shard-00-01.c41mp.mongodb.net:27017,chess-shard-00-02.c41mp.mongodb.net:27017/Chess?ssl=true&replicaSet=atlas-xlzo6d-shard-0&authSource=admin&retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true})
+mongoose.connect('mongodb://ChessUser:1905Chess@chess-shard-00-00.c41mp.mongodb.net:27017,chess-shard-00-01.c41mp.mongodb.net:27017,chess-shard-00-02.c41mp.mongodb.net:27017/Chess?ssl=true&replicaSet=atlas-xlzo6d-shard-0&authSource=admin&retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true, useFindAndModify: false})
 
 //Models & routes
 require('./models/Users');
@@ -81,6 +82,7 @@ app.use((err, req, res, next) => {
 
 const GlobalChat = mongoose.model('GlobalChat');
 const OpenGame = mongoose.model('OpenGame');
+const Users = mongoose.model('Users');
 
 socketIO.on('connection', (socket) => {
   socket.on('disconnect', () => {
@@ -167,7 +169,16 @@ socketIO.on('connection', (socket) => {
             }
           }
           changeColor().then(() => {
-            gameFound.save().then(() => {
+            gameFound.save().then((gameSaved) => {
+              Users.findOne({_id: gameSaved.players.player1ID}).then(userFound => {
+                userFound.activeGame = gameSaved._id;
+                userFound.save();
+              })
+              Users.findOne({_id: player2info.player2ID}).then(userFound => {
+                userFound.activeGame = gameSaved._id;
+                userFound.save();
+              })
+
               OpenGame.find({ isOpen: true }, (err, allOpenGames) => {
                 socketIO.sockets.emit('newGameInfo', allOpenGames);
               });
