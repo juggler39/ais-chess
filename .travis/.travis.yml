@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+- node
+cache: npm
+before_install:
+- openssl aes-256-cbc -K $encrypted_f217180e22ee_key -iv $encrypted_f217180e22ee_iv
+  -in .travis/id_rsa.enc -out .travis/id_rsa -d
+- eval "$(ssh-agent -s)"
+- cp .travis/id_rsa ~/.ssh/id_rsa
+- chmod 600 ~/.ssh/id_rsa
+- ssh-add ~/.ssh/id_rsa
+- cd backend
+- npm i
+- cd ..
+- cd frontend
+- npm i
+- cd ..
+script:
+- cd frontend
+- npm run lint
+- npm run build
+- cd ..
+
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: ".travis/deploy.sh"
+  on:
+    branch: master
