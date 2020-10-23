@@ -162,7 +162,7 @@ router.post('/google', (req, res, next) => {
   verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
 });
 
-router.post('/setlogo', [auth.required, multer.single("file")], (req, res, next) => {
+router.post('/setlogo', [auth.required, multer.single("profile_photo")], (req, res, next) => {
   const { payload: { id } } = req;
 
   return Users.findById(id)

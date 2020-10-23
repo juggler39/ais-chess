@@ -1,6 +1,20 @@
 language: node_js
-node_js: 
-  - "stable"
-cache:
-  directories:
-    - "node_modules"
+node_js:
+ - "node"
+
+cache: npm
+before_install:
+
+   - cd backend
+   - npm i
+   - cd ..
+   - cd frontend
+   - npm i
+   - cd ..
+ 
+script: 
+  
+  - cd frontend
+  - npm run lint
+  - npm run build
+  - cd ..
