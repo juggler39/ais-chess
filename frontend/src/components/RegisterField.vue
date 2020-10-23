@@ -71,7 +71,6 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        console.log('1');
         let userObj = {
           user: {
             login: this.username,
@@ -79,10 +78,8 @@ export default {
             email: this.email
           }
         }
-        console.log(userObj);
         axios.post('/api/users/register', userObj).then((response) => {
                               if (response.data.user) {
-                                console.log('response');
                                 axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
                                 window.localStorage.setItem("userLog", response.data.user.token);
                                 window.localStorage.setItem("userName", response.data.user.name);
@@ -94,7 +91,6 @@ export default {
                               }
                               else {//here if Login info is incorrect
                                 console.log(response.data.errors);
-                                console.log('Error');
                               }
                             }, (error) => {
                               console.log(error);
