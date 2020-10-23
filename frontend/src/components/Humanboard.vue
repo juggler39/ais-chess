@@ -39,7 +39,6 @@ export default {
   sockets: {
     newMove(data) {
       //here we are getting every new move
-
       if (data.move.color === "w") {
         this.timeWhite = data.playerTime;
       } else {
