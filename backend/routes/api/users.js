@@ -23,9 +23,12 @@ generateJWTGoogle = function(_id, login) {
 router.post('/register', auth.optional, (req, res, next) => {
   const { body: { user } } = req;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   console.log(user);
 >>>>>>> feat: registration again
+=======
+>>>>>>> feat: registration again (remove console.log)
   if(!user.email) {
     return res.json({
       errors: {
