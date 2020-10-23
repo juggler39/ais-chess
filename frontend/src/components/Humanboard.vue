@@ -37,21 +37,12 @@ export default {
   sockets: {
     newMove(data) {
       //here we are getting every new move
-      // window.localStorage.setItem(
-      //   "playerTurn",
-      //   data.move.color === "w" ? "black" : "white"
-      // );
-      //this.saveTimer();
+
       if (data.move.color === "w") {
         this.timeWhite = data.playerTime;
       } else {
         this.timeBlack = data.playerTime;
       }
-      // this.$store.dispatch("updatePvPHistory", data.move);
-      // window.localStorage.setItem(
-      //   "playersHistory",
-      //   JSON.stringify(this.getPVPHistory)
-      // );
       const color = data.move.color === "w" ? "white" : "black";
       if (color !== this.pieceColor) {
         this.opponentMove(data.move);
