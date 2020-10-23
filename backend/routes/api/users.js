@@ -49,6 +49,8 @@ router.post('/register', auth.optional, (req, res, next) => {
 
   const finalUser = new Users(user);
   finalUser.name = user.login;
+  finalUser.bio = "";
+  finalUser.activeGame = "";
 
   Users.findOne({ login: user.login }, function( err, user_login) {
     if (user_login)
@@ -86,7 +88,59 @@ router.post('/register', auth.optional, (req, res, next) => {
   });});
 });
 
-//POST login route
+router.post('/update', auth.required, (req, res, next) => {
+  const { payload: { id } } = req;
+
+  return Users.findById(id)
+    .then(async userFound => {
+      if(!userFound) {
+        return res.json({ user: "Access is denied" });
+      }
+      else {
+        const { body: { user } } = req;
+
+        if (userFound.name !== user.name) {
+          await Users.findOne({ login: user.name }, function( err, user_login) {
+            if (user_login)
+             {
+              return res.json({
+                errors: {
+                  login: 'already exists',
+                },
+              });
+             }
+             else {
+               userFound.name = user.name;
+             }
+          });
+        }
+
+        if (userFound.email !== user.email) {
+          await Users.findOne({ email: user.email }, function( err, user_email) {
+            if (user_email)
+             {
+              return res.json({
+                errors: {
+                  email: 'already exists',
+                },
+              });
+             }
+             else {
+               userFound.email = user.email;
+             }
+          });
+        }
+
+        if (userFound.bio !== user.bio) userFound.bio = user.bio;
+
+        if (user.password.length !== 0) userFound.setPassword(user.password);
+
+        userFound.save().then((user) => res.json({user: user.toAuthJSON()}));
+
+      }
+    });
+});
+
 router.post('/login', (req, res, next) => {
   const { body: { user } } = req;
 
@@ -145,13 +199,17 @@ router.post('/google', (req, res, next) => {
     if (isUser)
     {
       const token = await generateJWTGoogle(isUser._id, name);
-      res.json({ user : {email, name, token, id: isUser._id }});
+      let userObj = isUser.toAuthJSON();
+      userObj.token = token;
+      res.json({ user : userObj});
     }
     else {
       const userObj = {
         email,
         login: userid,
-        name
+        name,
+        bio: "",
+        activeGame: ""
       }
       const finalUser = new Users(userObj);
       finalUser.save()
@@ -162,7 +220,7 @@ router.post('/google', (req, res, next) => {
   verify().catch(() => {console.error; res.json({ err: "error in GAuth" });});
 });
 
-router.post('/setlogo', [auth.required, multer.single("file")], (req, res, next) => {
+router.post('/setlogo', [auth.required, multer.single("profile_photo")], (req, res, next) => {
   const { payload: { id } } = req;
 
   return Users.findById(id)
@@ -179,7 +237,18 @@ router.post('/setlogo', [auth.required, multer.single("file")], (req, res, next)
     });
 });
 
-//GET protected route
+router.get('/info', auth.required, (req, res, next) => {
+  const { payload: { id } } = req;
+
+  return Users.findById(id)
+    .then((user) => {
+      if(!user) {
+        return res.json({ user: "Access is denied" });
+      }
+      return res.json({ user: user.toAuthJSON() });
+    });
+});
+
 router.get('/secret', auth.required, (req, res, next) => {
   const { payload: { id } } = req;
 

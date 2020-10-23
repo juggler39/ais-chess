@@ -8,16 +8,11 @@ before_install:
 - eval "$(ssh-agent -s)"
 - chmod 600 ./deploy_key
 - ssh-add ./deploy_key
-- ssh -i ./deploy_key root@138.68.163.126 pwd
+- ssh -i ./deploy_key root@165.227.158.125 pwd
 install:
-- cd backend
-- npm i
-- cd ..
 - cd frontend
 - npm i
-- cd ..
 script:
-- cd frontend
 - npm run lint
 - npm run build
 - cd ..
@@ -25,13 +20,10 @@ script:
 addons:
   ssh_known_hosts: 165.227.158.125
 
-before_deploy:
-  - chmod +x .travis/deploy.sh
-
 deploy:
 - provider: script
   skip_cleanup: true
-  # script: chmod +x .travis/deploy.sh && .travis/deploy.sh
-  script: ".travis/deploy.sh"
+  script: chmod +x .travis/deploy.sh && .travis/deploy.sh
   on:
-    branch: dev
+    branch: production
+    
