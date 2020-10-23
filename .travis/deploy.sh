@@ -8,7 +8,7 @@ echo "###### Starting Deployment ######"
 
 echo "###### Continue Deployment ######"
 
-git config --global push.default matching
+git config --global push.default simple
 git remote add deploy ssh://root@$IP:$PORT$DEPLOY_DIR
 git push deploy dev
 
