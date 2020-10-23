@@ -2,11 +2,10 @@
 
 echo "###### Starting Deployment ######"
 
-git branch
 git config --global push.default simple
 git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR
 git fetch --unshallow || true
-git push production master
+git push production dev
 
 echo "###### Contunue Deployment ######"
 
@@ -14,6 +13,13 @@ echo "###### Contunue Deployment ######"
  ssh root@$IP <<EOF
  cd $DEPLOY_DIR
  mkdir testdir
+ cd backend
+ npm install
+ cd ..
+ cd frontend
+ npm install
+ npm run build
+ pm2 restart app
 EOF
 
 echo "###### End Deployment ######"
