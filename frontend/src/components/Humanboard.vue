@@ -40,6 +40,7 @@ export default {
     newMove(data) {
       //here we are getting every new move
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       // window.localStorage.setItem(
       //   "playerTurn",
@@ -47,11 +48,15 @@ export default {
       // );
       //this.saveTimer();
 >>>>>>> ab55158... get moves and timers when not on my game tab #144
+=======
+
+>>>>>>> 03627b5... remove commemts
       if (data.move.color === "w") {
         this.timeWhite = data.playerTime;
       } else {
         this.timeBlack = data.playerTime;
       }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
       // this.$store.dispatch("updatePvPHistory", data.move);
@@ -60,6 +65,8 @@ export default {
       //   JSON.stringify(this.getPVPHistory)
       // );
 >>>>>>> ab55158... get moves and timers when not on my game tab #144
+=======
+>>>>>>> 03627b5... remove commemts
       const color = data.move.color === "w" ? "white" : "black";
       //filtering own moves
       if (color !== this.pieceColor) {
