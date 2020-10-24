@@ -30,7 +30,7 @@ after_success:
 - git add .
 - git commit -m 'Build by Travis'
 - git config --list
-- git push --force production HEAD
+- git push --force production dev
 
 addons:
   ssh_known_hosts: 165.227.158.125
