@@ -7,6 +7,7 @@ echo "###### Starting Deployment ######"
 # git fetch --unshallow || true
 # git push production dev
 
+ls
 git init
 git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
 git add .
