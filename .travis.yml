@@ -16,7 +16,7 @@ install:
 - cd frontend
 - npm i
 - cd ..
-skip_cleanup: true
+
 script:
 - cd frontend
 - npm run lint
@@ -37,7 +37,6 @@ before_deploy:
 
 deploy:
 - provider: script
-skip_cleanup: true
 # script: chmod +x .travis/deploy.sh && .travis/deploy.sh
 script: ".travis/deploy.sh"
 on:
