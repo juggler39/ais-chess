@@ -32,6 +32,7 @@
 <script>
 import Avatar from "@/components/Avatar";
 import FormDialog from "@/components/FormDialog";
+import axios from "axios";
 
 export default {
   name: "Account",
@@ -41,22 +42,20 @@ export default {
       dialog: false,
       password: "",
       items: [
-        { title: "Name: ", content: "name" },
-        { title: "Email: ", content: "test@gmail.com" },
-        { title: "Bio: ", content: "test" }
+        { title: "Name: ", content: ""},
+        { title: "Email: ", content: "" },
+        { title: "Bio: ", content: "" }
       ]
     };
   },
   mounted() {
-    if (localStorage.username) {
-      this.items[0].content = localStorage.username;
-    }
-    if (localStorage.email) {
-      this.items[1].content = localStorage.email;
-    }
-    if (localStorage.bio) {
-      this.items[2].content = localStorage.bio;
-    }
+    axios.get("/api/users/info").then(response => {
+      const { data: { user }} = response;
+
+      this.items[0].content = user.name;
+      this.items[1].content = user.email;
+      this.items[2].content = user.bio;
+    });
   }
 };
 </script>
