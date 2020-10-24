@@ -26,5 +26,5 @@ deploy:
   script: chmod +x .travis/deploy.sh && .travis/deploy.sh
 
   on:
-    branch: dev
+    branch: production
     
