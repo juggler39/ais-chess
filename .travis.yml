@@ -17,6 +17,9 @@ install:
 - npm i
 - cd ..
 script:
+- cd backend
+- npm run lint
+- cd ..
 - cd frontend
 - npm run lint
 - npm run build
@@ -26,7 +29,7 @@ script:
 - git add .
 - git commit -m 'Build by Travis'
 - git config --list
-- git push --force --set-upstream production master
+- git push --force --set-upstream production dev
 
 addons:
   ssh_known_hosts: 165.227.158.125
