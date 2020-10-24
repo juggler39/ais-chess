@@ -29,6 +29,7 @@ after_success:
 - git remote -v
 - git add .
 - git commit -m 'Build by Travis'
+- git config --list
 - git push --force production HEAD
 
 addons:
