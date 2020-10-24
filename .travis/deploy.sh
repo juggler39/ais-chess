@@ -12,7 +12,6 @@ echo "###### Contunue Deployment ######"
 # Skip this command if you don't need to execute any additional commands after deploying.
  ssh root@$IP <<EOF
  cd $DEPLOY_DIR
- mkdir testdir
  cd backend
  npm install
  cd ..
