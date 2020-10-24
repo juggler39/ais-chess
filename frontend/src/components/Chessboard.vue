@@ -109,7 +109,9 @@ export default {
         this.$socket.client.emit("move", {
           game: id,
           move: move,
-          playerTime
+          playerTime,
+          timeWhite: this.timeWhite,
+          timeBlack: this.timeBlack
         });
       }
     },

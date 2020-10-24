@@ -11,7 +11,8 @@ const UsersSchema = new Schema({
   hash: String,
   salt: String,
   activeGame: String,
-  logo: Object
+  logo: Object,
+  bio: String
 });
 
 UsersSchema.methods.setPassword = function(password) {
@@ -43,7 +44,8 @@ UsersSchema.methods.toAuthJSON = function() {
     email: this.email,
     token: this.generateJWT(),
     activeGame: this.activeGame,
-    logo: this.logo
+    logo: this.logo,
+    bio: this.bio
   };
 };
 
