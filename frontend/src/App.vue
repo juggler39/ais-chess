@@ -23,7 +23,26 @@ export default {
   name: "App",
   components: { Navbar, Footer },
   sockets: {
-    connect() {},
+    newMove(data) {
+      window.localStorage.setItem(
+        "playerTurn",
+        data.move.color === "w" ? "black" : "white"
+      );
+      window.localStorage.setItem(
+        "playersTimer",
+        JSON.stringify({
+          whiteTimer: data.timeWhite,
+          blackTimer: data.timeBlack,
+          moveTime: Date.now()
+        })
+      );
+      this.$store.dispatch("updatePvPHistory", data.move);
+      window.localStorage.setItem(
+        "playersHistory",
+        JSON.stringify(this.$store.getters.getPVPHistory)
+      );
+      console.log("app get move", data);
+    },
     startGame(game) {
       window.localStorage.removeItem("playersHistory");
       window.localStorage.removeItem("playersTimer");
