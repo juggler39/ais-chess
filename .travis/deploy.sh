@@ -6,7 +6,7 @@ scp -r backend/* root@$IP:$DEPLOY_DIR/backend/
 
 echo "###### Starting Deployment ######"
 
- ssh root@$IP <<EOF
+ssh root@$IP <<EOF
  cd $DEPLOY_DIR/backend
  npm install
  pm2 restart app
