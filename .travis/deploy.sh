@@ -8,6 +8,7 @@ echo "###### Starting Deployment ######"
 # git push production dev
 
 ls
+cd dist
 git init
 git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
 git add .
