@@ -24,8 +24,8 @@ echo "###### Contunue Deployment ######"
  cd $DEPLOY_DIR
  git checkout dev
  ls
-#  cd backend
-#  npm install
+ cd backend
+ npm install
  pm2 restart app
 EOF
 
