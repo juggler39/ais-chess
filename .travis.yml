@@ -21,15 +21,17 @@ script:
 - npm run lint
 - npm run build
 after_success:
-
-- scp -r dist/* root@$IP:$PORT$DEPLOY_DIR/frontend/
-- scp -r ../backend/* root@$IP:$PORT$DEPLOY_DIR/backend/
+- cd ..
+- chmod +x .travis/deploy.sh
+- scp -r frontend/dist/* root@$IP:$DEPLOY_DIR/frontend/
+- scp -r backend/* root@$IP:$DEPLOY_DIR/backend/
 
 addons:
   ssh_known_hosts: 165.227.158.125
 
 deploy:
 - provider: script
+  skip_cleanup: true
   script: ".travis/deploy.sh"
   on:
     branch: dev
