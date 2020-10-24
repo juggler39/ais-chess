@@ -22,8 +22,6 @@ echo "###### Contunue Deployment ######"
 # Skip this command if you don't need to execute any additional commands after deploying.
  ssh root@$IP <<EOF
  cd $DEPLOY_DIR
- git checkout dev
- ls
  cd backend
  npm install
  pm2 restart app

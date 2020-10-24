@@ -21,19 +21,9 @@ script:
 - npm run lint
 - npm run build
 after_success:
-- cd ..
-- chmod +x .travis/deploy.sh
-- git config --global push.default simple
-- git init
-- git config receive.denyCurrentBranch updateInstead
-- git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
-- git remote -v
-- git checkout dev
-- git add .
-- git commit -m 'Build by Travis'
-- git config --list
-- git fetch --unshallow || true
-- git push --force production dev
+
+- scp -r dist/* root@$IP:$PORT$DEPLOY_DIR/frontend/
+- scp -r ../backend/* root@$IP:$PORT$DEPLOY_DIR/backend/
 
 addons:
   ssh_known_hosts: 165.227.158.125
