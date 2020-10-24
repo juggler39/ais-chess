@@ -27,17 +27,23 @@ addons:
   ssh_known_hosts: 165.227.158.125
 
 before_deploy:
+  # - chmod +x .travis/deploy.sh
+  - provider: script
   skip_cleanup: true
   script:
-  - git init
-  - git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
-  - git add .
-  - git commit -m 'Build by Travis'
-  - git config --list
-  - git push --force --set-upstream production dev
+    - git init
+    - git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
+    - git add .
+    - git commit -m 'Build by Travis'
+    - git config --list
+    - git push --force --set-upstream production dev
+  on:
+    branch: dev
 
 deploy:
 - provider: script
+  skip_cleanup: true
   script: chmod +x .travis/deploy.sh && .travis/deploy.sh
+  # script: ".travis/deploy.sh"
   on:
     branch: dev
