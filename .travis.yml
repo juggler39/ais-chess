@@ -12,9 +12,7 @@ before_install:
 install:
 - cd frontend
 - npm i
-- cd ..
 script:
-- cd frontend
 - npm run lint
 - npm run build
 after_success:
@@ -31,4 +29,4 @@ deploy:
   skip_cleanup: true
   script: ".travis/deploy.sh"
   on:
-    branch: dev
+    branch: production
