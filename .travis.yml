@@ -21,6 +21,7 @@ script:
 - npm run lint
 - npm run build
 after_success:
+- cd ..
 - git config --global push.default simple
 - git init
 - git config receive.denyCurrentBranch updateInstead
@@ -28,18 +29,7 @@ after_success:
 - git remote -v
 - git add .
 - git commit -m 'Build by Travis'
-- git config --list
 - git push --force production HEAD
-- cd dist
-- git init
-- git config receive.denyCurrentBranch updateInstead
-- git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/frontend/dist
-- git remote -v
-- git add .
-- git commit -m 'Build by Travis'
-- git config --list
-- git push --force production HEAD
-- cd ..
 
 addons:
   ssh_known_hosts: 165.227.158.125
