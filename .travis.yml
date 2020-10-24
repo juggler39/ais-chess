@@ -20,9 +20,9 @@ script:
 - cd frontend
 - npm run lint
 - npm run build
-- cd dist
+- cd ..
 - git init
-- git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/frontend/dist
+- git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
 - git add .
 - git commit -m 'Build by Travis'
 - git config --list
