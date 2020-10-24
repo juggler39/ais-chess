@@ -10,9 +10,6 @@ before_install:
 - ssh-add ./deploy_key
 - ssh -i ./deploy_key root@165.227.158.125 pwd
 install:
-- cd backend
-- npm i
-- cd ..
 - cd frontend
 - npm i
 - cd ..
