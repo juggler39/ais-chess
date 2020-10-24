@@ -14,7 +14,7 @@ git add .
 git commit -m 'Build by Travis'
 git config --list
 git fetch --unshallow || true
-git push --force --set-upstream production dev
+git push --force production dev
 
 echo "###### Contunue Deployment ######"
 
