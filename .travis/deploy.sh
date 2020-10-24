@@ -2,10 +2,18 @@
 
 echo "###### Starting Deployment ######"
 
-git config --global push.default simple
-git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR
+# git config --global push.default simple
+# git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR
+# git fetch --unshallow || true
+# git push production dev
+
+git init
+git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
+git add .
+git commit -m 'Build by Travis'
+git config --list
 git fetch --unshallow || true
-git push production dev
+git push --force --set-upstream production dev
 
 echo "###### Contunue Deployment ######"
 
