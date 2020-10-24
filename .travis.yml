@@ -10,14 +10,13 @@ before_install:
 - ssh-add ./deploy_key
 - ssh -i ./deploy_key root@165.227.158.125 pwd
 install:
-- cd backend
-- npm i
-- cd ..
 - cd frontend
 - npm i
 - cd ..
-
 script:
+- cd backend
+- npm run lint
+- cd ..
 - cd frontend
 - npm run lint
 - npm run build
@@ -37,7 +36,8 @@ before_deploy:
 
 deploy:
 - provider: script
-# script: chmod +x .travis/deploy.sh && .travis/deploy.sh
-script: ".travis/deploy.sh"
-on:
-  branch: dev
+  skip_cleanup: true
+  # script: chmod +x .travis/deploy.sh && .travis/deploy.sh
+  script: ".travis/deploy.sh"
+  on:
+    branch: dev
