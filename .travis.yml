@@ -17,9 +17,7 @@ install:
 - npm i
 - cd ..
 script:
-- cd backend
-- npm run lint
-- cd ..
+
 - cd frontend
 - npm run lint
 - npm run build
@@ -31,7 +29,6 @@ addons:
 before_deploy:
   skip_cleanup: true
   script:
-  - chmod +x .travis/deploy.sh
   - git init
   - git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/
   - git add .
@@ -41,8 +38,6 @@ before_deploy:
 
 deploy:
 - provider: script
-  skip_cleanup: true
-  # script: chmod +x .travis/deploy.sh && .travis/deploy.sh
-  script: ".travis/deploy.sh"
+  script: chmod +x .travis/deploy.sh && .travis/deploy.sh
   on:
     branch: dev
