@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "###### Starting Deployment ######"
+
+scp -r frontend/dist/* root@$IP:$DEPLOY_DIR/frontend/
+scp -r backend/* root@$IP:$DEPLOY_DIR/backend/
 
 echo "###### Starting Deployment ######"
 

@@ -15,11 +15,7 @@ install:
 script:
 - npm run lint
 - npm run build
-after_success:
 - cd ..
-- chmod +x .travis/deploy.sh
-- scp -r frontend/dist/* root@$IP:$DEPLOY_DIR/frontend/
-- scp -r backend/* root@$IP:$DEPLOY_DIR/backend/
 
 addons:
   ssh_known_hosts: 165.227.158.125
@@ -27,7 +23,7 @@ addons:
 deploy:
 - provider: script
   skip_cleanup: true
-  script: ".travis/deploy.sh"
+  script: chmod +x .travis/deploy.sh && .travis/deploy.sh
   on:
     branch: production
     
