@@ -20,7 +20,13 @@ script:
 - cd frontend
 - npm run lint
 - npm run build
-- cd ..
+- cd dist
+- git init
+- git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR/frontend/dist
+- git add .
+- git commit -m 'Build by Travis'
+- git config --list
+- git push --force --set-upstream production master
 
 addons:
   ssh_known_hosts: 165.227.158.125

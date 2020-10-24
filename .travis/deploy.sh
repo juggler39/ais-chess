@@ -18,7 +18,6 @@ echo "###### Contunue Deployment ######"
  cd ..
  cd frontend
  npm install
- npm run build
  pm2 restart app
 EOF
 
