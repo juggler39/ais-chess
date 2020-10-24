@@ -89,7 +89,7 @@ export default {
         }
       };
       axios.post("/api/users/login", userObj).then(
-        async response => {
+        response => {
           if (response.data.user) {
             axios.defaults.headers.common[
               "Authorization"
