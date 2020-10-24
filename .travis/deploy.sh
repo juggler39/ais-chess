@@ -2,7 +2,7 @@
 
 echo "###### Starting Deployment ######"
 
-# git config --global push.default simple
+git config --global push.default simple
 # git remote add production ssh://root@$IP:$PORT$DEPLOY_DIR
 # git fetch --unshallow || true
 # git push production dev
