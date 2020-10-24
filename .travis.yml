@@ -1,20 +1,33 @@
 language: node_js
 node_js:
- - "node"
-
+- node
 cache: npm
 before_install:
+- openssl aes-256-cbc -K $encrypted_f217180e22ee_key -iv $encrypted_f217180e22ee_iv
+  -in .travis/id_rsa.enc -out ./deploy_key -d
+- eval "$(ssh-agent -s)"
+- chmod 600 ./deploy_key
+- ssh-add ./deploy_key
+- ssh -i ./deploy_key root@165.227.158.125 pwd
+install:
+- cd frontend
+- npm i
+script:
+- npm run lint
+- npm run build
+after_success:
+- cd ..
+- chmod +x .travis/deploy.sh
+- scp -r frontend/dist/* root@$IP:$DEPLOY_DIR/frontend/
+- scp -r backend/* root@$IP:$DEPLOY_DIR/backend/
 
-   - cd backend
-   - npm i
-   - cd ..
-   - cd frontend
-   - npm i
-   - cd ..
- 
-script: 
-  
-  - cd frontend
-  - npm run lint
-  - npm run build
-  - cd ..
+addons:
+  ssh_known_hosts: 165.227.158.125
+
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: ".travis/deploy.sh"
+  on:
+    branch: production
+    
