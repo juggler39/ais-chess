@@ -19,6 +19,7 @@ install:
 - npm i
 script:
 - npm run lint
+- rm -r node_modules
 - cd ..
 - cd frontend
 - npm run lint
