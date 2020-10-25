@@ -131,9 +131,19 @@ export default {
     width: 13%;
   }
 
+  nav:first-child,
+  .footer_logo {
+    @media (max-width: 767.98px) {
+      display: none;
+    }
+  }
+
   nav,
   form {
     width: 23%;
+    @media (max-width: 767.98px) {
+      width: 47%;
+    }
 
     ul,
     li {

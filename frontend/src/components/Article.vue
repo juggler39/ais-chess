@@ -34,6 +34,10 @@ export default {
   margin: 0;
   display: flex;
 
+  @media (max-width: 767.98px) {
+    display: none;
+  }
+
   .breadcrumb-item,
   span {
     margin: 10px 5px;
@@ -56,6 +60,10 @@ export default {
   padding: 50px 0 0 0;
   .content {
     padding: 50px 0;
+
+    @media (max-width: 767.98px) {
+      font-size: 14px;
+    }
   }
   .image {
     float: right;

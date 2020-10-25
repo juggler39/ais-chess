@@ -43,6 +43,11 @@ export default {
     padding: 1vw !important;
     width: 15vw;
 
+    @media (max-width: 767.98px) {
+      font-size: 12px;
+      width: auto;
+    }
+
     &:hover {
       background-position: 0 0;
     }

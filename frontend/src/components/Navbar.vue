@@ -126,6 +126,10 @@ export default {
   .logo {
     width: 60px;
     margin-right: 20px;
+
+    @media (max-width: 575.98px) {
+      display: none;
+    }
   }
 }
 // .v-toolbar__content {
