@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const Users = mongoose.model('Users');
+const mongoose = require("mongoose");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const Users = mongoose.model("Users");
 
 passport.use(new LocalStrategy({
-  usernameField: 'user[login]',
-  passwordField: 'user[password]',
+	usernameField: "user[login]",
+	passwordField: "user[password]",
 }, (login, password, done) => {
-  Users.findOne({ login })
-    .then((user) => {
-      if(!user || !user.validatePassword(password)) {
-        return done(null, false, { errors: { 'login or password': 'is invalid' } });
-      }
+	Users.findOne({ login })
+		.then((user) => {
+			if(!user || !user.validatePassword(password)) {
+				return done(null, false, { errors: { "login or password": "is invalid" } });
+			}
 
-      return done(null, user);
-    }).catch(done);
+			return done(null, user);
+		}).catch(done);
 }));
