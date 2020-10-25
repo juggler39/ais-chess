@@ -30,7 +30,7 @@ addons:
 
 deploy:
 - provider: script
-  cleanup: false
+  skip_cleanup: true
   script: chmod +x .travis/deploy.sh && .travis/deploy.sh
   on:
     branch: production
