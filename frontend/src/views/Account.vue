@@ -42,7 +42,7 @@ export default {
       dialog: false,
       password: "",
       items: [
-        { title: "Name: ", content: ""},
+        { title: "Name: ", content: "" },
         { title: "Email: ", content: "" },
         { title: "Bio: ", content: "" }
       ]
@@ -50,7 +50,9 @@ export default {
   },
   mounted() {
     axios.get("/api/users/info").then(response => {
-      const { data: { user }} = response;
+      const {
+        data: { user }
+      } = response;
 
       this.items[0].content = user.name;
       this.items[1].content = user.email;

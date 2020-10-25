@@ -35,6 +35,15 @@ export default {
     justify-content: space-evenly;
     align-items: center;
     width: 60%;
+
+    @media (max-width: 767.98px) {
+      width: 100%;
+    }
+
+    @media (max-width: 575.98px) {
+      width: 100%;
+      flex-direction: column;
+    }
   }
 
   .not-found-content {

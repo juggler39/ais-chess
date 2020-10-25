@@ -1,6 +1,6 @@
 <template>
   <div class="news-blog">
-    <h1 class="subtitle">
+    <h1 class="subtitle ml-2">
       Latest news in the world of chess
     </h1>
     <Card maxCount="Infinity" />

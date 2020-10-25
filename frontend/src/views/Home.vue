@@ -52,9 +52,18 @@ export default {
 .main-banner {
   display: flex;
   justify-content: space-around;
+
+  @media (max-width: 767.98px) {
+    flex-direction: column-reverse;
+  }
+
   .home--main_image {
     padding: 5%;
     opacity: 0.5;
+
+    @media (max-width: 767.98px) {
+      width: 100%;
+    }
   }
 
   .home--title {
@@ -134,6 +143,10 @@ export default {
   transition: 0.3s ease-in;
   text-decoration: none;
 
+  @media (max-width: 767.98px) {
+    margin: 0 1em;
+  }
+
   &:hover {
     opacity: 0.7;
     text-shadow: 0 0 15px #ffffff;
@@ -151,6 +164,12 @@ export default {
   color: #ccc;
   padding: 3em;
   border: 2px solid #666;
+
+  @media (max-width: 767.98px) {
+    margin: 2em;
+    padding: 1em;
+    font-size: 14px;
+  }
 
   p {
     margin: 0.2em 0;

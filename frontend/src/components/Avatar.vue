@@ -61,20 +61,19 @@ export default {
       // const userId = this.$route.params.user.id;
       this.cropedImage = this.$refs.cropper.getCroppedCanvas().toDataURL();
       this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
-
         const formData = new FormData();
         formData.append("profile_photo", blob, this.selectedFile);
-
-        axios.post('/api/users/setlogo', formData, {
-          headers: {
-          'content-type': 'multipart/form-data'
-          }})
+        axios
+          .post("/api/users/setlogo", formData, {
+            headers: {
+              "content-type": "multipart/form-data"
+            }
+          })
           .then(response => console.log(response))
           .catch(function(error) {
             console.log(error);
           });
       }, this.mime_type);
-      
       this.dialog = false;
     },
     onFileSelect(e) {
