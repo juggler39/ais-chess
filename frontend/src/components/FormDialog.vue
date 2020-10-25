@@ -93,30 +93,32 @@ export default {
           email: this.email,
           password: this.password,
           bio: this.bio
-        }
-        axios.post("/api/users/update", { user : userObj}).then(response => {
-          if (response.data.user) {
+        };
+        axios.post("/api/users/update", { user: userObj }).then(
+          response => {
+            if (response.data.user) {
               window.localStorage.setItem("userName", response.data.user.name);
               this.$store.commit("setLoginUser", response.data.user.name);
               this.dialog = false;
+            } else {
+              console.log(response.data.errors);
             }
-          else {
-            console.log(response.data.errors);
-          }
           },
           error => {
             console.log(error);
-          }) 
+          }
+        );
       }
     },
     updateInfo() {
       axios.get("/api/users/info").then(response => {
-      const { data: { user }} = response;
-
-      this.username = user.name;
-      this.email= user.email;
-      this.bio = user.bio;
-    });
+        const {
+          data: { user }
+        } = response;
+        this.username = user.name;
+        this.email = user.email;
+        this.bio = user.bio;
+      });
     }
   },
   mounted() {

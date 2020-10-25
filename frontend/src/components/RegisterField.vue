@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import router from '../router/index';
+import router from "../router/index";
 import axios from "axios";
 export default {
   data: () => ({
@@ -77,25 +77,29 @@ export default {
             password: this.password,
             email: this.email
           }
-        }
-        axios.post('/api/users/register', userObj).then((response) => {
-                              if (response.data.user) {
-                               axios.defaults.headers.common["Authorization"] = `Token ${response.data.user.token}`;
-                                window.localStorage.setItem("userLog", response.data.user.token);
-                                window.localStorage.setItem("userName", response.data.user.name);
-                                window.localStorage.setItem("userID", response.data.user.id);
-                                this.$store.commit("setLoginUser", response.data.user.name);
-                                this.$store.commit("setLoginUserID", response.data.user.id);
-                                router.push('/account', () => {});
-                                this.dialog = false;
-                              }
-                              else {//here if Login info is incorrect
-                                console.log(response.data.errors);
-                              }
-                            }, (error) => {
-                              console.log(error);
-                            });
-        }
+        };
+        axios.post("/api/users/register", userObj).then(
+          response => {
+            if (response.data.user) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Token ${response.data.user.token}`;
+              window.localStorage.setItem("userLog", response.data.user.token);
+              window.localStorage.setItem("userName", response.data.user.name);
+              window.localStorage.setItem("userID", response.data.user.id);
+              this.$store.commit("setLoginUser", response.data.user.name);
+              this.$store.commit("setLoginUserID", response.data.user.id);
+              router.push("/account", () => {});
+              this.dialog = false;
+            } else {
+              console.log(response.data.errors);
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
     }
   }
 };
