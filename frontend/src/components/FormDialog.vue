@@ -20,7 +20,6 @@
                     v-model="username"
                     label="UserName"
                     :rules="nameRules"
-                    @input="changed"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -29,7 +28,6 @@
                     label="Email"
                     :rules="emailRules"
                     :counter="20"
-                    @input="changed"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12">
@@ -42,7 +40,6 @@
                     :rules="rules"
                     :type="show ? 'text' : 'password'"
                     @click:append="show = !show"
-                    @input="changed"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -50,7 +47,6 @@
                     v-model="bio"
                     label="Bio"
                     :rules="bioRules"
-                    @input="changed"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -72,6 +68,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
     dialog: false,
@@ -88,33 +86,41 @@ export default {
     show: false
   }),
   methods: {
-    changed() {
-      this.$emit("update:username", this.username);
-      this.$emit("update:email", this.email);
-      this.$emit("update:password", this.password);
-      this.$emit("update:bio", this.bio);
-    },
     save() {
-      this.dialog = false;
-      localStorage.username = this.username;
-      localStorage.email = this.email;
-      localStorage.password = this.password;
-      localStorage.bio = this.bio;
+      if (this.$refs.form.validate()) {
+        let userObj = {
+          name: this.username,
+          email: this.email,
+          password: this.password,
+          bio: this.bio
+        }
+        axios.post("/api/users/update", { user : userObj}).then(response => {
+          if (response.data.user) {
+              window.localStorage.setItem("userName", response.data.user.name);
+              this.$store.commit("setLoginUser", response.data.user.name);
+              this.dialog = false;
+            }
+          else {
+            console.log(response.data.errors);
+          }
+          },
+          error => {
+            console.log(error);
+          }) 
+      }
+    },
+    updateInfo() {
+      axios.get("/api/users/info").then(response => {
+      const { data: { user }} = response;
+
+      this.username = user.name;
+      this.email= user.email;
+      this.bio = user.bio;
+    });
     }
   },
   mounted() {
-    if (localStorage.username) {
-      this.username = localStorage.username;
-    }
-    if (localStorage.email) {
-      this.email = localStorage.email;
-    }
-    if (localStorage.password) {
-      this.password = localStorage.password;
-    }
-    if (localStorage.bio) {
-      this.bio = localStorage.bio;
-    }
+    this.updateInfo();
   }
 };
 </script>
