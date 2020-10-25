@@ -55,7 +55,11 @@ UsersSchema.index({ login: 1 });
 UsersSchema.index({ email: 1 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 mongoose.model("Users", UsersSchema);
 =======
 mongoose.model("Users", UsersSchema);
 >>>>>>> refactor: add and apply eslint
+=======
+mongoose.model("Users", UsersSchema);
+>>>>>>> refactor: add and apply eslint (backend)
