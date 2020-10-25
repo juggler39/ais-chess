@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "###### Starting Deployment ######"
 
 scp -r frontend/dist/* root@$IP:$DEPLOY_DIR/frontend/
