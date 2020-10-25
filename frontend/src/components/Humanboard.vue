@@ -21,19 +21,21 @@
     </v-card>
     <Promote ref="Promote" :color="pieceColor" />
     <GameOver ref="GameOver" />
+    <AcceptDraw ref="AcceptDraw" @drawAccepted="drawAccepted" />
   </v-col>
 </template>
 
 <script>
 import Chessboard from "./Chessboard";
 import Playerbar from "@/components/Playerbar";
+import AcceptDraw from "@/components/dialogs/AcceptDraw";
 import axios from "axios";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Humanboard",
   extends: Chessboard,
-  components: { Playerbar },
+  components: { Playerbar, AcceptDraw },
   sockets: {
     newMove(data) {
       //here we are getting every new move
@@ -44,6 +46,7 @@ export default {
         this.timeBlack = data.playerTime;
       }
       const color = data.move.color === "w" ? "white" : "black";
+      //filtering own moves
       if (color !== this.pieceColor) {
         this.opponentMove(data.move);
       }
@@ -56,11 +59,19 @@ export default {
     },
     drawProposal() {
       // here code for draw proposal
-      console.log("Opponent offering draw");
+      this.$refs.AcceptDraw.pop();
+    },
+    drawAccepted() {
+      this.stopGameAndStoreResult({
+        color: "draw",
+        reason: "opponents agreed to a draw"
+      });
     },
     opponentResign() {
-      // here code for resign
-      console.log("opponent resigned");
+      this.stopGameAndStoreResult({
+        color: this.pieceColor,
+        reason: "resignation"
+      });
     }
   },
   data() {
@@ -85,8 +96,14 @@ export default {
       });
     },
     drawProposal() {
-      console.log("propose a draw");
       this.$socket.client.emit("draw", this.gameInfo.id);
+    },
+    drawAccepted() {
+      this.$socket.client.emit("accept", this.gameInfo.id);
+      this.stopGameAndStoreResult({
+        color: "draw",
+        reason: "opponents agreed to a draw"
+      });
     },
     opponentName() {
       if (this.gameInfo.players.player1Name === this.$store.state.loginUser) {
@@ -197,26 +214,28 @@ export default {
       }
     },
     stopGameAndStoreResult(result) {
-      if (!result) result = this.checkEndReason();
-      this.gameOver(result);
-      if (this.pieceColor === "white") {
-        axios
-          .post("/api/finished-games/finish-game", {
-            game: {
-              id: this.$props.gameId,
-              winner: result.color,
-              timeWhite: this.timeWhite,
-              timeBlack: this.timeBlack
-            }
-          })
-          .then(() => {
-            //somethig else if needed (redirect and etc.)
-          });
+      if (window.localStorage.getItem("runningGameId")) {
+        if (!result) result = this.checkEndReason();
+        this.gameOver(result);
+        if (this.pieceColor === "white") {
+          axios
+            .post("/api/finished-games/finish-game", {
+              game: {
+                id: this.$props.gameId,
+                winner: result.color,
+                timeWhite: this.timeWhite,
+                timeBlack: this.timeBlack
+              }
+            })
+            .then(() => {
+              //somethig else if needed (redirect and etc.)
+            });
+        }
+        window.localStorage.removeItem("gameInfo");
+        window.localStorage.removeItem("runningGameId");
+        clearInterval(this.timer);
+        this.$emit("gameOver", true);
       }
-
-      window.localStorage.removeItem("gameInfo");
-      window.localStorage.removeItem("runningGameId");
-      clearInterval(this.timer);
     }
   },
   mounted() {
@@ -251,6 +270,7 @@ export default {
       }
     } else {
       this.gameInfo = this.$store.getters.getGameInfo;
+      this.$emit("gameOver", true);
     }
   }
 };
