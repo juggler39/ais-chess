@@ -10,7 +10,7 @@
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
-    "google-auth-library": "latest",
+    "google-auth-library": "^6.1.2",
     "jsonwebtoken": "^8.2.2",
     "mongoose": "^5.10.6",
     "morgan": "^1.10.0",

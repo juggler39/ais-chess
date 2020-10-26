@@ -41,6 +41,7 @@ export default {
     return {
       dialog: false,
       password: "",
+      avatar: {},
       items: [
         { title: "Name: ", content: "" },
         { title: "Email: ", content: "" },
@@ -54,9 +55,11 @@ export default {
         data: { user }
       } = response;
 
+      this.avatar = user.logo;
       this.items[0].content = user.name;
       this.items[1].content = user.email;
       this.items[2].content = user.bio;
+      console.log(this.avatar);
     });
   }
 };
