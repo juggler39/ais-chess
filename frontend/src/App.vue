@@ -41,10 +41,6 @@ export default {
         "playersHistory",
         JSON.stringify(this.$store.getters.getPVPHistory)
       );
-<<<<<<< HEAD
-=======
-      console.log("app get move", data);
->>>>>>> ab55158... get moves and timers when not on my game tab #144
     },
     startGame(game) {
       window.localStorage.removeItem("playersHistory");
