@@ -1,11 +1,6 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="290">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on">
-          Draw
-        </v-btn>
-      </template>
       <v-card>
         <v-toolbar dark color="primary">
           <v-toolbar-title>Draw</v-toolbar-title>
@@ -14,7 +9,9 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-card-text class="pa-5">Propose a draw?</v-card-text>
+        <v-card-text class="pa-5"
+          >Your opponent proposes a draw. Accept?</v-card-text
+        >
         <v-card-actions>
           <v-btn color="error" dark @click="dialog = false">NO</v-btn>
           <v-spacer></v-spacer>
@@ -34,8 +31,11 @@ export default {
   },
   methods: {
     submit() {
-      this.$emit("drawProposal", true);
+      this.$emit("drawAccepted", true);
       this.dialog = false;
+    },
+    pop() {
+      this.dialog = true;
     }
   }
 };

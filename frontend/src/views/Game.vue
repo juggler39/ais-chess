@@ -10,6 +10,7 @@
           ref="humanBoard"
           :gameId="this.$route.params.id"
           :moves="getPVPHistory"
+          @gameOver="hideButtons"
         />
 
         <v-col class="col-12 col-md-3 grey darken-4">
@@ -19,9 +20,12 @@
               <GameHistory :moves="getPVPHistory" />
             </div>
           </v-card>
-          <div class="d-flex ma-2">
+          <div class="d-flex ma-2" v-if="gameIsRunning">
             <Resign @resign="resign" />
             <OfferDraw @drawProposal="drawProposal" />
+          </div>
+          <div class="d-flex ma-2 justify-center" v-if="!gameIsRunning">
+            <v-btn color="success" to="/lobby" dark>New game</v-btn>
           </div>
           <v-container>
             <Chat :game="{ id: this.$route.params.id, global: false }" />
@@ -48,7 +52,8 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      id: 12
+      id: 12,
+      gameIsRunning: true
     };
   },
   components: {
@@ -74,6 +79,9 @@ export default {
     },
     drawProposal: function() {
       this.$refs.humanBoard.drawProposal();
+    },
+    hideButtons() {
+      this.gameIsRunning = false;
     }
   },
   created() {

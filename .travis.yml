@@ -1,3 +1,5 @@
+os: linux
+dist: xenium
 language: node_js
 node_js:
 - node
@@ -12,7 +14,14 @@ before_install:
 install:
 - cd frontend
 - npm i
+- cd ..
+- cd backend
+- npm i
 script:
+- npm run lint
+- rm -r node_modules
+- cd ..
+- cd frontend
 - npm run lint
 - npm run build
 - cd ..
@@ -24,7 +33,6 @@ deploy:
 - provider: script
   skip_cleanup: true
   script: chmod +x .travis/deploy.sh && .travis/deploy.sh
-
   on:
     branch: production
     
