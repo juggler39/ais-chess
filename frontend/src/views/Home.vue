@@ -52,6 +52,7 @@ export default {
 .main-banner {
   display: flex;
   justify-content: space-around;
+  align-items: center;
 
   @media (max-width: 767.98px) {
     flex-direction: column-reverse;

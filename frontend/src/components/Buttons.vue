@@ -2,9 +2,14 @@
   <div class="buttons">
     <v-tooltip v-for="link in menuLinks" :key="link.text" bottom>
       <template v-slot:activator="{ attrs }">
-        <v-btn :to="link.route" v-bind="attrs" text class="ml-1 btn-size">
-          <span>
-            {{ link.text }}
+        <v-btn :to="link.route" v-bind="attrs" text class="btn-size">
+          <span class="btn-content">
+            <v-icon>
+              {{ link.icon }}
+            </v-icon>
+            <span>
+              {{ link.text }}
+            </span>
           </span>
         </v-btn>
       </template>
@@ -17,8 +22,16 @@ export default {
   name: "Buttons",
   data: () => ({
     menuLinks: [
-      { icon: "mdi-mouse", text: "Play AI", route: "/playai" },
-      { icon: "mdi-face", text: "Play Human", route: "/game" }
+      {
+        icon: "mdi-desktop-mac",
+        text: "Play against Computer",
+        route: "/playai"
+      },
+      {
+        icon: "mdi-account-multiple",
+        text: "Play against Human",
+        route: "/lobby"
+      }
     ]
   })
 };
@@ -29,6 +42,11 @@ export default {
   display: flex;
   justify-content: space-evenly;
 
+  @media (max-width: 767.98px) {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .v-btn {
     background-image: linear-gradient(
       45deg,
@@ -38,14 +56,48 @@ export default {
     );
     background-position: 100% 0;
     background-size: 200% 200%;
-    font-size: 16px;
+    font-size: 14px;
     transition: 0.6s;
     padding: 1vw !important;
-    width: 15vw;
+    width: 40%;
+
+    .btn-content {
+      display: flex;
+      flex-direction: column;
+
+      .v-icon {
+        font-size: 50px;
+        margin-bottom: 20px;
+        background: linear-gradient(
+          to right,
+          #d4d4d4 20%,
+          #505657c0 40%,
+          #505657c0 60%,
+          #d4d4d4 80%
+        );
+        background-size: 200% auto;
+        color: #000;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 2s linear infinite;
+
+        @keyframes shine {
+          to {
+            background-position: 200% center;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      width: 49%;
+      font-size: 12px;
+    }
 
     @media (max-width: 767.98px) {
-      font-size: 12px;
-      width: auto;
+      width: 70%;
+      margin-bottom: 10px;
+      font-size: 14px;
     }
 
     &:hover {
