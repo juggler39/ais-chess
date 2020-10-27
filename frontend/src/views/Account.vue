@@ -42,6 +42,7 @@ export default {
       dialog: false,
       password: "",
       avatar: {},
+      gamesPlayed: [],
       items: [
         { title: "Name: ", content: "" },
         { title: "Email: ", content: "" },
@@ -61,6 +62,14 @@ export default {
       this.items[2].content = user.bio;
       console.log(this.avatar);
     });
+    axios.get("/api/finished-games/get-played-games").then(response => {
+      const {
+        data: { games }
+      } = response;
+
+      this.gamesPlayed = games;
+      console.log(this.gamesPlayed);
+    })
   }
 };
 </script>
