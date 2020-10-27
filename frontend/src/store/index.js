@@ -3,6 +3,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import gameHistory from "./modules/gameHistory";
 import openGames from "./modules/openGames";
+import finishedGames from "./modules/finishedGames";
 import { getStore } from "../config/utils";
 
 Vue.use(Vuex);
@@ -41,7 +42,8 @@ export default new Vuex.Store({
   },
   modules: {
     gameHistory,
-    openGames
+    openGames,
+    finishedGames
   },
   getters: {
     getLoginUserInfo(state) {

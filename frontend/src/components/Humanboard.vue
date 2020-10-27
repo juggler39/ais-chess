@@ -232,6 +232,7 @@ export default {
         }
         window.localStorage.removeItem("gameInfo");
         window.localStorage.removeItem("runningGameId");
+        window.localStorage.removeItem("playersHistory");
         clearInterval(this.timer);
         this.$emit("gameOver", true);
       }
@@ -268,6 +269,8 @@ export default {
         this.continue();
       }
     } else {
+      this.gameInfo = this.$store.getters.getGameInfo;
+      this.opponent = this.opponentName();
       this.gameInfo = this.$store.getters.getGameInfo;
       this.$emit("gameOver", true);
     }
