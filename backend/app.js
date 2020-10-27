@@ -9,6 +9,8 @@ const http = require("http");
 const io = require("socket.io");
 const { UserRefreshClient } = require("google-auth-library");
 
+require("dotenv").config();
+
 //Configure isProduction variable
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -23,7 +25,7 @@ app.use(require("morgan")("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(session({ secret: "passport-tutorial", cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+app.use(session({ secret: process.env.SECRET_SESSION, cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
 if(!isProduction) {
 	app.use(errorHandler());
@@ -38,7 +40,7 @@ mongoose.connection
 		const info = mongoose.connections[0];
 		console.log(`Connection to ${info.host}:${info.port}/${info.name}`);
 	});
-mongoose.connect("mongodb://ChessUser:1905Chess@chess-shard-00-00.c41mp.mongodb.net:27017,chess-shard-00-01.c41mp.mongodb.net:27017,chess-shard-00-02.c41mp.mongodb.net:27017/Chess?ssl=true&replicaSet=atlas-xlzo6d-shard-0&authSource=admin&retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true, useFindAndModify: false});
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true, useFindAndModify: false});
 
 //Models & routes
 require("./models/Users");
@@ -215,4 +217,7 @@ socketIO.on("connection", (socket) => {
 	});
 });
 
-server.listen(8000, () => console.log("Server running on http://localhost:8000/"));
+let port = process.env.PORT;
+let host = process.env.HOST;
+
+server.listen(port, host, () => console.log(`Server running on http://${host}:${port}/`));
