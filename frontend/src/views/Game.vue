@@ -91,6 +91,15 @@ export default {
         "loadPvPHistory",
         JSON.parse(window.localStorage.getItem("playersHistory"))
       );
+    } else if (
+      !window.localStorage.getItem("runningGameId") &&
+      this.$route.params.id
+    ) {
+      const gameHistory = this.$store.getters.getFinishedGames.filter(
+        game => game.id === this.$route.params.id
+      )[0];
+      this.$store.dispatch("loadPvPHistory", gameHistory.moves);
+      this.$store.dispatch("setGameInfo", gameHistory);
     }
   },
   mounted() {

@@ -41,7 +41,6 @@ export default {
         "playersHistory",
         JSON.stringify(this.$store.getters.getPVPHistory)
       );
-      console.log("app get move", data);
     },
     startGame(game) {
       window.localStorage.removeItem("playersHistory");
