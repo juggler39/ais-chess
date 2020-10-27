@@ -82,10 +82,16 @@ export default {
     };
   },
   computed: mapGetters(["getPVPHistory"]),
+  watch: {
+    historyMove: function() {
+      this.moveToHistory(this.historyMove);
+    }
+  },
   props: {
     gameId: {
       type: String
-    }
+    },
+    historyMove: { type: Number }
   },
   methods: {
     resign() {

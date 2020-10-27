@@ -4,17 +4,17 @@
     <v-container>
       <v-row>
         <Aiboard
+          ref="Aiboard"
           v-bind:moves="getAIHistory"
           v-bind:newGame="newGame"
+          v-bind:historyMove="historyMove"
           @newGame="newGame.start = $event"
         />
         <v-col class="col-12 col-md-3 grey darken-4">
-          <v-card class="mx-auto">
-            <h2 class="text-center">Moves</h2>
-            <div class="history">
-              <GameHistory v-bind:moves="getAIHistory" />
-            </div>
-          </v-card>
+          <GameHistory
+            v-bind:moves="getAIHistory"
+            @historyMove="historyMove = $event"
+          />
           <v-container>
             <SetUpAiGame @newGame="newGame = $event" />
           </v-container>
@@ -42,7 +42,8 @@ export default {
         start: false,
         color: "",
         level: 1
-      }
+      },
+      historyMove: 0
     };
   },
   methods: {},
@@ -57,25 +58,3 @@ export default {
   computed: mapGetters(["getAIHistory"])
 };
 </script>
-<style scoped>
-.history {
-  width: 100%;
-  height: 200px;
-  overflow-y: scroll;
-}
-::-webkit-scrollbar {
-  width: 2px;
-}
-::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  background: #bcc9d2;
-}
-::-webkit-scrollbar-thumb:window-inactive {
-  background: #bcc9d2;
-}
-</style>

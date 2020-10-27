@@ -62,9 +62,13 @@ export default {
       default: function() {
         return { start: false, color: "", level: 1 };
       }
-    }
+    },
+    historyMove: { type: Number }
   },
   watch: {
+    historyMove: function() {
+      this.moveToHistory(this.historyMove);
+    },
     "newGame.start": function(n) {
       if (n) {
         this.color = this.newGame.color;
