@@ -1,5 +1,5 @@
 os: linux
-dist: xenium
+dist: xenial
 language: node_js
 node_js:
 - node
@@ -20,6 +20,12 @@ install:
 script:
 - npm run lint
 - rm -r node_modules
+- touch .env
+- echo "MONGO_URL=$MONGO_URL" >> .env
+- echo "PORT=8000" >> .env
+- echo "HOST=localhost" >> .env
+- echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
+- echo "SECRET_SESSION=$SECRET_SESSION" >> .env
 - cd ..
 - cd frontend
 - npm run lint

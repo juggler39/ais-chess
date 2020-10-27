@@ -10,7 +10,7 @@ ssh root@$IP <<EOF
 
  cd $DEPLOY_DIR/backend
  npm install
- pm2 restart app
+ pm2 restart chess
 EOF
 
 echo "###### End Deployment ######"
