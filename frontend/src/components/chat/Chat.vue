@@ -9,7 +9,7 @@
       />
     </div>
     <div class="typer">
-      <v-btn icon class="typer-btn">
+      <v-btn icon class="typer-btn" @click="toogleDialogEmoji" ref="button">
         <v-icon>mdi-emoticon</v-icon>
       </v-btn>
       <input
@@ -23,11 +23,21 @@
         <v-icon>mdi-send</v-icon>
       </v-btn>
     </div>
+    <VEmojiPicker
+      v-show="showDialog"
+      dark="true"
+      emojiSize="26"
+      emojisByRow="7"
+      continuousList="true"
+      labelSearch="Search"
+      @select="onSelectEmoji"
+    />
   </div>
 </template>
 
 <script>
 import ChatItem from "@/components/chat/ChatItem";
+import { VEmojiPicker } from "v-emoji-picker";
 //import { mapGetters } from "vuex";
 
 export default {
@@ -55,6 +65,7 @@ export default {
   },
   data() {
     return {
+      showDialog: false,
       itemData: {
         text: "",
         name: this.$store.state.loginUser,
@@ -63,9 +74,19 @@ export default {
     };
   },
   components: {
-    ChatItem
+    ChatItem,
+    VEmojiPicker
   },
   methods: {
+    toogleDialogEmoji() {
+      this.showDialog = !this.showDialog;
+    },
+    onSelectEmoji(emoji) {
+      this.itemData.text += emoji.data;
+    },
+    onClose() {
+      this.showDialog = false;
+    },
     getChat() {
       if (this.$props.game.global) {
         return this.$store.getters.getGlobalChatHistory;
@@ -88,6 +109,8 @@ export default {
           id: this.$props.game.id
         });
       }
+
+      this.showDialog = false;
     },
     scrollToEnd() {
       const content = this.$refs.chat;
@@ -103,12 +126,21 @@ export default {
     }
 
     this.scrollToEnd();
+  },
+  created() {
+    window.addEventListener("click", e => {
+      if (!this.$el.contains(e.target)) {
+        this.showDialog = false;
+      }
+    });
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .chat-container {
+  position: relative;
+
   @media (max-width: 959.99px) {
     background-color: #000000;
   }
@@ -118,15 +150,23 @@ export default {
     opacity: 0.7;
     font-size: 20px;
   }
+
+  .emoji-picker {
+    position: absolute;
+    bottom: 0px;
+    right: 100%;
+
+    @media (max-width: 959.99px) {
+      left: 0;
+      bottom: 50px;
+    }
+  }
 }
 
 .typer {
   display: flex;
   input[type="text"] {
     width: 80%;
-  }
-  .typer-btn {
-    width: 10%;
   }
 }
 
