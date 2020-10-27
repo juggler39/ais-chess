@@ -11,15 +11,15 @@
           :gameId="this.$route.params.id"
           :moves="getPVPHistory"
           @gameOver="hideButtons"
+          v-bind:historyMove="historyMove"
         />
 
         <v-col class="col-12 col-md-3 grey darken-4">
-          <v-card class="mx-auto">
-            <h2 class="text-center">Moves</h2>
-            <div class="history">
-              <GameHistory :moves="getPVPHistory" />
-            </div>
-          </v-card>
+          <GameHistory
+            :moves="getPVPHistory"
+            @historyMove="historyMove = $event"
+          />
+
           <div class="d-flex ma-2" v-if="gameIsRunning">
             <Resign @resign="resign" />
             <OfferDraw @drawProposal="drawProposal" />
@@ -53,7 +53,8 @@ export default {
   data() {
     return {
       id: 12,
-      gameIsRunning: true
+      gameIsRunning: true,
+      historyMove: 0
     };
   },
   components: {
@@ -110,25 +111,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-.history {
-  width: 100%;
-  height: 200px;
-  overflow-y: scroll;
-}
-::-webkit-scrollbar {
-  width: 2px;
-}
-::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  background: #bcc9d2;
-}
-::-webkit-scrollbar-thumb:window-inactive {
-  background: #bcc9d2;
-}
-</style>

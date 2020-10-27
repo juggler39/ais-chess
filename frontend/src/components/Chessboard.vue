@@ -181,6 +181,36 @@ export default {
         }
       });
       this.$refs.GameOver.pop(result);
+    },
+    moveToHistory(ply) {
+      let historyGame = new Chess();
+      for (let i = 0; i < ply; i++) {
+        historyGame.move(this.game.history()[i]);
+      }
+      let lastMove =
+        ply === 0
+          ? []
+          : [
+              this.game.history({ verbose: true })[ply - 1].from,
+              this.game.history({ verbose: true })[ply - 1].to
+            ];
+      this.board.set({
+        fen: historyGame.fen(),
+        lastMove: lastMove
+      });
+      if (ply != this.game.history().length) {
+        this.board.set({
+          movable: {
+            color: null
+          }
+        });
+      } else {
+        this.board.set({
+          movable: {
+            color: this.pieceColor
+          }
+        });
+      }
     }
   },
   mounted() {
