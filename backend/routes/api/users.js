@@ -7,6 +7,8 @@ const {OAuth2Client} = require("google-auth-library");
 const jwt = require("jsonwebtoken");
 let multer  = require("multer")();
 
+require("dotenv").config();
+
 let generateJWTGoogle = function(_id, login) {
 	const today = new Date();
 	const expirationDate = new Date(today);
@@ -181,13 +183,16 @@ router.post("/login", (req, res, next) => {
 });
 
 router.post("/google", (req, res, next) => {
-	const { body: { ID } } = req;
-	const client = new OAuth2Client("745478166073-6pqqiojeous9m3s3moi88krc0obh6u8d.apps.googleusercontent.com");
+  const { body: { ID } } = req;
+  
+  let clientID = process.env.GOOGLE_CLIENT_ID;
+
+	const client = new OAuth2Client(clientID);
 
 	async function verify() {
 		const ticket = await client.verifyIdToken({
 			idToken: ID,
-			audience: "745478166073-6pqqiojeous9m3s3moi88krc0obh6u8d.apps.googleusercontent.com", 
+			audience: clientID, 
 		});
 
 		const payload = ticket.getPayload();
