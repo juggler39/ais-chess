@@ -32,6 +32,7 @@ export default {
   watch: {
     moves: function() {
       this.currentPly = this.moves.length;
+      this.historyMove(this.currentPly);
     }
   },
   methods: {
@@ -60,7 +61,11 @@ export default {
     }
   },
   mounted() {
-    this.historyMove(this.moves.length);
+    if (typeof this.moves !== "undefined") {
+      this.historyMove(this.moves.length);
+    } else {
+      this.historyMove(0);
+    }
   }
 };
 </script>
