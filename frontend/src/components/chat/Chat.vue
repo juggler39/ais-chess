@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
     <h2 class="text-center">Chat</h2>
-    <div class="chat grey darken-3">
+    <div class="chat grey darken-3" ref="chat">
       <ChatItem
         v-for="(message, index) in getChat()"
         :key="index"
@@ -14,6 +14,7 @@
       </v-btn>
       <input
         v-model="itemData.text"
+        v-on:keyup.enter="send"
         type="text"
         class="white--text"
         placeholder="Type here..."
@@ -87,12 +88,21 @@ export default {
           id: this.$props.game.id
         });
       }
+    },
+    scrollToEnd() {
+      const content = this.$refs.chat;
+      content.scrollTop = content.scrollHeight;
     }
+  },
+  updated() {
+    this.scrollToEnd();
   },
   mounted() {
     if (this.$props.game.global) {
       this.$socket.client.emit("getGlobalChatMessages");
     }
+
+    this.scrollToEnd();
   }
 };
 </script>
