@@ -25,6 +25,78 @@
           />
         </v-col>
       </v-row>
+      <v-container v-if="gamesPlayed.length">
+        <v-simple-table dark class="col-12 col-md-9">
+          <template v-slot:default>
+            <thead>
+              <tr class="primary">
+                <th class="text-left">
+                  <h2>Players</h2>
+                </th>
+                <th class="text-left">
+                  <h2>Winner</h2>
+                </th>
+                <th class="text-left">
+                  <h2>Time</h2>
+                </th>
+                <th class="text-left">
+                  <h2>Moves</h2>
+                </th>
+                <th class="text-left">
+                  <h2>Game date</h2>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="game in gamesPlayed"
+                :key="game.date"
+                @click="inspectGame(game)"
+              >
+                <td>
+                  <span class="player"
+                    ><div class="white"></div>
+                    {{
+                      game.players.player1Color === "white"
+                        ? game.players.player1Name
+                        : game.players.player2Name
+                    }}</span
+                  >
+                  <span class="player"
+                    ><div class="black"></div>
+                    {{
+                      game.players.player1Color === "black"
+                        ? game.players.player1Name
+                        : game.players.player2Name
+                    }}</span
+                  >
+                </td>
+                <td>
+                  <span>{{
+                    game.winner === "white"
+                      ? 1
+                      : game.winner === "draw"
+                      ? "1/2"
+                      : 0
+                  }}</span>
+                  <br />
+                  <span>{{
+                    game.winner === "black"
+                      ? 1
+                      : game.winner === "draw"
+                      ? "1/2"
+                      : 0
+                  }}</span>
+                </td>
+                <td>{{ game.timeToGo }}</td>
+                <td>{{ game.moves.length }}</td>
+                <td>{{ game.gameDate }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-container>
+      <h3 v-else>no games found</h3>
     </v-container>
   </div>
 </template>
@@ -50,6 +122,11 @@ export default {
       ]
     };
   },
+  methods: {
+    inspectGame(game) {
+      this.$router.push({ name: "Game", params: { id: game.id } });
+    }
+  },
   mounted() {
     axios.get("/api/users/info").then(response => {
       const {
@@ -66,10 +143,11 @@ export default {
       const {
         data: { games }
       } = response;
-
-      this.gamesPlayed = games;
-      console.log(this.gamesPlayed);
-    })
+      if (games[0] !== "No played games") {
+        this.gamesPlayed = games;
+        this.$store.dispatch("updateFinishedGamesList", games);
+      }
+    });
   }
 };
 </script>
@@ -79,5 +157,21 @@ export default {
   &:not(:last-child) {
     border-bottom: 1px solid #181818;
   }
+}
+.white {
+  margin-right: 5px;
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+}
+.black {
+  margin-right: 5px;
+  width: 12px;
+  height: 12px;
+  background-color: #000;
+}
+.player {
+  display: flex;
+  align-items: center;
 }
 </style>

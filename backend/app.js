@@ -203,6 +203,10 @@ socketIO.on("connection", (socket) => {
 		socket.broadcast.to(id).emit("opponentResign");
 	});
 
+	socket.on('accept', (id) => {
+		socket.broadcast.to(id).emit('drawAccepted');
+	  });
+	
 	socket.on("joinRoom", id => {
 		socket.join(id);
 
