@@ -64,4 +64,24 @@ router.post("/get-finish-game", auth.required, (req, res, next) => {
 		}).catch((err) => {res.json({error: err});});
 });
 
+router.get("/get-played-games", auth.required, (req, res, next) => {
+	const { payload: { id } } = req;
+
+	return Users.findById(id)
+		.then((user) => {
+			if(!user) {
+				return res.json({ user: "Access is denied" });
+			}
+			//access is allowed
+			FinishedGame.find({"$or": [{"players.player1ID": user._id}, {"players.player2ID": user._id}]})
+				.then((gamesPlayed) => {
+					if(gamesPlayed.length === 0) {
+						return res.json({ games: ["No played games"]});
+					}
+					//games exists
+					res.json({ games: gamesPlayed });
+				}).catch((err) => {res.json({error: err});});
+		}).catch((err) => {res.json({error: err});});
+});
+
 module.exports = router;
