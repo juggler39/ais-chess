@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
-    <h2 class="text-center">Chat</h2>
-    <div class="chat grey darken-3" ref="chat">
+    <h2 class="text-center chat-header">Chat</h2>
+    <div class="chat darken-3" ref="chat">
       <ChatItem
         v-for="(message, index) in getChat()"
         :key="index"
@@ -9,7 +9,7 @@
       />
     </div>
     <div class="typer">
-      <v-btn icon>
+      <v-btn icon class="typer-btn">
         <v-icon>mdi-emoticon</v-icon>
       </v-btn>
       <input
@@ -107,34 +107,47 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.chat-container {
+  @media (max-width: 959.99px) {
+    background-color: #000000;
+  }
+
+  .chat-header {
+    padding: 8px;
+    opacity: 0.7;
+    font-size: 20px;
+  }
+}
+
 .typer {
-  width: 100%;
+  display: flex;
+  input[type="text"] {
+    width: 80%;
+  }
+  .typer-btn {
+    width: 10%;
+  }
 }
-.typer input[type="text"] {
-  width: 60%;
-}
+
 .chat {
   height: 40vh;
-  padding: 3px;
+  padding: 5px;
   overflow-y: scroll;
 }
-.chat-container {
-  padding: 5px;
-}
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 7px;
+  cursor: pointer;
 }
 ::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  background: #bcc9d2;
+  background: rgba(59, 59, 59, 0.8);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-  background: #bcc9d2;
+  background: rgba(44, 44, 44, 0.5);
 }
 </style>

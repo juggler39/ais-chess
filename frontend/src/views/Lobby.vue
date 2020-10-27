@@ -3,11 +3,11 @@
     <h1 class="text-center">Game lobby</h1>
     <h2 class="text-center">Choose an open call or create your own game</h2>
     <Creategame class="my-6" />
-    <v-row>
-      <v-simple-table dark class="col-12 col-md-9">
+    <v-row class="lobby-container">
+      <v-simple-table class="col-sm-12 col-md-8 transparent">
         <template v-slot:default>
-          <thead>
-            <tr class="primary">
+          <thead class="table-head">
+            <tr>
               <th class="text-left">
                 <h2>Player</h2>
               </th>
@@ -36,10 +36,8 @@
           </tbody>
         </template>
       </v-simple-table>
-      <v-col class="col-12 col-md-3 grey darken-4">
-        <v-container>
-          <Chat :game="{ global: true }" />
-        </v-container>
+      <v-col class="col-sm-12 col-md-4 pa-0">
+        <Chat :game="{ global: true }" />
       </v-col>
     </v-row>
   </div>
@@ -85,3 +83,21 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.lobby-container {
+  border: 3px solid #272727;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.9);
+  .v-data-table {
+    padding: 0 !important;
+    border-right: 3px solid #272727 !important;
+    border-radius: 0;
+
+    @media (max-width: 959.99px) {
+      border-right: none !important;
+      border-bottom: 3px solid #272727 !important;
+    }
+  }
+}
+</style>
