@@ -25,9 +25,10 @@
             "warn",
             "always"
         ],
-        "no-unused-vars": "warn",
+        "no-unused-vars": "off",
         "no-undef": "warn",
         "no-inner-declarations": "off",
-        "eol-last": "warn"
+        "eol-last": "warn",
+        "no-mixed-spaces-and-tabs": "warn"
     }
 }
