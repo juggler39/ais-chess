@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
-    <h2 class="text-center">Chat</h2>
-    <div class="chat grey darken-3" ref="chat">
+    <h2 class="text-center chat-header">Chat</h2>
+    <div class="chat darken-3" ref="chat">
       <ChatItem
         v-for="(message, index) in getChat()"
         :key="index"
@@ -9,7 +9,7 @@
       />
     </div>
     <div class="typer">
-      <v-btn icon>
+      <v-btn icon class="typer-btn" @click="toogleDialogEmoji" ref="button">
         <v-icon>mdi-emoticon</v-icon>
       </v-btn>
       <input
@@ -23,11 +23,21 @@
         <v-icon>mdi-send</v-icon>
       </v-btn>
     </div>
+    <VEmojiPicker
+      v-show="showDialog"
+      dark="true"
+      emojiSize="26"
+      emojisByRow="7"
+      continuousList="true"
+      labelSearch="Search"
+      @select="onSelectEmoji"
+    />
   </div>
 </template>
 
 <script>
 import ChatItem from "@/components/chat/ChatItem";
+import { VEmojiPicker } from "v-emoji-picker";
 //import { mapGetters } from "vuex";
 
 export default {
@@ -55,6 +65,7 @@ export default {
   },
   data() {
     return {
+      showDialog: false,
       itemData: {
         text: "",
         name: this.$store.state.loginUser,
@@ -63,9 +74,19 @@ export default {
     };
   },
   components: {
-    ChatItem
+    ChatItem,
+    VEmojiPicker
   },
   methods: {
+    toogleDialogEmoji() {
+      this.showDialog = !this.showDialog;
+    },
+    onSelectEmoji(emoji) {
+      this.itemData.text += emoji.data;
+    },
+    onClose() {
+      this.showDialog = false;
+    },
     getChat() {
       if (this.$props.game.global) {
         return this.$store.getters.getGlobalChatHistory;
@@ -88,6 +109,8 @@ export default {
           id: this.$props.game.id
         });
       }
+
+      this.showDialog = false;
     },
     scrollToEnd() {
       const content = this.$refs.chat;
@@ -103,38 +126,68 @@ export default {
     }
 
     this.scrollToEnd();
+  },
+  created() {
+    window.addEventListener("click", e => {
+      if (!this.$el.contains(e.target)) {
+        this.showDialog = false;
+      }
+    });
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.chat-container {
+  position: relative;
+
+  @media (max-width: 959.99px) {
+    background-color: #000000;
+  }
+
+  .chat-header {
+    padding: 8px;
+    opacity: 0.7;
+    font-size: 20px;
+  }
+
+  .emoji-picker {
+    position: absolute;
+    bottom: 0px;
+    right: 100%;
+
+    @media (max-width: 959.99px) {
+      left: 0;
+      bottom: 50px;
+    }
+  }
+}
+
 .typer {
-  width: 100%;
+  display: flex;
+  input[type="text"] {
+    width: 80%;
+  }
 }
-.typer input[type="text"] {
-  width: 60%;
-}
+
 .chat {
   height: 40vh;
-  padding: 3px;
+  padding: 5px;
   overflow-y: scroll;
 }
-.chat-container {
-  padding: 5px;
-}
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 7px;
+  cursor: pointer;
 }
 ::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  background: #bcc9d2;
+  background: rgba(59, 59, 59, 0.8);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-  background: #bcc9d2;
+  background: rgba(44, 44, 44, 0.5);
 }
 </style>

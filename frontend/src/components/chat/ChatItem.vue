@@ -13,34 +13,30 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .chat-item {
   display: flex;
-  margin: 3px;
-  justify-content: space-between;
-  align-items: flex-start;
-  background-color: rgb(105, 105, 105);
-  padding: 3px;
-  width: 98%;
-  color: azure;
+  margin: 5px 0;
+  align-items: center;
+  padding: 5px;
+  background-color: rgba(14, 14, 14, 0.8);
+  border-radius: 3px;
   font-size: 14px;
-}
-.user-name {
-  color: bisque;
-  font-weight: bold;
-  padding-right: 5px;
-}
-.text {
-  margin: 0;
-  display: inline-block;
-  word-wrap: break-word;
-  width: 60%;
-}
-.date {
-  color: goldenrod;
-  font-size: 12px;
-  text-align: left;
-  width: 60px;
-  overflow-wrap: anywhere;
+
+  .user-name {
+    color: #707070;
+  }
+  .text {
+    word-wrap: break-word;
+    line-height: 1em;
+    margin-left: 5px;
+    color: #dddddd;
+    width: 60%;
+  }
+  .date {
+    color: #272727;
+    font-size: 10px;
+    margin-left: auto;
+  }
 }
 </style>
