@@ -104,13 +104,13 @@ export default {
     menuLinks: [
       { icon: "mdi-home", text: "Home", route: "/" },
       { icon: "mdi-store", text: "Lobby", route: "/lobby" },
-      { icon: "mdi-mouse", text: "Play AI", route: "/playai" },
-      { icon: "mdi-face", text: "My game", route: "/game" }
+      { icon: "mdi-desktop-mac", text: "Play AI", route: "/playai" },
+      { icon: "mdi-account-multiple", text: "My game", route: "/game" }
     ],
     drawer: false,
     drawerLinks: [
       { icon: "mdi-home", text: "Home", route: "/" },
-      { icon: "mdi-home", text: "News", route: "/news" },
+      { icon: "mdi-newspaper", text: "News", route: "/news" },
       { icon: "mdi-account", text: "Account", route: "/account" },
       { icon: "mdi-email", text: "Contact", route: "/contact" }
     ]
