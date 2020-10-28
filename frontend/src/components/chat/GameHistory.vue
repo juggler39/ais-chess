@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto">
     <h2 class="text-center">Moves</h2>
-    <div class="history">
+    <div class="history" ref="history">
       <ul>
         <li
           v-for="(move, index) in moves"
@@ -13,10 +13,20 @@
         </li>
       </ul>
     </div>
-    <v-btn @click="historyMove(0)" dark small mt-2>s</v-btn>
-    <v-btn @click="historyMove(currentPly - 1)" dark small mt-2>b</v-btn>
-    <v-btn @click="historyMove(currentPly + 1)" dark small mt-2>f</v-btn>
-    <v-btn @click="historyMove(moves.length)" dark small mt-2>e</v-btn>
+    <div class="history-buttons">
+      <v-btn @click="historyMove(0)" dark small mt-2>
+        <v-icon medium dark>mdi-chevron-double-left</v-icon>
+      </v-btn>
+      <v-btn @click="historyMove(currentPly - 1)" dark small mt-2>
+        <v-icon medium dark>mdi-chevron-left</v-icon>
+      </v-btn>
+      <v-btn @click="historyMove(currentPly + 1)" dark small mt-2>
+        <v-icon medium dark>mdi-chevron-right</v-icon>
+      </v-btn>
+      <v-btn @click="historyMove(moves.length)" dark small mt-2>
+        <v-icon medium dark>mdi-chevron-double-right</v-icon>
+      </v-btn>
+    </div>
   </v-card>
 </template>
 
@@ -58,7 +68,14 @@ export default {
       if (ply > this.moves.length) ply = this.moves.length;
       this.currentPly = ply;
       this.$emit("historyMove", this.currentPly);
+    },
+    scrollToEnd() {
+      const history = this.$refs.history;
+      history.scrollTop = history.scrollHeight;
     }
+  },
+  updated() {
+    this.scrollToEnd();
   },
   mounted() {
     if (typeof this.moves !== "undefined") {
@@ -66,15 +83,24 @@ export default {
     } else {
       this.historyMove(0);
     }
+
+    this.scrollToEnd();
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .history {
   width: 100%;
   height: 200px;
   overflow-y: scroll;
+}
+.history-buttons {
+  display: flex;
+
+  .v-btn {
+    width: 25%;
+  }
 }
 ::-webkit-scrollbar {
   width: 2px;
