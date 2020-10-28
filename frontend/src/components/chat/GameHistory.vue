@@ -5,8 +5,9 @@
       <ul>
         <li
           v-for="(move, index) in moves"
-          v-bind:key="index"
-          @click="historyMove(index)"
+          :key="index"
+          @click="historyMove(index + 1)"
+          :id="'ply' + (index + 1)"
         >
           <label v-if="index % 2 === 0">{{ index / 2 + 1 }}.</label>
           {{ getFigureImage(move.color + move.piece) + " " + move.san }}
@@ -31,8 +32,12 @@ export default {
   props: ["moves"],
   watch: {
     moves: function() {
-      this.currentPly = this.moves.length;
-      this.historyMove(this.currentPly);
+      if (typeof this.moves !== "undefined") {
+        this.currentPly = this.moves.length;
+        this.clearActivePly(this.currentPly);
+      } else {
+        this.currentPly = 0;
+      }
     }
   },
   methods: {
@@ -54,23 +59,35 @@ export default {
       return figures[figure];
     },
     historyMove(ply) {
+      const moves = this.moves.length || 0;
       if (ply < 0) ply = 0;
-      if (ply > this.moves.length) ply = this.moves.length;
+      if (ply > moves) ply = moves;
       this.currentPly = ply;
       this.$emit("historyMove", this.currentPly);
+      this.clearActivePly(moves + 1);
+      if (this.currentPly > 0) {
+        document
+          .getElementById("ply" + this.currentPly)
+          .classList.add("active");
+      }
+    },
+    clearActivePly(ply) {
+      for (let i = 1; i < ply; i++) {
+        document.getElementById("ply" + i).classList.remove("active");
+      }
     }
   },
   mounted() {
-    if (typeof this.moves !== "undefined") {
-      this.historyMove(this.moves.length);
-    } else {
-      this.historyMove(0);
-    }
+    const moves = this.moves.length || 0;
+    this.historyMove(moves);
   }
 };
 </script>
 
 <style scoped>
+.active {
+  background-color: #8aa0ab;
+}
 .history {
   width: 100%;
   height: 200px;
