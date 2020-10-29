@@ -174,13 +174,13 @@ export default {
       }
       return result;
     },
-    gameOver(result) {
+    gameOver(result, id) {
       this.board.set({
         movable: {
           color: null
         }
       });
-      this.$refs.GameOver.pop(result);
+      this.$socket.client.emit("gameOver", { result, id });
     },
     moveToHistory(ply) {
       let historyGame = new Chess();
