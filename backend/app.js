@@ -107,6 +107,10 @@ socketIO.on("connection", (socket) => {
 			.catch(err => console.log(err));
 	});
 
+	socket.on("gameOver", result => {
+		socketIO.to(result.id).emit("gameOver", result.result);
+	})
+
 	socket.on("getGlobalChatMessages", () => {
 		GlobalChat.find({}, (err, messages) => {
 			socketIO.sockets.emit("allMessages", messages);
