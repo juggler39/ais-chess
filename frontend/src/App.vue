@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <Navbar />
+    <GameOver ref="GameOver" />
     <div class="shimmery-background">
       <div class="background-image"></div>
       <div class="content">
@@ -18,10 +19,11 @@
 <script>
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GameOver from "@/components/dialogs/GameOver";
 
 export default {
   name: "App",
-  components: { Navbar, Footer },
+  components: { Navbar, Footer, GameOver },
   sockets: {
     newMove(data) {
       window.localStorage.setItem(
@@ -50,6 +52,9 @@ export default {
       this.$store.dispatch("clearPvPHistory");
       this.$store.dispatch("clearPlayersChatHistory");
       this.$router.push({ name: "Game", params: { id: game[0].id } });
+    },
+    gameOver(res) {
+      this.$refs.GameOver.pop(res);
     }
   },
   mounted() {}

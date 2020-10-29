@@ -98,8 +98,10 @@ export default {
       const gameHistory = this.$store.getters.getFinishedGames.filter(
         game => game.id === this.$route.params.id
       )[0];
-      this.$store.dispatch("loadPvPHistory", gameHistory.moves);
-      this.$store.dispatch("setGameInfo", gameHistory);
+      if (gameHistory) {
+        this.$store.dispatch("loadPvPHistory", gameHistory.moves);
+        this.$store.dispatch("setGameInfo", gameHistory);
+      }
     }
   },
   mounted() {
