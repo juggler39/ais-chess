@@ -221,7 +221,7 @@ export default {
     stopGameAndStoreResult(result) {
       if (window.localStorage.getItem("runningGameId")) {
         if (!result) result = this.checkEndReason();
-        this.gameOver(result);
+        this.gameOver(result, window.localStorage.getItem("runningGameId"));
         if (this.pieceColor === "white") {
           axios
             .post("/api/finished-games/finish-game", {
@@ -277,7 +277,8 @@ export default {
     } else {
       this.gameInfo = this.$store.getters.getGameInfo;
       this.opponent = this.opponentName();
-      this.gameInfo = this.$store.getters.getGameInfo;
+      this.timeWhite = this.gameInfo.timeWhite;
+      this.timeBlack = this.gameInfo.timeBlack;
       this.$emit("gameOver", true);
     }
   }

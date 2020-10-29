@@ -22,7 +22,7 @@ let generateJWTGoogle = function(_id, login) {
 };
 
 //POST new user route
-router.post("/register", auth.optional, (req, res, next) => {
+router.post("/register", (req, res, next) => {
 	const { body: { user } } = req;
 
 	if(!user.email) {

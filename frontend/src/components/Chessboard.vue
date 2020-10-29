@@ -174,13 +174,13 @@ export default {
       }
       return result;
     },
-    gameOver(result) {
+    gameOver(result, id) {
       this.board.set({
         movable: {
           color: null
         }
       });
-      this.$refs.GameOver.pop(result);
+      this.$socket.client.emit("gameOver", { result, id });
     },
     moveToHistory(ply) {
       let historyGame = new Chess();
@@ -198,19 +198,6 @@ export default {
         fen: historyGame.fen(),
         lastMove: lastMove
       });
-      if (ply != this.game.history().length) {
-        this.board.set({
-          movable: {
-            color: null
-          }
-        });
-      } else {
-        this.board.set({
-          movable: {
-            color: this.pieceColor
-          }
-        });
-      }
     }
   },
   mounted() {
