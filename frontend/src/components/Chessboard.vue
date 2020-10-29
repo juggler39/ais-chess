@@ -180,7 +180,11 @@ export default {
           color: null
         }
       });
-      this.$socket.client.emit("gameOver", { result, id });
+      if (this.$options.components.Aiboard) {
+        this.$refs.GameOver.pop(result);
+      } else {
+        this.$socket.client.emit("gameOver", { result, id });
+      }
     },
     moveToHistory(ply) {
       let historyGame = new Chess();
@@ -198,6 +202,19 @@ export default {
         fen: historyGame.fen(),
         lastMove: lastMove
       });
+      if (ply != this.game.history().length) {
+        this.board.set({
+          movable: {
+            color: null
+          }
+        });
+      } else {
+        this.board.set({
+          movable: {
+            color: this.pieceColor
+          }
+        });
+      }
     }
   },
   mounted() {

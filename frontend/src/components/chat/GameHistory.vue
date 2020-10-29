@@ -95,7 +95,6 @@ export default {
     this.scrollToEnd();
   },
   mounted() {
-
     const moves = this.moves.length || 0;
     this.historyMove(moves);
     this.scrollToEnd();
