@@ -74,7 +74,6 @@ export default {
   data: () => ({
     dialog: false,
     valid: true,
-    props: ["username", "email", "password", "bio"],
     username: "",
     bio: "",
     nameRules: [v => v.length <= 20 || "Name must be less than 20 characters"],
@@ -85,6 +84,17 @@ export default {
     rules: [v => v.length <= 10 || "Password must be less than 10 characters"],
     show: false
   }),
+  watch: {
+    username() {
+      this.$emit("update:username", this.username);
+    },
+    email() {
+      this.$emit("update:email", this.email);
+    },
+    bio() {
+      this.$emit("update:bio", this.bio);
+    }
+  },
   methods: {
     save() {
       if (this.$refs.form.validate()) {
