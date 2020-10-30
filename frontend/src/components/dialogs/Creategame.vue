@@ -1,11 +1,9 @@
 <template>
   <v-row justify="center">
+    <v-btn color="success" dark @click="open">
+      Create game
+    </v-btn>
     <v-dialog v-model="dialog" max-width="290">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on">
-          Create game
-        </v-btn>
-      </template>
       <v-card>
         <v-toolbar dark color="primary">
           <v-toolbar-title>Create a game</v-toolbar-title>
@@ -49,6 +47,13 @@ export default {
     };
   },
   methods: {
+    open() {
+      if (this.$store.state.loginUser) {
+        this.dialog = true;
+      } else {
+        this.$store.dispatch("setRegisterTab", true);
+      }
+    },
     send() {
       if (this.$store.state.loginUser !== null) {
         this.dialog = false;

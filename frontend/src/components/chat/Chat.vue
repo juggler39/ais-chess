@@ -8,7 +8,7 @@
         :data="message"
       />
     </div>
-    <div class="typer">
+    <div v-if="$store.state.loginUser" class="typer">
       <v-btn icon class="typer-btn" @click="toogleDialogEmoji" ref="button">
         <v-icon>mdi-emoticon</v-icon>
       </v-btn>
