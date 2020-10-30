@@ -20,7 +20,6 @@
       />
     </v-card>
     <Promote ref="Promote" :color="pieceColor" />
-    <GameOver ref="GameOver" />
     <AcceptDraw ref="AcceptDraw" @drawAccepted="drawAccepted" />
   </v-col>
 </template>
@@ -75,7 +74,6 @@ export default {
   },
   data() {
     return {
-      pieceColor: "white",
       gameInfo: [],
       opponent: ""
     };
@@ -221,6 +219,7 @@ export default {
     stopGameAndStoreResult(result) {
       if (window.localStorage.getItem("runningGameId")) {
         if (!result) result = this.checkEndReason();
+        result.playerColor = this.pieceColor === "white" ? "black" : "white";
         this.gameOver(result, window.localStorage.getItem("runningGameId"));
         if (this.pieceColor === "white") {
           axios

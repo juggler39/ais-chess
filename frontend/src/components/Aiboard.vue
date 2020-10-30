@@ -103,7 +103,9 @@ export default {
           lastMove: [this.bestMove.from, this.bestMove.to]
         });
         this.setMovableColor(this.toColor());
-        if (this.game.game_over()) this.gameOver(this.checkEndReason());
+        let result = this.checkEndReason();
+        result.playerColor = this.color;
+        if (this.game.game_over()) this.gameOver(result);
       }
     }
   },
@@ -125,6 +127,8 @@ export default {
           }
         }
       });
+      let result = this.checkEndReason();
+      result.playerColor = this.color;
       if (this.game.game_over()) this.gameOver(this.checkEndReason());
     },
     engineAnalyse() {
