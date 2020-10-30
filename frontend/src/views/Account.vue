@@ -132,7 +132,6 @@ export default {
       const {
         data: { user }
       } = response;
-
       this.avatar = user.logo;
       this.items[0].content = user.name;
       this.items[1].content = user.email;
