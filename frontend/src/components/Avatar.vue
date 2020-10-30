@@ -1,6 +1,7 @@
 <template>
   <div>
     <div size="120" class="user">
+      <!-- convertBase64ToImg(image) -->
       <img :src="convertBase64ToImg(image)" class="profile-img" />
       <v-icon class="icon grey white--text" @click="$refs.FileInput.click()">
         mdi-upload
@@ -47,14 +48,16 @@ export default {
       cropedImage: "",
       autoCrop: false,
       selectedFile: "",
-      image: "",
+      image: {},
       dialog: false,
       files: ""
     };
   },
   watch: {
     avatar() {
-      this.image = this.avatar;
+      if (this.avatar) {
+        this.image = this.avatar;
+      }
     }
   },
   computed: {
@@ -96,9 +99,12 @@ export default {
         alert("Sorry, FileReader API not supported");
       }
     },
+    // getImg() {
+    //   return this.default = require("@/assets/avatar.png");
+    // },
     convertBase64ToImg({ mimetype, b64 }) {
       if (!mimetype && !b64) {
-        return "";
+        return require("@/assets/avatar.png");
       }
       return `data:${mimetype};base64,${b64}`;
     }
