@@ -1,7 +1,7 @@
 <template>
   <div>
     <div size="120" class="user">
-      <v-img :src="image_name" class="profile-img"></v-img>
+      <img :src="convertBase64ToImg(image)" class="profile-img" />
       <v-icon class="icon grey white--text" @click="$refs.FileInput.click()">
         mdi-upload
       </v-icon>
@@ -38,10 +38,9 @@ import { mapState } from "vuex";
 import axios from "axios";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
-
 export default {
   components: { VueCropper },
-  props: ["image_name"],
+  props: ["avatar"],
   data() {
     return {
       mime_type: "",
@@ -53,23 +52,29 @@ export default {
       files: ""
     };
   },
+  watch: {
+    avatar() {
+      this.image = this.avatar;
+    }
+  },
   computed: {
     ...mapState(["user"])
   },
   methods: {
-    saveImage() {
-      // const userId = this.$route.params.user.id;
+    saveImage(file) {
       this.cropedImage = this.$refs.cropper.getCroppedCanvas().toDataURL();
       this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
         const formData = new FormData();
-        formData.append("profile_photo", blob, this.selectedFile);
+        formData.append("profile_photo", blob, file);
         axios
           .post("/api/users/setlogo", formData, {
             headers: {
               "content-type": "multipart/form-data"
             }
           })
-          .then(response => console.log(response))
+          .then(response => {
+            this.image = response.data.logo;
+          })
           .catch(function(error) {
             console.log(error);
           });
@@ -90,6 +95,12 @@ export default {
       } else {
         alert("Sorry, FileReader API not supported");
       }
+    },
+    convertBase64ToImg({ mimetype, b64 }) {
+      if (!mimetype && !b64) {
+        return "";
+      }
+      return `data:${mimetype};base64,${b64}`;
     }
   }
 };

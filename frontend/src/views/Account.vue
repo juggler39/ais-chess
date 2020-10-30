@@ -4,7 +4,7 @@
     <v-container class="my-6">
       <v-row>
         <v-col class="col-12 col-md-5">
-          <Avatar />
+          <Avatar :avatar="avatar" />
         </v-col>
         <v-col outline class="col-12 col-md-7">
           <v-card class="mb-2">
@@ -137,7 +137,6 @@ export default {
       this.items[0].content = user.name;
       this.items[1].content = user.email;
       this.items[2].content = user.bio;
-      console.log(this.avatar);
     });
     axios.get("/api/finished-games/get-played-games").then(response => {
       const {
