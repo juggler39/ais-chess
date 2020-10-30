@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark :color="dialogColor">
           <v-toolbar-title>{{ result.color }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
@@ -10,6 +10,9 @@
           </v-btn>
         </v-toolbar>
         <v-card-text class="pa-5"> {{ result.reason }}</v-card-text>
+        <!-- <v-card-text class="pa-5">
+          "Player color": {{ result.playerColor }}</v-card-text
+        > -->
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="success" dark @click="dialog = false">YES</v-btn>
@@ -24,7 +27,8 @@ export default {
   data() {
     return {
       dialog: false,
-      result: {}
+      result: {},
+      dialogColor: "info"
     };
   },
   methods: {
@@ -32,9 +36,11 @@ export default {
       this.show = false;
     },
     pop(result) {
+      console.log("Result", result);
       this.dialog = true;
       this.result.color = result.color;
       this.result.reason = result.reason;
+      this.result.playerColor = result.playerColor;
     }
   }
 };

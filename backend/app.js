@@ -108,7 +108,7 @@ socketIO.on("connection", (socket) => {
 	});
 
 	socket.on("gameOver", result => {
-		socketIO.to(result.id).emit("gameOver", result.result);
+		socket.broadcast.to(result.id).emit("gameOver", result.result);
 	})
 
 	socket.on("getGlobalChatMessages", () => {
