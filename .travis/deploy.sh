@@ -10,11 +10,11 @@ ssh root@$IP <<EOF
 
  cd $DEPLOY_DIR/backend
  echo "MONGO_URL=$MONGO_URL" > .env
- echo "PORT=8000" >> .env
- echo "HOST=localhost" >> .env
+ echo "PORT=$LISTEN_PORT" >> .env
+ echo "HOST=$HOST" >> .env
  echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
  echo "SECRET_SESSION=$SECRET_SESSION" >> .env
- npm install
+ npm i
  pm2 restart chess
 EOF
 

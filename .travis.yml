@@ -10,24 +10,22 @@ before_install:
 - eval "$(ssh-agent -s)"
 - chmod 600 ./deploy_key
 - ssh-add ./deploy_key
-- ssh -i ./deploy_key root@165.227.158.125 pwd
+- ssh -i ./deploy_key root@$IP pwd
 install:
 - cd frontend
 - npm i
-- cd ..
-- cd backend
+- cd ../backend
 - npm i
 script:
 - npm run lint
 - rm -r node_modules
-- cd ..
-- cd frontend
+- cd ../cd frontend
 - npm run lint
 - npm run build
 - cd ..
 
 addons:
-  ssh_known_hosts: 165.227.158.125
+  ssh_known_hosts: $IP
 
 deploy:
 - provider: script
