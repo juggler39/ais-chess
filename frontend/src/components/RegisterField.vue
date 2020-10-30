@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <v-form ref="form" lazy-validation>
+    <v-form ref="form" lazy-validation class="form">
       <v-text-field
         id="username"
         v-model="username"
@@ -39,6 +39,12 @@
           submit
         </v-btn>
       </v-layout>
+      <v-card class="content-error" id="error" dark>
+        <p>User with this name or email already exists!</p>
+        <v-btn color="secondary mt-5" @click="closeErrorCard">
+          ok
+        </v-btn>
+      </v-card>
     </v-form>
   </div>
 </template>
@@ -69,6 +75,10 @@ export default {
     }
   }),
   methods: {
+    closeErrorCard() {
+      const cardError = document.getElementById("error");
+      cardError.classList.remove("active");
+    },
     submit() {
       if (this.$refs.form.validate()) {
         let userObj = {
@@ -92,6 +102,7 @@ export default {
               router.push("/account", () => {});
               this.dialog = false;
             } else {
+              document.getElementById("error").classList.add("active");
               console.log(response.data.errors);
             }
           },
@@ -104,3 +115,34 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.form {
+  position: relative;
+
+  .content-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    background-color: #1e1e1e;
+    height: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid #1a1a1a;
+
+    p {
+      font-size: 18px;
+      color: #c04242;
+      text-align: center;
+      padding: 0 5px;
+    }
+  }
+
+  .active {
+    display: flex;
+  }
+}
+</style>
