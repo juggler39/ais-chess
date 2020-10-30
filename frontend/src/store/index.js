@@ -14,11 +14,15 @@ const id = getStore("userID");
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
   state: {
+    registerTab: false,
     loginUser: user,
     idUser: id,
     gameInfo: []
   },
   mutations: {
+    setRegisterTab(state, value) {
+      state.registerTab = value;
+    },
     setGameInfo(state, game) {
       state.gameInfo = game;
     },
@@ -36,6 +40,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setRegisterTab(context, value) {
+      context.commit("setRegisterTab", value);
+    },
     setGameInfo(context, game) {
       context.commit("setGameInfo", game);
     }
