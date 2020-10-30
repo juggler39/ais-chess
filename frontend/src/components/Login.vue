@@ -1,26 +1,26 @@
 <template>
-  <v-dialog persistent v-model="dialog">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn text v-bind="attrs" v-on="on" class="btn-for-after">
-        <span class="hidden-sm-and-down">
-          login
-        </span>
-        <v-icon right>mdi-login</v-icon>
-      </v-btn>
-    </template>
-    <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center">
-        <v-col sm="8" md="4">
-          <v-card>
-            <ModalTabs />
-            <v-btn icon large @click="dialog = false" class="btn-close">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-dialog>
+  <div>
+    <v-btn text class="btn-for-after" @click="openLogin(true)">
+      <span class="hidden-sm-and-down">
+        login
+      </span>
+      <v-icon right>mdi-login</v-icon>
+    </v-btn>
+    <v-dialog persistent v-model="$store.state.registerTab">
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col sm="8" md="4">
+            <v-card>
+              <ModalTabs />
+              <v-btn icon large @click="openLogin(false)" class="btn-close">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -34,6 +34,11 @@ export default {
     return {
       dialog: false
     };
+  },
+  methods: {
+    openLogin(value) {
+      this.$store.dispatch("setRegisterTab", value);
+    }
   }
 }
 </script>

@@ -235,8 +235,12 @@ router.post("/setlogo", [auth.required, multer.single("profile_photo")], (req, r
 			}
 			if (req.file.size > 1048576) res.json("File is too big");
 			else {
-				userFound.logo = req.file;
-				userFound.save().then(() => res.json("Logo saved"));
+				const { mimetype, buffer } = req.file;
+				userFound.logo = {
+					mimetype,
+					b64: buffer.toString('base64')
+				};
+				userFound.save().then(() => res.json(userFound));
 			}
 
 		});
