@@ -15,21 +15,22 @@ const isProduction = process.env.NODE_ENV === "production";
 
 //Initiate our app
 const app = express();
-if(isProduction) {
-	const https = require("https");
-	const fs = require("fs");
-	const options = {
+let server;
+if (isProduction) {
+  const https = require("https");
+  const fs = require("fs");
+  const options = {
     key: fs.readFileSync(
       "/etc/letsencrypt/live/chess.edu2020.devais.work/privkey.pem"
     ),
     cert: fs.readFileSync(
       "/etc/letsencrypt/live/chess.edu2020.devais.work/fullchain.pem"
     ),
-	};
-  const server = https.createServer(options, app);
+  };
+  server = https.createServer(options, app);
 } else {
-  const http = require('http');
-  const server = http.createServer(app);
+  const http = require("http");
+  server = http.createServer(app);
 }
 const socketIO = io(server);
 
