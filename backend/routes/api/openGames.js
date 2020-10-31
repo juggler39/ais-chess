@@ -15,6 +15,7 @@ router.post("/open-game", auth.required, (req, res, next) => {
 			//access is allowed
 			const newGame = new OpenedGame();
 			newGame.players.player1 = user.name;
+			newGame.players.player1Rating = user.rating;
 			newGame.save().then(() => res.json({ game: newGame.toJSON() }));
 		});
 });

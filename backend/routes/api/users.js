@@ -53,6 +53,7 @@ router.post("/register", (req, res, next) => {
 	finalUser.name = user.login;
 	finalUser.bio = "";
 	finalUser.activeGame = "";
+	finalUser.rating = 1200;
 
 	Users.findOne({ login: user.login }, function( err, user_login) {
 		if (user_login)
@@ -214,7 +215,8 @@ router.post("/google", (req, res, next) => {
 					login: userid,
 					name,
 					bio: "",
-					activeGame: ""
+					activeGame: "",
+					rating: 1200
 				};
 				const finalUser = new Users(userObj);
 				finalUser.save()

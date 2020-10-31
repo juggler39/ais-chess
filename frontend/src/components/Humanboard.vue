@@ -232,7 +232,6 @@ export default {
               }
             })
             .then(() => {
-              //somethig else if needed (redirect and etc.)
             });
         }
         window.localStorage.removeItem("gameInfo");

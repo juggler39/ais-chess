@@ -72,7 +72,8 @@ export default {
         this.$socket.client.emit("connectToGame", {
           gameId: game.id,
           player2Name: this.$store.state.loginUser,
-          player2ID: this.$store.state.idUser
+          player2ID: this.$store.state.idUser,
+          player2Rating: window.localStorage.getItem("userRating")
         });
       }
     }

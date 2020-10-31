@@ -97,6 +97,7 @@ export default {
               window.localStorage.setItem("userLog", response.data.user.token);
               window.localStorage.setItem("userName", response.data.user.name);
               window.localStorage.setItem("userID", response.data.user.id);
+              window.localStorage.setItem("userRating", response.data.user.rating);
               this.$store.commit("setLoginUser", response.data.user.name);
               this.$store.commit("setLoginUserID", response.data.user.id);
               router.push("/account", () => {});
