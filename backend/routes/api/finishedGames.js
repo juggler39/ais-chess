@@ -18,6 +18,7 @@ router.post("/finish-game", auth.required, (req, res, next) => {
 			if (err){
 				console.log(err);  
 			}
+<<<<<<< HEAD
 			const newGame = new FinishedGame();
 			newGame.players = gameFound.players;
 			newGame.moves = gameFound.moves;
@@ -33,6 +34,32 @@ router.post("/finish-game", auth.required, (req, res, next) => {
 				userFound.rating = game.finalElo1;
 				userFound.save();
 			});
+=======
+			//access is allowed
+			OpenedGame.findByIdAndDelete(game.id, async (err, gameFound) => {
+				if (err){
+					console.log(err);  
+				} else {
+					const newGame = new FinishedGame();
+					newGame.players = gameFound.players;
+					newGame.moves = gameFound.moves;
+					newGame.timeToGo = gameFound.timeToGo;
+					newGame.timeWhite = game.timeWhite;
+					newGame.timeBlack = game.timeBlack;
+					newGame.winner = game.winner;
+
+					newGame.save().then((gameSaved) => {
+						Users.findOne({_id: gameSaved.players.player1ID}).then(userFound => {
+							userFound.activeGame = "";
+							userFound.rating = game.finalElo1;
+							userFound.save();
+						});
+						Users.findOne({_id: gameSaved.players.player2ID}).then(userFound => {
+							userFound.activeGame = "";
+							userFound.rating = game.finalElo2;
+							userFound.save();
+						});
+>>>>>>> feat: correct rating system (calculate on front)
 
 			Users.findOne({_id: gameSaved.players.player2ID}).then(userFound => {
 				userFound.activeGame = "";
