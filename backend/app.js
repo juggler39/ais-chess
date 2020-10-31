@@ -5,7 +5,6 @@ const session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const errorHandler = require("errorhandler");
-const http = require("http");
 const io = require("socket.io");
 const { UserRefreshClient } = require("google-auth-library");
 
@@ -16,7 +15,22 @@ const isProduction = process.env.NODE_ENV === "production";
 
 //Initiate our app
 const app = express();
-const server = http.createServer(app);
+if(isProduction) {
+	const https = require("https");
+	const fs = require("fs");
+	const options = {
+    key: fs.readFileSync(
+      "/etc/letsencrypt/live/chess.edu2020.devais.work/privkey.pem"
+    ),
+    cert: fs.readFileSync(
+      "/etc/letsencrypt/live/chess.edu2020.devais.work/fullchain.pem"
+    ),
+	};
+  const server = https.createServer(options, app);
+} else {
+  const http = require('http');
+  const server = http.createServer(app);
+}
 const socketIO = io(server);
 
 //Configure our app
