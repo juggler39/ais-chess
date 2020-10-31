@@ -136,6 +136,7 @@ socketIO.on("connection", (socket) => {
 		Game.players.player1ID = info.playerID;
 		Game.players.player1Name = info.playerName;
 		Game.players.player1Color = info.color;
+		Game.players.player1Rating = info.rating;
 		Game.timeToGo = info.time;
 		Game.isOpen = true;
 
@@ -153,7 +154,7 @@ socketIO.on("connection", (socket) => {
 	});
 
 	socket.on("connectToGame", player2info => {
-		OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
+		OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name, "players.player2Rating": player2info.player2Rating }}, (err, gameFound) => {
 			if (err) {
 				console.log(err);
 			} else {
