@@ -14,6 +14,7 @@ ssh root@$IP <<EOF
  echo "HOST=$HOST" >> .env
  echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
  echo "SECRET_SESSION=$SECRET_SESSION" >> .env
+ echo "NODE_ENV=production" >> .env
  npm i
  pm2 restart chess
 EOF
