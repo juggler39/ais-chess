@@ -32,6 +32,7 @@ router.get("/open-game-info", auth.required, (req, res, next) => {
 			OpenedGame.findById(user.activeGame).then((game) => {
 				res.json({game: game.toJSON()});
 			})
+			.catch(err => console.log(err));
 		});
 });
 
