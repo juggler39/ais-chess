@@ -3,19 +3,21 @@
     <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
         <v-toolbar dark :color="dialogColor">
-          <v-toolbar-title>{{ result.color }}</v-toolbar-title>
+          <v-toolbar-title>Game over</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-card-text class="pa-5"> {{ result.reason }}</v-card-text>
-        <!-- <v-card-text class="pa-5">
-          "Player color": {{ result.playerColor }}</v-card-text
-        > -->
+        <v-card-text class="text-h4 text-center font-weight-bold pa-2">
+          {{ gameResult }}</v-card-text
+        >
+        <v-card-text class="text-h5 text-center font-weight-bold pa-2">
+          {{ reason }}</v-card-text
+        >
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" dark @click="dialog = false">YES</v-btn>
+          <v-btn color="success" dark @click="dialog = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -28,7 +30,9 @@ export default {
     return {
       dialog: false,
       result: {},
-      dialogColor: "info"
+      dialogColor: "info",
+      gameResult: "",
+      reason: ""
     };
   },
   methods: {
@@ -36,11 +40,24 @@ export default {
       this.show = false;
     },
     pop(result) {
-      console.log("Result", result);
       this.dialog = true;
-      this.result.color = result.color;
-      this.result.reason = result.reason;
-      this.result.playerColor = result.playerColor;
+      this.reason = result.reason;
+      if (result.color === "draw") {
+        this.dialogColor = "info";
+        this.gameResult = "Draw";
+      } else if (result.color === result.playerColor) {
+        this.dialogColor = "success";
+        this.gameResult = "You win!";
+        if (this.reason === "resignation") {
+          this.reason = "your opponent resigned";
+        }
+      } else {
+        this.dialogColor = "error";
+        this.gameResult = "You lose!";
+        if (this.reason === "resignation") {
+          this.reason = "you resigned";
+        }
+      }
     }
   }
 };

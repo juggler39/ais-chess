@@ -158,19 +158,19 @@ export default {
       const result = {};
       if (this.game.in_checkmate()) {
         result.color = this.game.turn() === "w" ? "black" : "white";
-        result.reason = "checkmate";
+        result.reason = "by checkmate";
       } else if (this.game.in_stalemate()) {
         result.color = "draw";
-        result.reason = "stalemate";
+        result.reason = "by stalemate";
       } else if (this.game.in_threefold_repetition()) {
         result.color = "draw";
-        result.reason = "threefold repetition";
+        result.reason = "by threefold repetition";
       } else if (this.game.insufficient_material()) {
         result.color = "draw";
-        result.reason = "insufficient material";
+        result.reason = "by insufficient material";
       } else {
         result.color = "draw";
-        result.reason = "50-move rule";
+        result.reason = "by 50-move rule";
       }
       return result;
     },
