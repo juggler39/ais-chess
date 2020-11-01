@@ -20,6 +20,21 @@ router.post("/open-game", auth.required, (req, res, next) => {
 		});
 });
 
+router.get("/open-game-info", auth.required, (req, res, next) => {
+	const { payload: { id } } = req;
+
+	return Users.findById(id)
+		.then((user) => {
+			if(!user) {
+				return res.json({ user: "Access is denied" });
+			}
+			//access is allowed
+			OpenedGame.findById(user.activeGame).then((game) => {
+				res.json({game: game.toJSON()});
+			})
+		});
+});
+
 router.post("/open-game-message", auth.required, (req, res, next) => {
 	const { payload: { id } } = req;
 	const { body: { gameUser } } = req;
