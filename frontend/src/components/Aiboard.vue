@@ -103,9 +103,7 @@ export default {
           lastMove: [this.bestMove.from, this.bestMove.to]
         });
         this.setMovableColor(this.toColor());
-        let result = this.checkEndReason();
-        result.playerColor = this.color;
-        if (this.game.game_over()) this.gameOver(result);
+        if (this.game.game_over()) this.showResult();
       }
     }
   },
@@ -127,9 +125,12 @@ export default {
           }
         }
       });
+      if (this.game.game_over()) this.showResult();
+    },
+    showResult() {
       let result = this.checkEndReason();
       result.playerColor = this.color;
-      if (this.game.game_over()) this.gameOver(this.checkEndReason());
+      this.gameOver(result);
     },
     engineAnalyse() {
       this.stockfish.postMessage("position startpos moves" + this.getMoves());
