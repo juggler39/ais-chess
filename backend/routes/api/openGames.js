@@ -32,14 +32,7 @@ router.get("/open-game-info", auth.required, (req, res, next) => {
 			OpenedGame.findById(user.activeGame).then((game) => {
 				res.json({game: game.toJSON()});
 			})
-<<<<<<< HEAD
-<<<<<<< HEAD
 			.catch(err => console.log(err));
-=======
->>>>>>> feat: correct rating system (calculate on front)
-=======
-			.catch(err => console.log(err));
->>>>>>> refactor: finishedGames refactor
 		});
 });
 
