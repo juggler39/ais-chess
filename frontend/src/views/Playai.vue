@@ -18,6 +18,7 @@
           <v-container>
             <SetUpAiGame @newGame="newGame = $event" />
           </v-container>
+          <v-img :src="require('@/assets/giphy.webp')"></v-img>
         </v-col>
       </v-row>
     </v-container>
