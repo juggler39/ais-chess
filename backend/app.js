@@ -5,7 +5,6 @@ const session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const errorHandler = require("errorhandler");
-const http = require("http");
 const io = require("socket.io");
 const { UserRefreshClient } = require("google-auth-library");
 
@@ -16,7 +15,23 @@ const isProduction = process.env.NODE_ENV === "production";
 
 //Initiate our app
 const app = express();
-const server = http.createServer(app);
+let server;
+if (isProduction) {
+  const https = require("https");
+  const fs = require("fs");
+  const options = {
+    key: fs.readFileSync(
+      "/etc/letsencrypt/live/chess.edu2020.devais.work/privkey.pem"
+    ),
+    cert: fs.readFileSync(
+      "/etc/letsencrypt/live/chess.edu2020.devais.work/fullchain.pem"
+    ),
+  };
+  server = https.createServer(options, app);
+} else {
+  const http = require("http");
+  server = http.createServer(app);
+}
 const socketIO = io(server);
 
 //Configure our app
@@ -108,7 +123,7 @@ socketIO.on("connection", (socket) => {
 	});
 
 	socket.on("gameOver", result => {
-		socketIO.to(result.id).emit("gameOver", result.result);
+		socket.broadcast.to(result.id).emit("gameOver", result.result);
 	})
 
 	socket.on("getGlobalChatMessages", () => {
@@ -136,6 +151,7 @@ socketIO.on("connection", (socket) => {
 		Game.players.player1ID = info.playerID;
 		Game.players.player1Name = info.playerName;
 		Game.players.player1Color = info.color;
+		Game.players.player1Rating = info.rating;
 		Game.timeToGo = info.time;
 		Game.isOpen = true;
 
@@ -153,7 +169,7 @@ socketIO.on("connection", (socket) => {
 	});
 
 	socket.on("connectToGame", player2info => {
-		OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name}}, (err, gameFound) => {
+		OpenGame.findOneAndUpdate({ _id: player2info.gameId }, { $set: { isOpen: false, "players.player2ID":  player2info.player2ID, "players.player2Name": player2info.player2Name, "players.player2Rating": player2info.player2Rating }}, (err, gameFound) => {
 			if (err) {
 				console.log(err);
 			} else {

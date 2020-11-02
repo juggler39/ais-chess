@@ -20,7 +20,6 @@
       />
     </v-card>
     <Promote ref="Promote" :color="pieceColor" />
-    <GameOver ref="GameOver" />
     <AcceptDraw ref="AcceptDraw" @drawAccepted="drawAccepted" />
   </v-col>
 </template>
@@ -75,7 +74,6 @@ export default {
   },
   data() {
     return {
-      pieceColor: "white",
       gameInfo: [],
       opponent: ""
     };
@@ -218,10 +216,45 @@ export default {
         this.stopGameAndStoreResult();
       }
     },
-    stopGameAndStoreResult(result) {
+    async stopGameAndStoreResult(result) {
       if (window.localStorage.getItem("runningGameId")) {
         if (!result) result = this.checkEndReason();
+        result.playerColor = this.pieceColor === "white" ? "black" : "white";
         this.gameOver(result, window.localStorage.getItem("runningGameId"));
+
+        let finalElo1, finalElo2;
+
+        await axios.get("/api/open-games/open-game-info").then(response => {
+          const { data: {game}} = response;
+          console.log(game);
+          let R1, R2, E1, E2, S1, S2;
+
+          R1 = Math.pow(10, game.players.player1Rating/400);
+          R2 = Math.pow(10, game.players.player2Rating/400);
+
+          E1 = R1 / (R1 + R2);
+          E2 = R2 / (R2 + R1);
+
+          if (game.players.player1Color === result.color) { 
+            S1 = 1;
+            S2 = 0;
+          } else if ((result.color !== "draw")) {
+            S1 = 0;
+            S2 = 1;
+          }
+          else {
+            S1 = 0.5;
+            S2 = 0.5;
+          }
+          console.log(S1 + " " + S2);
+
+          finalElo1 = Math.round(game.players.player1Rating + 32 * (S1 - E1));
+          finalElo2 = Math.round(game.players.player2Rating + 32 * (S2 - E2));
+          console.log(finalElo1);
+          console.log(finalElo2);
+          if (this.pieceColor === game.players.player1Color) window.localStorage.setItem("userRating", finalElo1);
+          else window.localStorage.setItem("userRating", finalElo2);
+        });
         if (this.pieceColor === "white") {
           axios
             .post("/api/finished-games/finish-game", {
@@ -229,11 +262,13 @@ export default {
                 id: this.$props.gameId,
                 winner: result.color,
                 timeWhite: this.timeWhite,
-                timeBlack: this.timeBlack
+                timeBlack: this.timeBlack,
+                finalElo1,
+                finalElo2
               }
             })
             .then(() => {
-              //somethig else if needed (redirect and etc.)
+              
             });
         }
         window.localStorage.removeItem("gameInfo");

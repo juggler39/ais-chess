@@ -61,7 +61,8 @@ export default {
           playerID: this.$store.state.idUser,
           playerName: this.$store.state.loginUser,
           time: this.time,
-          color: this.color
+          color: this.color,
+          rating: window.localStorage.getItem("userRating")
         });
       }
     }

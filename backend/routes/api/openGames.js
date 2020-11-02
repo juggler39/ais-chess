@@ -15,7 +15,24 @@ router.post("/open-game", auth.required, (req, res, next) => {
 			//access is allowed
 			const newGame = new OpenedGame();
 			newGame.players.player1 = user.name;
+			newGame.players.player1Rating = user.rating;
 			newGame.save().then(() => res.json({ game: newGame.toJSON() }));
+		});
+});
+
+router.get("/open-game-info", auth.required, (req, res, next) => {
+	const { payload: { id } } = req;
+
+	return Users.findById(id)
+		.then((user) => {
+			if(!user) {
+				return res.json({ user: "Access is denied" });
+			}
+			//access is allowed
+			OpenedGame.findById(user.activeGame).then((game) => {
+				res.json({game: game.toJSON()});
+			})
+			.catch(err => console.log(err));
 		});
 });
 
