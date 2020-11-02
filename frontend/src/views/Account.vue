@@ -91,6 +91,7 @@
                 <td>{{ game.timeToGo }}</td>
                 <td>{{ game.moves.length }}</td>
                 <td>{{ game.gameDate }}</td>
+                <td>{{ game.rating }}</td>
               </tr>
             </tbody>
           </template>
@@ -117,6 +118,7 @@ export default {
       gamesPlayed: [],
       items: [
         { title: "Name: ", content: "" },
+        { title: "Rating: ", content: "" },
         { title: "Email: ", content: "" },
         { title: "Bio: ", content: "" }
       ]
@@ -134,8 +136,9 @@ export default {
       } = response;
       this.avatar = user.logo;
       this.items[0].content = user.name;
-      this.items[1].content = user.email;
-      this.items[2].content = user.bio;
+      this.items[1].content = user.rating;
+      this.items[2].content = user.email;
+      this.items[3].content = user.bio;
     });
     axios.get("/api/finished-games/get-played-games").then(response => {
       const {
