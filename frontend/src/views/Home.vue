@@ -1,11 +1,9 @@
 <template>
   <div class="home">
     <div class="main-banner">
-      <img
-        class="home--main_image"
-        slot="image"
-        :src="require('@/assets/chess-imgmin.gif')"
-      />
+      <video class="home--main_video" playsinline autoplay muted loop>
+        <source :src="require('@/assets/chess.mp4')" type="video/mp4" />
+      </video>
       <div class="home--title">
         <h1 class="main-title">Experience Virtual World of Chess</h1>
         <p class="content">
@@ -58,7 +56,7 @@ export default {
     flex-direction: column-reverse;
   }
 
-  .home--main_image {
+  .home--main_video {
     padding: 5%;
     opacity: 0.5;
 
