@@ -112,7 +112,7 @@ export default {
       { icon: "mdi-home", text: "Home", route: "/" },
       { icon: "mdi-newspaper", text: "News", route: "/news" },
       { icon: "mdi-account", text: "Account", route: "/account" },
-      { icon: "mdi-email", text: "Contact", route: "/contact" }
+      { icon: "mdi-email", text: "About Us", route: "/about_us" }
     ]
   })
 };
