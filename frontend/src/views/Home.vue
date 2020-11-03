@@ -27,22 +27,22 @@
         prizes.
       </p>
     </div>
-    <router-link :to="{ name: 'News' }" class="subtitle">
-      Latest news in the world of chess
+    <router-link :to="{ name: 'Basics' }" class="subtitle">
+      How to Play Chess | Rules
       <v-icon dark class="arrow-right">mdi-arrow-right</v-icon>
     </router-link>
-    <Card maxCount="3" />
+    <BasicMenu />
   </div>
 </template>
 
 <script>
 import Buttons from "@/components/Buttons";
-import Card from "@/components/Card";
+import BasicMenu from "@/components/BasicMenu";
 // @ is an alias to /src
 
 export default {
   name: "Home",
-  components: { Buttons, Card }
+  components: { Buttons, BasicMenu }
 };
 </script>
 
