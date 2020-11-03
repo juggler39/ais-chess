@@ -272,13 +272,15 @@ router.get("/secret", auth.required, (req, res, next) => {
 		});
 });
 
-router.get("/rating-all", (req, res, next) => {
+router.get("/top10", (req, res, next) => {
 
-	Users.find({}, {name: 1, rating: 1, _id: 0})
-		.then((users) => {
-			res.json({users: users});
-		})
-		.catch(err => console.log(err));
+	Users.find({}, { name: 1, rating: 1 })
+    .sort({ rating: -1 })
+    .limit(10)
+    .then((users) => {
+      res.json({ users: users });
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;

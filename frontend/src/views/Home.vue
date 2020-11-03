@@ -27,6 +27,29 @@
         prizes.
       </p>
     </div>
+    <v-container>
+      <h2 class="text-center">Hall of fame</h2>
+      <v-simple-table dark>
+        <template>
+          <thead>
+            <tr>
+              <th class="text-left">
+                <h2>Player</h2>
+              </th>
+              <th class="text-left">
+                <h2>Rating</h2>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="player in players" :key="player._id">
+              <td>{{ player.name }}</td>
+              <td>{{ player.rating }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </v-container>
     <router-link :to="{ name: 'Basics' }" class="subtitle">
       How to Play Chess | Rules
       <v-icon dark class="arrow-right">mdi-arrow-right</v-icon>
@@ -38,11 +61,25 @@
 <script>
 import Buttons from "@/components/Buttons";
 import BasicMenu from "@/components/BasicMenu";
+import axios from "axios";
 // @ is an alias to /src
 
 export default {
   name: "Home",
-  components: { Buttons, BasicMenu }
+  components: { Buttons, BasicMenu },
+  data() {
+    return {
+      players: []
+    };
+  },
+  mounted() {
+    axios
+      .get("/api/users/top10")
+      .then(response => {
+        this.players = response.data.users;
+      })
+      .catch(error => console.log(error));
+  }
 };
 </script>
 
