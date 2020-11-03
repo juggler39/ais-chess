@@ -210,6 +210,7 @@ export default {
       @media (max-width: 767.98px) {
         width: 60%;
         padding-bottom: 30%;
+
         margin: 20px auto;
       }
     }
