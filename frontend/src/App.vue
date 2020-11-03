@@ -13,17 +13,19 @@
       </div>
     </div>
     <Footer />
+    <ButtonToTop />
   </v-app>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar";
+import ButtonToTop from "@/components/ButtonToTop";
 import Footer from "@/components/Footer";
 import GameOver from "@/components/dialogs/GameOver";
 
 export default {
   name: "App",
-  components: { Navbar, Footer, GameOver },
+  components: { Navbar, Footer, GameOver, ButtonToTop },
   sockets: {
     newMove(data) {
       window.localStorage.setItem(
