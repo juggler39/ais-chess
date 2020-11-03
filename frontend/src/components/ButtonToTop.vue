@@ -34,6 +34,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .button-to-top {
+  @media (max-width: 767.98px) {
+    display: none;
+  }
   .btn {
     bottom: 20px;
     opacity: 0.5;
