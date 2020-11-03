@@ -27,6 +27,7 @@
         prizes.
       </p>
     </div>
+
     <v-container>
       <h2 class="text-center">Hall of fame</h2>
       <v-simple-table dark>
@@ -62,6 +63,7 @@
 import Buttons from "@/components/Buttons";
 import BasicMenu from "@/components/BasicMenu";
 import axios from "axios";
+
 // @ is an alias to /src
 
 export default {

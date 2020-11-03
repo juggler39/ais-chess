@@ -205,11 +205,12 @@ export default {
 
     .video {
       width: 45%;
-      padding-bottom: 30%;
+      padding-bottom: 50%;
 
       @media (max-width: 767.98px) {
         width: 60%;
-        padding-bottom: 50%;
+        padding-bottom: 30%;
+
         margin: 20px auto;
       }
     }
