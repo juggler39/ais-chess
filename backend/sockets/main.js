@@ -1,5 +1,6 @@
 const io = require("socket.io");
 const mongoose = require("mongoose");
+const mongoAdapter = require("socket.io-adapter-mongo");
 
 require("../models/Users");
 require("../models/GlobalChat");
@@ -12,6 +13,7 @@ const Users = mongoose.model("Users");
 
 const sockets = (server) => {
 	const socketIO = io(server);
+	socketIO.adapter(mongoAdapter(process.env.MONGO_URL));
     
 	socketIO.on("connection", (socket) => {
 		socket.on("disconnect", () => {
