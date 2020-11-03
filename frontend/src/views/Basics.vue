@@ -4,47 +4,17 @@
       How to Play Chess | Rules
     </h1>
     <BasicMenu />
+    <Rules />
   </div>
 </template>
 
 <script>
 import BasicMenu from "@/components/BasicMenu";
+import Rules from "@/components/Rules";
 
 export default {
   name: "Basics",
-  components: { BasicMenu },
-  data: () => ({
-    items: [
-      {
-        item: "Set up the Chess Board",
-        color: "deep-purple lighten-5"
-      },
-      {
-        item: "Learn to move the Pieces",
-        color: "deep-purple lighten-4"
-      },
-      {
-        item: "Discover the Special Rules",
-        color: "deep-purple lighten-3"
-      },
-      {
-        item: "Learn who Makes the First Move",
-        color: "deep-purple lighten-2"
-      },
-      {
-        item: "Check out the rules on How to Win",
-        color: "deep-purple lighten-1"
-      },
-      {
-        item: "Study the Basic Strategies",
-        color: "deep-purple darken-1"
-      },
-      {
-        item: "Practice Playing Lots of Games",
-        color: "deep-purple darken-2"
-      }
-    ]
-  })
+  components: { BasicMenu, Rules }
 };
 </script>
 <style lang="scss" scoped>
@@ -64,13 +34,7 @@ export default {
       left: 0;
       background: rgba(0, 0, 0, 0.8);
     }
-
-    .subtitle {
-      position: relative;
-      z-index: 2;
-    }
   }
-
   .v-timeline {
     position: relative;
     z-index: 2;

@@ -1,5 +1,9 @@
 <template>
   <div class="basics-bg">
+    <p class="title-content ml-4">
+      It's never too late to learn how to play chess - the most popular game in
+      the world! Learning the rules of chess is easy:
+    </p>
     <v-timeline align-top dense>
       <v-timeline-item
         v-for="item in items"
@@ -8,7 +12,7 @@
         small
       >
         <div>
-          <a :href="id" class="basic-link">{{ item.item }}</a>
+          <a :href="item.id" class="basic-link">{{ item.item }}</a>
         </div>
       </v-timeline-item>
     </v-timeline>
@@ -21,32 +25,42 @@ export default {
   data: () => ({
     items: [
       {
+        id: 1,
         item: "Set up the Chess Board",
-        color: "blue lighten-5"
+        color: "light-green lighten-5"
       },
       {
+        id: 2,
         item: "Learn to move the Pieces",
-        color: "blue lighten-4"
+        color: "light-green lighten-4"
       },
       {
-        item: "Discover the Special Rules",
-        color: "blue lighten-3"
+        item: "Learn to move the Queen",
+        color: "light-green lighten-3"
       },
       {
-        item: "Learn who Makes the First Move",
-        color: "blue lighten-2"
+        item: "Learn to move the Rook",
+        color: "light-green lighten-2"
       },
       {
-        item: "Check out the rules on How to Win",
-        color: "blue lighten-1"
+        item: "Learn to move the Knight",
+        color: "light-green lighten-1"
       },
       {
-        item: "Study the Basic Strategies",
-        color: "blue darken-1"
+        item: "Learn to move the Pawn",
+        color: "light-green darken-1"
       },
       {
-        item: "Practice Playing Lots of Games",
-        color: "blue darken-2"
+        item: "How to promote a Pawn",
+        color: "light-green darken-2"
+      },
+      {
+        item: "How to do 'en passant'",
+        color: "light-green darken-3"
+      },
+      {
+        item: "How to Castle",
+        color: "light-green darken-4"
       }
     ]
   })
@@ -58,6 +72,13 @@ export default {
   background-size: cover;
   padding: 50px 10px;
   position: relative;
+
+  .title-content {
+    font-weight: bold;
+    position: relative;
+    z-index: 2;
+    font-size: 18px;
+  }
 
   &::after {
     position: absolute;
@@ -77,9 +98,10 @@ export default {
   .basic-link {
     color: #ffffff;
     transition: 0.3s ease-in;
+    text-decoration: none;
 
     &:hover {
-      color: #64B5F6;
+      color: #7cb342;
     }
   }
 }
