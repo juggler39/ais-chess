@@ -272,4 +272,13 @@ router.get("/secret", auth.required, (req, res, next) => {
 		});
 });
 
+router.get("/rating-all", (req, res, next) => {
+
+	Users.find({}, {name: 1, rating: 1, _id: 0})
+		.then((users) => {
+			res.json({users: users});
+		})
+		.catch(err => console.log(err));
+});
+
 module.exports = router;
