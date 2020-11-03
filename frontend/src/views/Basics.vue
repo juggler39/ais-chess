@@ -19,6 +19,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .basics {
+  .btn {
+    bottom: 20px;
+  }
   .basics-bg {
     background: url("../assets/cards/img2.jpg") 50%;
     background-size: cover;

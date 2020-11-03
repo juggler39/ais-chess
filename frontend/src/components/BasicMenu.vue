@@ -25,40 +25,52 @@ export default {
   data: () => ({
     items: [
       {
-        id: 1,
+        id: "/basics#1",
         item: "Set up the Chess Board",
         color: "light-green lighten-5"
       },
       {
-        id: 2,
+        id: "/basics#2",
         item: "Learn to move the Pieces",
         color: "light-green lighten-4"
       },
       {
-        item: "Learn to move the Queen",
+        id: "/basics#4",
+        item: "Learn to move the King",
         color: "light-green lighten-3"
       },
       {
-        item: "Learn to move the Rook",
+        id: "/basics#4",
+        item: "Learn to move the Queen",
         color: "light-green lighten-2"
       },
       {
-        item: "Learn to move the Knight",
+        id: "/basics#5",
+        item: "Learn to move the Rook",
         color: "light-green lighten-1"
       },
       {
+        id: "/basics#6",
+        item: "Learn to move the Knight",
+        color: "light-green"
+      },
+      {
+        id: "/basics#7",
         item: "Learn to move the Pawn",
         color: "light-green darken-1"
       },
       {
+        id: "/basics#8",
         item: "How to promote a Pawn",
         color: "light-green darken-2"
       },
       {
+        id: "/basics#9",
         item: "How to do 'en passant'",
         color: "light-green darken-3"
       },
       {
+        id: "/basics#10",
         item: "How to Castle",
         color: "light-green darken-4"
       }
