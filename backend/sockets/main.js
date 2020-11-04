@@ -1,9 +1,23 @@
 const io = require("socket.io");
+<<<<<<< HEAD
 const mongoAdapter = require("socket.io-adapter-mongo");
 const gameEvents = require("./gameEvents");
 const lobbyEvents = require("./lobbyEvents");
 const globalChatEvents = require("./globalChatEvents");
 const playersChatEvents = require("./playersChatEvents");
+=======
+const mongoose = require("mongoose");
+const mongoAdapter = require("socket.io-adapter-mongo");
+
+require("../models/Users");
+require("../models/GlobalChat");
+require("../models/OpenGames");
+
+
+const GlobalChat = mongoose.model("GlobalChat");
+const OpenGame = mongoose.model("OpenGame");
+const Users = mongoose.model("Users");
+>>>>>>> 7725c943e462bdc46a5fd47ae952b2a982774c3b
 
 const sockets = (server) => {
 	
