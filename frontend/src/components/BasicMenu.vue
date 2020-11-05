@@ -84,6 +84,7 @@ export default {
   background-size: cover;
   padding: 50px 10px;
   position: relative;
+  margin: 20px 0 50px;
 
   .title-content {
     font-weight: bold;

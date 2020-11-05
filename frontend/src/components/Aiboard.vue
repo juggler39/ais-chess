@@ -1,8 +1,6 @@
 <template>
-  <v-col
-    class="col-12 col-md-9 grey darken-4 d-flex justify-center flex-column align-center"
-  >
-    <v-card class="col-12 col-md-8">
+  <v-col class="col-12 col-md-8 d-flex justify-center flex-column align-center">
+    <v-card class="col-12 col-md-9">
       <Playerbar
         :color="opponentColor"
         :username="'StockFish Level ' + level"

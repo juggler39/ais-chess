@@ -109,14 +109,23 @@ export default {
 
 .history {
   width: 100%;
-  height: 200px;
+  height: 250px;
   overflow-y: scroll;
+  background: #15151aa6;
+
+  @media (max-width: 991.98px) {
+    height: 150px;
+  }
 }
 .history-buttons {
   display: flex;
 
   .v-btn {
     width: 25%;
+  }
+
+  .v-btn:not(.v-btn--round).v-size--small {
+    min-width: auto !important;
   }
 }
 ::-webkit-scrollbar {
