@@ -45,6 +45,7 @@ export default {
   @media (max-width: 767.98px) {
     flex-direction: column;
     align-items: center;
+    margin-top: 50px;
   }
 
   .v-btn {
@@ -96,8 +97,12 @@ export default {
 
     @media (max-width: 767.98px) {
       width: 70%;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       font-size: 14px;
+    }
+
+    @media (max-width: 575.98px) {
+      font-size: 12px;
     }
 
     &:hover {
