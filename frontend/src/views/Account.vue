@@ -1,6 +1,6 @@
 <template>
   <div class="account">
-    <h1>User Profile</h1>
+    <p class="acc-header">Hi, {{ items[0].content }} !</p>
     <v-container class="my-6">
       <v-row>
         <v-col class="col-12 col-md-5">
@@ -19,9 +19,9 @@
           </v-card>
           <FormDialog
             :username.sync="items[0].content"
-            :email.sync="items[1].content"
+            :email.sync="items[2].content"
             :password.sync="password"
-            :bio.sync="items[2].content"
+            :bio.sync="items[3].content"
           />
         </v-col>
       </v-row>
@@ -154,6 +154,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.acc-header {
+  font-size: 30px;
+
+  @media (max-width: 991.98px) {
+    text-align: center;
+  }
+  @media (max-width: 575.98px) {
+    font-size: 24px;
+  }
+}
 .v-list-item {
   &:not(:last-child) {
     border-bottom: 1px solid #181818;

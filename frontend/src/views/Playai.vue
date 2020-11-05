@@ -1,6 +1,8 @@
 <template>
   <div class="game">
-    <h1 class="text-center mb-5">Play against the Artificial Intelligence</h1>
+    <h1 class="text-center mb-5 game-header">
+      Play against the Artificial Intelligence
+    </h1>
     <div class="game-bg">
       <v-container>
         <v-row>
@@ -71,6 +73,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.game-header {
+  @media (max-width: 575.98px) {
+    font-size: 24px;
+  }
+}
 .game-bg {
   background: #0f0f13e3;
 }
