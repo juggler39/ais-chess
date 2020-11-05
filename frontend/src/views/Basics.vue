@@ -51,5 +51,11 @@ export default {
       }
     }
   }
+
+  .subtitle {
+    @media (max-width: 575.98px) {
+      font-size: 24px;
+    }
+  }
 }
 </style>

@@ -75,9 +75,16 @@ export default {
     .contacts-card {
       width: 50%;
       display: flex;
+      @media (max-width: 425px) {
+        flex-direction: column;
+        align-items: center;
+      }
 
       .v-image {
         width: 50%;
+        @media (max-width: 425px) {
+          width: 70%;
+        }
       }
 
       @media (max-width: 991.98px) {
@@ -98,6 +105,11 @@ export default {
         @media (max-width: 991.98px) {
           flex-direction: row-reverse;
         }
+        @media (max-width: 425px) {
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
         .content {
           .text {
             &::after {
@@ -111,6 +123,11 @@ export default {
         @media (max-width: 991.98px) {
           flex-direction: row;
         }
+        @media (max-width: 425px) {
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
         .content {
           .text {
             &::after {
@@ -122,6 +139,11 @@ export default {
 
       &:nth-child(4) {
         flex-direction: row-reverse;
+        @media (max-width: 425px) {
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
         .content {
           .text {
             &::after {
@@ -140,6 +162,10 @@ export default {
         align-items: center;
         justify-content: center;
         position: relative;
+
+        @media (max-width: 425px) {
+          width: 100%;
+        }
 
         &::after {
           position: absolute;
