@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="390">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on">
+        <v-btn dark v-bind="attrs" v-on="on" class="animated-button">
           New Game
         </v-btn>
       </template>
@@ -96,3 +96,7 @@ export default {
   }
 };
 </script>
+
+<style>
+
+</style>
