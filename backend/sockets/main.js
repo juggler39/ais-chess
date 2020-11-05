@@ -1,12 +1,12 @@
 const io = require("socket.io");
-const mongoAdapter = require("socket.io-adapter-mongo");
+const mongoAdapter = require("@mother/socket.io-adapter-mongo");
 const gameEvents = require("./gameEvents");
 const lobbyEvents = require("./lobbyEvents");
 const globalChatEvents = require("./globalChatEvents");
 const playersChatEvents = require("./playersChatEvents");
 
 const sockets = (server) => {
-	
+
 	const socketIO = io(server);
 	socketIO.adapter(mongoAdapter(process.env.MONGO_URL));
     
