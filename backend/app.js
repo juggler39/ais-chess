@@ -33,7 +33,7 @@ if (isProduction) {
 	server = http.createServer(app);
 }
 
-sockets(server);
+sockets(server, isProduction);
 
 //Configure our app
 app.use(cors());
