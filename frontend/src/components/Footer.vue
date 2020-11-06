@@ -31,7 +31,13 @@
       <form @submit.prevent="action()">
         <p class="nav_header">Stay Connected</p>
         <div class="form-input">
-          <input v-model="email" type="email" placeholder="Email" required />
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Email"
+            aria-label="Email"
+            required
+          />
           <button type="submit">
             SEND
           </button>
