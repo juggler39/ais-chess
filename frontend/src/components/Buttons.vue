@@ -91,8 +91,8 @@ export default {
     }
 
     @media (max-width: 991.98px) {
-      width: 49%;
-      font-size: 12px;
+      width: 47%;
+      font-size: 10px;
     }
 
     @media (max-width: 767.98px) {

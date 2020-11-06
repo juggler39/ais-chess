@@ -7,7 +7,7 @@
         </v-btn>
       </template>
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark color="blue-grey darken-1">
           <v-toolbar-title>Set up a new game</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
@@ -53,7 +53,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" dark @click="submit">OK</v-btn>
+          <v-btn color="blue-grey darken-1" dark @click="submit">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
