@@ -24,7 +24,7 @@ export default {
   font-size: 14px;
 
   .user-name {
-    color: #707070;
+    color: #acacac;
   }
   .text {
     word-wrap: break-word;
@@ -34,7 +34,7 @@ export default {
     width: 60%;
   }
   .date {
-    color: #272727;
+    color: #616161;
     font-size: 10px;
     margin-left: auto;
   }

@@ -156,16 +156,16 @@ export default {
     }
     button[type="submit"] {
       width: 30%;
-      border-left: 1px solid #202020;
-      background-color: #202020;
-      color: #444444;
+      border-left: 1px solid #474747;
+      background-color: #272727;
+      color: #8f8f8f;
       padding: 5px;
       outline: none;
       transition: 0.3s;
       &:hover,
       &:focus {
         background-color: #383838;
-        color: #202020;
+        color: #000000;
       }
     }
   }
