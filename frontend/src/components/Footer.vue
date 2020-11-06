@@ -14,13 +14,10 @@
       <nav>
         <p class="nav_header">Contact Us</p>
         <ul class="social-buttons">
-          <li v-for="link in socialLinks" :key="link.text">
-            <router-link
-              :to="'//' + link.url"
-              class="social-btn"
-              target="_blank"
-            >
-              <v-icon center>{{ link.icon }}</v-icon>
+          <li v-for="link in socialLinks" :key="link.text" class="social-btn">
+            <router-link :to="'//' + link.url" class="link" target="_blank">
+              <v-icon>{{ link.icon }}</v-icon>
+              {{ link.text }}
             </router-link>
           </li>
         </ul>
@@ -80,14 +77,46 @@ export default {
 
   .social-buttons {
     display: flex;
+    flex-direction: column;
 
     .social-btn {
       border-radius: 50px;
-      text-decoration: none;
-      padding: 7px 5px;
-      margin-right: 5px;
+      padding: 2px 0;
       transition: 0.3s;
       opacity: 0.5;
+
+      .link {
+        text-decoration: none;
+        color: #ffffff;
+      }
+
+      &:first-child {
+        .v-icon {
+          color: #00acee;
+        }
+      }
+
+      &:nth-child(2) {
+        .v-icon {
+          color: #4c75a3;
+        }
+      }
+
+      &:nth-child(3) {
+        .v-icon {
+          color: #0e76a8;
+        }
+      }
+
+      &:last-child {
+        .v-icon {
+          color: #ea4335;
+        }
+      }
+
+      .v-icon {
+        margin-right: 5px;
+      }
 
       @media (max-width: 575.98px) {
         padding: 0;
