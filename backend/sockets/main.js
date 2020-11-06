@@ -6,10 +6,12 @@ const lobbyEvents = require("./lobbyEvents");
 const globalChatEvents = require("./globalChatEvents");
 const playersChatEvents = require("./playersChatEvents");
 
-const sockets = (server) => {
-  
+const sockets = (server, isProduction) => {
+
 	const socketIO = io(server);
-	socketIO.adapter(mongoAdapter(process.env.MONGO_URL));
+	if(isProduction) {
+		socketIO.adapter(mongoAdapter(process.env.MONGO_URL));
+	}
     
 	socketIO.on("connection", (socket) => {
 
