@@ -1,11 +1,11 @@
 <template>
-  <v-row justify="center">
-    <v-btn color="success" dark @click="open">
+  <div class="create-game">
+    <v-btn dark @click="open">
       Create game
     </v-btn>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark color="blue-grey darken-1">
           <v-toolbar-title>Create a game</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
@@ -30,11 +30,11 @@
         </v-radio-group>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" dark @click="send">OK</v-btn>
+          <v-btn color="blue-grey darken-1" dark @click="send">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
+  </div>
 </template>
 
 <script>
@@ -69,3 +69,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.create-game {
+  display: flex;
+  justify-content: center;
+}
+</style>

@@ -119,6 +119,10 @@ export default {
   border-radius: 100%;
   border: 1px solid #333333;
   position: relative;
+
+  @media (max-width: 991.98px) {
+    margin: 0 auto;
+  }
   .profile-img {
     height: 100%;
     width: 100%;

@@ -1,27 +1,24 @@
 <template>
   <nav>
     <v-app-bar class="container" app>
-      <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
       <div class="logo">
         <v-img src="@/assets/new-logo.png"></v-img>
       </div>
-      <v-tooltip v-for="link in menuLinks" :key="link.text" bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
-            <v-icon left>{{ link.icon }}</v-icon>
-            <span class="hidden-sm-and-down">
-              {{ link.text }}
-            </span>
-          </v-btn>
-        </template>
-        <span>{{ link.text }}</span>
-      </v-tooltip>
+      <div class="desktopMenu">
+        <v-tooltip v-for="link in menuLinks" :key="link.text" bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn :to="link.route" v-bind="attrs" v-on="on" text class="ml-1">
+              <v-icon left>{{ link.icon }}</v-icon>
+              <span class="hidden-sm-and-down">
+                {{ link.text }}
+              </span>
+            </v-btn>
+          </template>
+          <span>{{ link.text }}</span>
+        </v-tooltip>
+      </div>
 
       <v-spacer></v-spacer>
-
-      <!-- <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn> -->
 
       <v-btn v-if="$store.state.loginUser" text to="/account">
         <span> {{ $store.state.loginUser }} </span>
@@ -43,8 +40,19 @@
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-
         <v-list>
+          <v-list-item
+            class="list-item-adaptive"
+            v-for="link in menuLinks"
+            :key="link.text"
+            router
+            :to="link.route"
+          >
+            <v-list-item-icon>
+              <v-icon> {{ link.icon }} </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{ link.text }}</v-list-item-title>
+          </v-list-item>
           <v-list-item
             v-for="link in drawerLinks"
             :key="link.text"
@@ -61,7 +69,6 @@
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" app temporary>
       <v-list nav dense subheader>
-        <v-subheader>User Controls</v-subheader>
         <v-list-item-group>
           <v-list-item
             v-for="link in drawerLinks"
@@ -109,8 +116,7 @@ export default {
     ],
     drawer: false,
     drawerLinks: [
-      { icon: "mdi-home", text: "Home", route: "/" },
-      { icon: "mdi-newspaper", text: "News", route: "/news" },
+      { icon: "mdi-cast-education", text: "Basics", route: "/basics" },
       { icon: "mdi-account", text: "Account", route: "/account" },
       { icon: "mdi-email", text: "About Us", route: "/about_us" }
     ]
@@ -127,12 +133,43 @@ export default {
     width: 60px;
     margin-right: 20px;
 
-    @media (max-width: 575.98px) {
-      display: none;
+    @media (max-width: 767.98px) {
+      margin-right: 0;
+    }
+
+    @media (max-width: 355.98px) {
+      width: 40px;
     }
   }
 }
-// .v-toolbar__content {
-//   height: auto !important;
-// }
+.list-item-adaptive {
+  display: none;
+
+  @media (max-width: 767.98px) {
+    display: flex;
+  }
+}
+
+.desktopMenu {
+  display: flex;
+
+  @media (max-width: 767.98px) {
+    display: none;
+  }
+}
+
+.v-btn:not(.v-btn--round).v-size--default {
+  @media (max-width: 575.98px) {
+    height: auto;
+    font-size: 12px;
+    min-width: auto;
+    padding: 10px 5px;
+  }
+  @media (max-width: 355.98px) {
+    height: auto;
+    font-size: 10px;
+    min-width: auto;
+    padding: 5px;
+  }
+}
 </style>

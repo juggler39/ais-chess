@@ -33,7 +33,7 @@
         </v-col>
       </v-row>
       <v-row v-else>
-        <h1>
+        <h1 class="text-center">
           You have no active game. Please, visit <a href="/lobby">lobby</a> to
           choose or create new game
         </h1>

@@ -67,7 +67,7 @@ export default {
     opacity: 0.5;
 
     @media (max-width: 767.98px) {
-      width: 100%;
+      width: 60%;
     }
   }
 
@@ -92,6 +92,10 @@ export default {
       color: #fff;
       text-shadow: 0 0 10px #3d7a97;
       letter-spacing: 1px;
+
+      @media (max-width: 575.98px) {
+        font-size: 24px;
+      }
     }
 
     .main-title:after,
@@ -130,11 +134,16 @@ export default {
     }
 
     .content {
-      font-size: 1rem;
+      font-size: 16px;
       line-height: 1.25rem;
       padding-top: 20px;
       font-weight: 300;
       letter-spacing: 1px;
+
+      @media (max-width: 575.98px) {
+        font-size: 14px;
+        line-height: 1rem;
+      }
     }
   }
 }
@@ -150,6 +159,10 @@ export default {
 
   @media (max-width: 767.98px) {
     margin: 0 1em;
+    font-size: 1.2rem;
+  }
+  @media (max-width: 355.98px) {
+    font-size: 0.8rem;
   }
 
   &:hover {
@@ -171,7 +184,7 @@ export default {
   border: 2px solid #666;
 
   @media (max-width: 767.98px) {
-    margin: 2em;
+    margin: 50px 0;
     padding: 1em;
     font-size: 14px;
   }

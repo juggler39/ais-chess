@@ -49,3 +49,17 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.headline {
+  @media (max-width: 575.98px) {
+    font-size: 16px !important;
+    line-height: 1rem;
+  }
+}
+.v-card__text {
+  @media (max-width: 575.98px) {
+    padding: 5px;
+  }
+}
+</style>

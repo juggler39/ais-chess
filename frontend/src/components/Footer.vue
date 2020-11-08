@@ -83,6 +83,10 @@ export default {
       transition: 0.3s;
       opacity: 0.5;
 
+      @media (max-width: 575.98px) {
+        padding: 0;
+      }
+
       &:hover {
         opacity: 1;
       }
@@ -99,6 +103,10 @@ export default {
   .form-input {
     display: flex;
     width: 100%;
+
+    @media (max-width: 575.98px) {
+      font-size: 10px;
+    }
 
     input[type="email"] {
       width: 70%;
@@ -144,6 +152,9 @@ export default {
     @media (max-width: 767.98px) {
       width: 47%;
     }
+    @media (max-width: 575.98px) {
+      width: 40%;
+    }
 
     ul,
     li {
@@ -166,6 +177,10 @@ export default {
   .nav_header {
     position: relative;
     padding-bottom: 2px;
+
+    @media (max-width: 575.98px) {
+      font-size: 14px;
+    }
 
     &::after {
       content: "";

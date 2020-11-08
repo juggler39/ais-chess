@@ -86,11 +86,20 @@ export default {
   position: relative;
   margin: 20px 0 50px;
 
+  @media (max-width: 575.98px) {
+    padding: 10px;
+  }
+
   .title-content {
     font-weight: bold;
     position: relative;
     z-index: 2;
     font-size: 18px;
+
+    @media (max-width: 575.98px) {
+      font-size: 14px;
+      font-weight: normal;
+    }
   }
 
   &::after {
@@ -115,6 +124,12 @@ export default {
 
     &:hover {
       color: #7cb342;
+    }
+  }
+
+  .v-timeline-item {
+    @media (max-width: 575.98px) {
+      padding-bottom: 15px;
     }
   }
 }

@@ -1,36 +1,38 @@
 <template>
   <div class="game">
-    <h1 class="text-center mb-5">Play against the Artificial Intelligence</h1>
+    <h1 class="text-center mb-5 game-header">
+      Play against the Artificial Intelligence
+    </h1>
     <div class="game-bg">
       <v-container>
-      <v-row>
-        <Aiboard
-          ref="Aiboard"
-          v-bind:moves="getAIHistory"
-          v-bind:newGame="newGame"
-          v-bind:historyMove="historyMove"
-          @newGame="newGame.start = $event"
-        />
-        <v-col class="col-12 col-md-3">
-          <div class="right-column">
-            <GameHistory
+        <v-row>
+          <Aiboard
+            ref="Aiboard"
             v-bind:moves="getAIHistory"
-            @historyMove="historyMove = $event"
+            v-bind:newGame="newGame"
+            v-bind:historyMove="historyMove"
+            @newGame="newGame.start = $event"
           />
-          <div class="btn-content">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <div class="content">
-              <p>Do you want to start a new game?</p>
-              <SetUpAiGame @newGame="newGame = $event" />
+          <v-col class="col-12 col-md-3">
+            <div class="right-column">
+              <GameHistory
+                v-bind:moves="getAIHistory"
+                @historyMove="historyMove = $event"
+              />
+              <div class="btn-content">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="content">
+                  <p>Do you want to start a new game?</p>
+                  <SetUpAiGame @newGame="newGame = $event" />
+                </div>
+              </div>
             </div>
-          </div>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
   </div>
 </template>
@@ -71,6 +73,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.game-header {
+  @media (max-width: 575.98px) {
+    font-size: 24px;
+  }
+}
 .game-bg {
   background: #0f0f13e3;
 }

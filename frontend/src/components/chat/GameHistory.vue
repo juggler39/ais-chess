@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto">
-    <h2 class="text-center">Moves</h2>
+    <h2 class="text-center moves-header">Moves</h2>
     <div class="history" ref="history">
       <ul>
         <li
@@ -105,6 +105,12 @@ export default {
 <style lang="scss" scoped>
 .active {
   background-color: #8aa0ab;
+}
+
+.moves-header {
+  @media (max-width: 575.98px) {
+    font-size: 16px;
+  }
 }
 
 .history {
